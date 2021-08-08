@@ -13,7 +13,7 @@ namespace ApplicationDevelopmentCourseProject.Helpers
 		IEnumerable<Order> GetByUserId(string userId);
 		IEnumerable<Order> GetAll();
 		IEnumerable<Order> GetUserLatestOrders(int count, string userId);
-		IEnumerable<Product> GetUserMostPopularFoods(string id);
+		IEnumerable<Product> GetUserMostPopularProducts(string id);
 		IEnumerable<Order> GetFilteredOrders(
 			string userId = null,
 			OrderBy orderBy = OrderBy.None,
