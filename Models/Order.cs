@@ -9,8 +9,6 @@ namespace ApplicationDevelopmentCourseProject.Models
     {
         public int Id { get; set; }
 
-        public IEnumerable<OrderDetails> OrderLines { get; set; }
-
         public string ZipCode { get; set; }
 
         public string Address { get; set; }

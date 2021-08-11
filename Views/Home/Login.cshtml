@@ -23,7 +23,7 @@
         var data = $("#loginForm").serialize();
         $.ajax({
             type: "post",
-            url: "/User/CheckValidUser",
+            url: "/Users/CheckValidUser",
             data: data,
             success: function (result) {
                 if (result == "Fail") {
