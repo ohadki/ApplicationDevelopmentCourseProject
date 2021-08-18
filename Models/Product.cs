@@ -2,20 +2,44 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace ApplicationDevelopmentCourseProject.Models
 {
     public class Product
     {
         public int Id { get; set; }
+
+        [DisplayName("Employee Name")]
+        [Required(ErrorMessage = "Product Name is required")]
+        [StringLength(100, MinimumLength = 3)]
+        [RegularExpression("^.*[a-zA-Z]+.*$", ErrorMessage = "Product Name must have at least one letter")] // contains at least one letter
         public string Name { get; set; }
-        public string ShortDescription { get; set; }
-        public string LongDescription { get; set; }
+
+        [DisplayName("Description")]
+        [Required(ErrorMessage = "Description is required")]
+        [StringLength(1000, MinimumLength = 10)]
+        [RegularExpression("^.*[a-zA-Z]+.*$", ErrorMessage = "Description must have at least one letter")] // contains at least one letter
+        public string Description { get; set; }
+
+        [DisplayName("Price")]
+        [Required(ErrorMessage = "Price is required")]
+        [Range(1,500,ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public decimal Price { get; set; }
+
+        [DisplayName("Image")]
+        [Required(ErrorMessage = "Image is required")]
+        [StringLength(80, MinimumLength = 5)]
+        /* Image file extension validation
+           1. It should start with a string of at least one character.
+           2. It should not have any white space.
+           3. It should be followed by a dot(.).
+           4. It should be end with any one of the following extensions: jpg, jpeg, png, gif, bmp.
+         */
+        [RegularExpression("([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$)", ErrorMessage = "Bad image format")]
         public string ImageUrl { get; set; }
-        public bool IsPreferedProduct { get; set; }
-        public int InStock { get; set; }
-        public int CategoryId { get; set; }
-        public virtual Category Category { get; set; }
+
+        //TODO: add category and sub category
     }
 }
