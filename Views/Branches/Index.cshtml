@@ -13,10 +13,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.BranchName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.XCoordinate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YCoordinate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ImageUrl)
@@ -28,10 +34,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.BranchName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location)
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.XCoordinate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YCoordinate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ImageUrl)
