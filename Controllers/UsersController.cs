@@ -153,10 +153,10 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public JsonResult CheckValidUser(User model)
         {
             string result = "Fail";
-            var DataItem = "Test"; //TODO: LINQ
-            if (DataItem != null)
+            bool loggedUser = _context.User.Any(x => x.Username == model.Username && x.Password == model.Password);
+            if (loggedUser)
             {
-                //TODO: Handle valid user
+                result = "Login Succedd";
             }
             return Json(result);
         }

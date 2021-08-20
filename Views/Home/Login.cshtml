@@ -11,7 +11,7 @@
                 <form class="form-signin" id="loginForm">
                     <input type="text" id="Username" name="Username" class="form-control" placeholder="Username" required autofocus>
                     <input type="password" name="Password" class="form-control" placeholder="Password" required>
-                    <input type="button" onclick="Login()" class="btn btn-lg btn-default btn-block" value="Login" />
+                    <input type="button" onclick="Login()" class="btn btn-lg btn-default btn-block btn-light" value="Login" />
                 </form>
             </div>
         </div>
@@ -32,6 +32,7 @@
                 }
                 else {
                     //TODO: redirect
+                    window.location.href = "../Home/";
                 }
             }
         })
