@@ -22,7 +22,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // GET: Branches
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Branch.ToListAsync());
+            var branches =  _context.Branch.ToListAsync();
+            return View(await branches);
+        }
+
+        public async Task<IActionResult> ContactUs()
+        {
+            var branches = _context.Branch.ToListAsync();
+            return View(await branches);
         }
 
         // GET: Branches/Details/5

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApplicationDevelopmentCourseProject.Migrations
 {
     [DbContext(typeof(ApplicationDevelopmentCourseProjectContext))]
-    [Migration("20210819161228_added-branches")]
-    partial class addedbranches
+    [Migration("20210822184320_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
