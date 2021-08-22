@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace ApplicationDevelopmentCourseProject.Models
 {
+    public enum UserType
+    {
+        Client,
+        Admin
+    }
+
     public class User
     {
         [Required]
@@ -18,10 +24,10 @@ namespace ApplicationDevelopmentCourseProject.Models
         [DataType(DataType.Text)]
         public string Username { get; set; }
         [Required(ErrorMessage = "Password is required")]
-        [StringLength(255, ErrorMessage = "Must be between 5 and 255 characters", MinimumLength = 5)]
+        [StringLength(255, ErrorMessage = "Password must be between 5 and 255 characters", MinimumLength = 5)]
         public string Password { get; set; }
         [Required(ErrorMessage = "Id is required")]
-        [StringLength(9, ErrorMessage = "Must be between 5 and 255 characters", MinimumLength = 9)]
+        [StringLength(9, ErrorMessage = "Id must be 9 characters", MinimumLength = 9)]
         public string Id { get; set; }
         [Required(ErrorMessage = "First Name is required")]
         [StringLength(50, MinimumLength = 3,
@@ -58,6 +64,7 @@ namespace ApplicationDevelopmentCourseProject.Models
         [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
         public string ContactNumber { get; set; }
+        public UserType Type { get; set; } = UserType.Client;
         public DateTime MemberSince { get; set; } = DateTime.Now;
         public IEnumerable<Order> Orders { get; set; }
     }

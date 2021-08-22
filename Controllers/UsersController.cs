@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
-
-
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -162,11 +163,44 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 loggedUser = _context.User.Any(x => x.Username == user.Username && x.Password == user.Password);
                 if (loggedUser)
                 {
+                    loginUser(user.Username, user.Type);
                     result = "Login Succedd";
                 }
             }
             return Json(result);
         }
+
+        private async void loginUser(string username, UserType type)
+        {
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Role, type.ToString()),
+                };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+        }
+
+        //TODO: MODIFY THIS LOGOUT
+        //public async Task<IActionResult> Logout()
+        //{
+        //    // HttpContext.Session.Clear();
+
+        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         public JsonResult RegisterUser([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
         {
@@ -178,6 +212,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 result = "Registration completed !";
                 return Json(result);
             }
+            //For develop pupose only
             else
             {
                 var errors = ModelState.Select(x => x.Value.Errors)
