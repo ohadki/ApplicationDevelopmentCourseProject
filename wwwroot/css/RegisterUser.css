@@ -21,3 +21,6 @@
         left: 0;
         z-index: 1;
     }
+.input-validation-error {
+    display: block;
+}

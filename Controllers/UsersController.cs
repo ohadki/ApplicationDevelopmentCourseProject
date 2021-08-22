@@ -193,35 +193,25 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         //TODO: MODIFY THIS LOGOUT
-        //public async Task<IActionResult> Logout()
-        //{
-        //    // HttpContext.Session.Clear();
-
-        //    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        public JsonResult RegisterUser([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
+        public async Task<IActionResult> Logout()
         {
-            string result = "Fail";
+            // HttpContext.Session.Clear();
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction(nameof(Index),"Home");
+        }
+
+        public async Task<IActionResult> RegisterUser([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
+        {
             if (ModelState.IsValid)
             {
                 _context.User.Add(user);
-                _context.SaveChanges();
-                result = "Registration completed !";
-                return Json(result);
+                await _context.SaveChangesAsync();
+                loginUser(user.Username, user.Type);
+                return RedirectToAction(nameof(Index),"Home");
             }
-            //For develop pupose only
-            else
-            {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                                       .Where(y => y.Count > 0)
-                                       .ToList();
-                return Json(result);
-
-            }
-            return Json(result);
+            return View(user);
         }
     }
 }
