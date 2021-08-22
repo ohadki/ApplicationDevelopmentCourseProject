@@ -1,0 +1,114 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model ApplicationDevelopmentCourseProject.Models.User
+
+<link rel="stylesheet" href="~/css/RegisterUser.css">
+
+<div class="container">
+    <div class="account-wall">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center">Create Account</h4>
+            <form class="form-signin" id="RegisterUserForm">
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                    </div>
+                    <input name="Username" class="form-control" placeholder="Username" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input name="Password" class="form-control" placeholder="Create password" type="password">
+                </div> <!-- form-group// -->
+                <!--<div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input class="form-control" placeholder="Repeat password" type="password">
+                </div>-->
+                <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-id-card"></i> </span>
+                    </div>
+                    <input name="Id" class="form-control" placeholder="Id number" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                    </div>
+                    <input name="FirstName" class="form-control" placeholder="First Name" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                    </div>
+                    <input name="LastName" class="form-control" placeholder="Last Name" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
+                    </div>
+                    <input name="AddressLine1" class="form-control" placeholder="Address" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
+                    </div>
+                    <input name="AddressLine2" class="form-control" placeholder="Address 2" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
+                    </div>
+                    <input name="City" class="form-control" placeholder="City" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-globe"></i> </span>
+                    </div>
+                    <input name="Country" class="form-control" placeholder="Country" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                    </div>
+                    <input name="Email" class="form-control" placeholder="Email address" type="email">
+                </div> <!-- form-group// -->
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+                    </div>
+                    <input name="ContactNumber" class="form-control" placeholder="Phone number" type="text">
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <button type="button" onclick="Regiser()" class="btn btn-dark btn-block"> Create Account  </button>
+                </div> <!-- form-group// -->
+                <p class="text-center">Have an account? <a href="~/Home/Login">Log In</a> </p>
+            </form>
+        </article>
+    </div> <!-- card.// -->
+</div>
+<!--container end.//-->
+<script>
+    var Regiser = function () {
+        var form = $("#RegisterUserForm")
+        var data = $("#RegisterUserForm").serialize();
+        $.ajax({
+            type: "post",
+            url: "/Users/RegisterUser",
+            data: data,
+            success: function (result) {
+                if (result == "Fail") {
+                    alert("Login failed")
+                }
+                else {
+                    //TODO: redirect
+                    window.location.href = "../Home/";
+                }
+            }
+        })
+    }
+</script>

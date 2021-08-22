@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+
+
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -54,7 +57,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Username,Password,Id,FirstName,LastName,ImageUrl,IsActive,Balance,AddressLine1,AddressLine2,City,Country,MemberSince")] User user)
+        public async Task<IActionResult> Create([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +89,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Username,Password,Id,FirstName,LastName,ImageUrl,IsActive,Balance,AddressLine1,AddressLine2,City,Country,MemberSince")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Username,Password,Id,FirstName,LastName,ImageUrl,AddressLine1,AddressLine2,City,Country")] User user)
         {
             if (id != user.Id)
             {
@@ -150,13 +153,38 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return _context.User.Any(e => e.Id == id);
         }
 
-        public JsonResult CheckValidUser(User model)
+        public JsonResult CheckValidUser([Bind("Username,Password")] User user)
         {
             string result = "Fail";
-            bool loggedUser = _context.User.Any(x => x.Username == model.Username && x.Password == model.Password);
-            if (loggedUser)
+            bool loggedUser = false;
+            if(user != null)
             {
-                result = "Login Succedd";
+                loggedUser = _context.User.Any(x => x.Username == user.Username && x.Password == user.Password);
+                if (loggedUser)
+                {
+                    result = "Login Succedd";
+                }
+            }
+            return Json(result);
+        }
+
+        public JsonResult RegisterUser([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
+        {
+            string result = "Fail";
+            if (ModelState.IsValid)
+            {
+                _context.User.Add(user);
+                _context.SaveChanges();
+                result = "Registration completed !";
+                return Json(result);
+            }
+            else
+            {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                                       .Where(y => y.Count > 0)
+                                       .ToList();
+                return Json(result);
+
             }
             return Json(result);
         }

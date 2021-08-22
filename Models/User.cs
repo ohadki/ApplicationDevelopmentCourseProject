@@ -8,6 +8,10 @@ namespace ApplicationDevelopmentCourseProject.Models
 {
     public class User
     {
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
+        public string Email { get; set; }
         [Required(ErrorMessage = "Userame is required")]
         [StringLength(50, MinimumLength = 3,
         ErrorMessage = "Userame should be minimum 3 characters and a maximum of 50 characters")]
@@ -49,6 +53,11 @@ namespace ApplicationDevelopmentCourseProject.Models
         ErrorMessage = "Country should be minimum 3 characters and a maximum of 50 characters")]
         [DataType(DataType.Text)]
         public string Country { get; set; }
+        [Display(Name = "Your contact number :")]
+        [Required(ErrorMessage = "A phone number is required.")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
+        public string ContactNumber { get; set; }
         public DateTime MemberSince { get; set; } = DateTime.Now;
         public IEnumerable<Order> Orders { get; set; }
     }

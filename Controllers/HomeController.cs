@@ -33,6 +33,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View();
         }
 
+        public IActionResult RegisterUser()
+        {
+            return View();
+        }
+
         public IActionResult ContactUs()
         {
             return View();
