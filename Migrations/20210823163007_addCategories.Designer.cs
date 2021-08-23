@@ -10,13 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApplicationDevelopmentCourseProject.Migrations
 {
     [DbContext(typeof(ApplicationDevelopmentCourseProjectContext))]
-<<<<<<< HEAD:Migrations/20210819194434_InitMigration.Designer.cs
-    [Migration("20210819194434_InitMigration")]
-    partial class InitMigration
-=======
-    [Migration("20210823162358_init")]
-    partial class init
->>>>>>> 736cd68 (added UploadProducts empty view):Migrations/20210823162358_init.Designer.cs
+    [Migration("20210823163007_addCategories")]
+    partial class addCategories
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -70,7 +65,7 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(9)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ZipCode")
                         .HasColumnType("nvarchar(max)");
@@ -120,53 +115,43 @@ namespace ApplicationDevelopmentCourseProject.Migrations
             modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AddressLine1")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddressLine2")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("MemberSince")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

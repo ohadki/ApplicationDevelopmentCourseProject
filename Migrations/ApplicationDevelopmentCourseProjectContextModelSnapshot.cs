@@ -85,26 +85,23 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("InStock")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsPreferedProduct")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LongDescription")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ShortDescription")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -190,7 +187,7 @@ namespace ApplicationDevelopmentCourseProject.Migrations
             modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.Product", b =>
                 {
                     b.HasOne("ApplicationDevelopmentCourseProject.Models.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany("products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -200,7 +197,7 @@ namespace ApplicationDevelopmentCourseProject.Migrations
 
             modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("products");
                 });
 
             modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.User", b =>

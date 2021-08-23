@@ -1,5 +1,6 @@
-﻿using ApplicationDevelopmentCourseProject.Models;
+using ApplicationDevelopmentCourseProject.Models;
 using Microsoft.AspNetCore.Authorization;
+﻿using ApplicationDevelopmentCourseProject.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,15 +14,18 @@ namespace ApplicationDevelopmentCourseProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDevelopmentCourseProjectContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDevelopmentCourseProjectContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            List<Product> products = _context.Product.ToList();
+            return View(products);
         }
         [Authorize]
         public IActionResult Privacy()
