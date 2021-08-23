@@ -22,8 +22,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var applicationDevelopmentCourseProjectContext = _context.Product.Include(p => p.Category);
-            return View(await applicationDevelopmentCourseProjectContext.ToListAsync());
+            return View(await _context.Product.ToListAsync());
         }
 
         // GET: Products/Details/5
