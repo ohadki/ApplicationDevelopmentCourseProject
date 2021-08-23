@@ -9,9 +9,10 @@ namespace ApplicationDevelopmentCourseProject.Models
 {
     public class Product
     {
+        [Key]
         public int Id { get; set; }
 
-        [DisplayName("Employee Name")]
+        [DisplayName("Product Name")]
         [Required(ErrorMessage = "Product Name is required")]
         [StringLength(100, MinimumLength = 3)]
         [RegularExpression("^.*[a-zA-Z]+.*$", ErrorMessage = "Product Name must have at least one letter")] // contains at least one letter
@@ -40,6 +41,8 @@ namespace ApplicationDevelopmentCourseProject.Models
         [RegularExpression("([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$)", ErrorMessage = "Bad image format")]
         public string ImageUrl { get; set; }
 
-        //TODO: add category and sub category
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
     }
 }
