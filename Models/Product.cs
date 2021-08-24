@@ -39,7 +39,7 @@ namespace ApplicationDevelopmentCourseProject.Models
            4. It should be end with any one of the following extensions: jpg, jpeg, png, gif, bmp.
          */
         [RegularExpression("([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$)", ErrorMessage = "Bad image format")]
-        public string ImageUrl { get; set; }
+        public string Image { get; set; } 
 
         public int CategoryId { get; set; }
 

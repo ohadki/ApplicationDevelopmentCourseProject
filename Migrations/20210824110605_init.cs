@@ -26,8 +26,8 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                 name: "User",
                 columns: table => new
                 {
-<<<<<<< HEAD:Migrations/20210819194434_InitMigration.cs
                     Id = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -37,20 +37,8 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                     AddressLine2 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     City = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-=======
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AddressLine1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AddressLine2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
->>>>>>> 736cd68 (added UploadProducts empty view):Migrations/20210823162358_init.cs
+                    ContactNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
                     MemberSince = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -93,11 +81,7 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrderTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OrderPlaced = table.Column<DateTime>(type: "datetime2", nullable: false),
-<<<<<<< HEAD:Migrations/20210819194434_InitMigration.cs
                     UserId = table.Column<string>(type: "nvarchar(9)", nullable: true)
-=======
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
->>>>>>> 736cd68 (added UploadProducts empty view):Migrations/20210823162358_init.cs
                 },
                 constraints: table =>
                 {
