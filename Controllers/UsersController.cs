@@ -11,6 +11,7 @@ using ApplicationDevelopmentCourseProject.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -27,6 +28,22 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.User.ToListAsync());
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [Authorize(Roles ="Admin")]
+        public IActionResult AdminPanel()
+        {
+            return View();
         }
 
         // GET: Users/Details/5
@@ -157,13 +174,12 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public JsonResult CheckValidUser([Bind("Username,Password")] User user)
         {
             string result = "Fail";
-            bool loggedUser = false;
             if(user != null)
             {
-                loggedUser = _context.User.Any(x => x.Username == user.Username && x.Password == user.Password);
-                if (loggedUser)
+                User loggedUser = _context.User.Where(x => x.Username == user.Username && x.Password == user.Password).FirstOrDefault();
+                if (loggedUser != null)
                 {
-                    loginUser(user.Username, user.Type);
+                    loginUser(loggedUser.Username, loggedUser.Type);
                     result = "Login Succedd";
                 }
             }

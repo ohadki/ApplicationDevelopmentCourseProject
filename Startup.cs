@@ -38,7 +38,7 @@ namespace ApplicationDevelopmentCourseProject
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
                 options =>
                 {
-                    options.LoginPath = "/Home/Login";
+                    options.LoginPath = "/Users/Login";
                     options.AccessDeniedPath = "/Users/AccessDenied";
                 });
         }
