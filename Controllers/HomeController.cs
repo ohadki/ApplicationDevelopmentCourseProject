@@ -1,5 +1,6 @@
-﻿using ApplicationDevelopmentCourseProject.Data;
+using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -26,13 +27,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public IActionResult Login()
         {
             return View();
         }

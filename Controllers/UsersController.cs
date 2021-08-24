@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -23,6 +28,22 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.User.ToListAsync());
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [Authorize(Roles ="Admin")]
+        public IActionResult AdminPanel()
+        {
+            return View();
         }
 
         // GET: Users/Details/5
@@ -54,7 +75,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Username,Password,Id,FirstName,LastName,ImageUrl,IsActive,Balance,AddressLine1,AddressLine2,City,Country,MemberSince")] User user)
+        public async Task<IActionResult> Create([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +107,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Username,Password,Id,FirstName,LastName,ImageUrl,IsActive,Balance,AddressLine1,AddressLine2,City,Country,MemberSince")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Username,Password,Id,FirstName,LastName,ImageUrl,AddressLine1,AddressLine2,City,Country")] User user)
         {
             if (id != user.Id)
             {
@@ -150,15 +171,63 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return _context.User.Any(e => e.Id == id);
         }
 
-        public JsonResult CheckValidUser(User model)
+        public JsonResult CheckValidUser([Bind("Username,Password")] User user)
         {
             string result = "Fail";
-            var DataItem = "Test"; //TODO: LINQ
-            if (DataItem != null)
+            if(user != null)
             {
-                //TODO: Handle valid user
+                User loggedUser = _context.User.Where(x => x.Username == user.Username && x.Password == user.Password).FirstOrDefault();
+                if (loggedUser != null)
+                {
+                    loginUser(loggedUser.Username, loggedUser.Type);
+                    result = "Login Succedd";
+                }
             }
             return Json(result);
+        }
+
+        private async void loginUser(string username, UserType type)
+        {
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, username),
+                    new Claim(ClaimTypes.Role, type.ToString()),
+                };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var authProperties = new AuthenticationProperties
+            {
+                //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10)
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+        }
+
+        //TODO: MODIFY THIS LOGOUT
+        public async Task<IActionResult> Logout()
+        {
+            // HttpContext.Session.Clear();
+
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction(nameof(Index),"Home");
+        }
+
+        public async Task<IActionResult> RegisterUser([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.User.Add(user);
+                await _context.SaveChangesAsync();
+                loginUser(user.Username, user.Type);
+                return RedirectToAction(nameof(Index),"Home");
+            }
+            return View(user);
         }
     }
 }
