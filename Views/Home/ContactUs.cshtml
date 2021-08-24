@@ -12,38 +12,6 @@
 </head>
 <body>
     <p>Use this page to contact us and see the shop branches.</p>
-    @*<table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.BranchName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.XCoordinate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.YCoordinate)
-            </th>
-            <th></th>
-        </tr>
-        @if (Model != null)
-        {
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BranchName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.XCoordinate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.YCoordinate)
-                    </td>
-                </tr>
-            }
-        }
-    </table>*@
-
     <div id="branchesMap" style="width:100%;height:400px;"></div>
 </body>
 </html>
