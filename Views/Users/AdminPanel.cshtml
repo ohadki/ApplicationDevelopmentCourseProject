@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ApplicationDevelopmentCourseProject.Models.User>
+﻿@model ApplicationDevelopmentCourseProject.Controllers.UsersController.AdminViewModel
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -12,7 +12,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="#users" onclick="showhide('userstable');">Users <span class="sr-only">(current)</span></a>
             </li>
-            <li><a class="nav-link" href="#mywork" onclick="showhide('examplediv');">Example div</a></li>
+            <li><a class="nav-link" href="#branches" onclick="showhide('exampletable');">Branches</a></li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -22,33 +22,81 @@
 </nav>
 
 <body>
-    <div id="examplediv" style="display: none;">
-        Example div
+    <div id="exampletable" style="display: none;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.BranchName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.XCoordinate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.YCoordinate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.ImageUrl)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Branches)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BranchName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.XCoordinate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.YCoordinate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ImageUrl)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     <div id="userstable">
         <table class="table">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Email)
+                        @Html.DisplayNameFor(model => model.UserModel.Email)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Username)
+                        @Html.DisplayNameFor(model => model.UserModel.Username)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Password)
+                        @Html.DisplayNameFor(model => model.UserModel.Password)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Type)
+                        @Html.DisplayNameFor(model => model.UserModel.Type)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.MemberSince)
+                        @Html.DisplayNameFor(model => model.UserModel.MemberSince)
                     </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Users)
                 {
                     <tr>
                         <td>

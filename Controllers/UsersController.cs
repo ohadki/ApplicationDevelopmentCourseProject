@@ -19,6 +19,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;
 
+        public class AdminViewModel
+        {
+            public List<Branch> Branches { get; set; }
+            public List<User> Users { get; set; }
+            public Branch BranchModel { get; set; }
+            public User UserModel { get; set; }
+        }
+
         public UsersController(ApplicationDevelopmentCourseProjectContext context)
         {
             _context = context;
@@ -43,7 +51,12 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> AdminPanel()
         {
-            return View(await _context.User.ToListAsync());
+            var adminModel = new AdminViewModel
+            {
+                Users = await _context.User.ToListAsync(),
+                Branches = await _context.Branch.ToListAsync()
+            };
+            return View(adminModel);
         }
 
         // GET: Users1/Details/5
