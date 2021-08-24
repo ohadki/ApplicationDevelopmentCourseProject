@@ -10,13 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApplicationDevelopmentCourseProject.Migrations
 {
     [DbContext(typeof(ApplicationDevelopmentCourseProjectContext))]
-<<<<<<< HEAD:Migrations/20210819194434_InitMigration.Designer.cs
-    [Migration("20210819194434_InitMigration")]
-    partial class InitMigration
-=======
-    [Migration("20210823162358_init")]
-    partial class init
->>>>>>> 736cd68 (added UploadProducts empty view):Migrations/20210823162358_init.Designer.cs
+    [Migration("20210824120003_ProductImageBytes")]
+    partial class ProductImageBytes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -97,10 +92,10 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<byte[]>("Image")
                         .IsRequired()
                         .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("varbinary(80)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -137,10 +132,18 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -162,6 +165,9 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()

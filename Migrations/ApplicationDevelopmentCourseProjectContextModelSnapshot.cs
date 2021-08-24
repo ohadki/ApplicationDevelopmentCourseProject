@@ -90,10 +90,10 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<byte[]>("Image")
                         .IsRequired()
                         .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
+                        .HasColumnType("varbinary(80)");
 
                     b.Property<string>("Name")
                         .IsRequired()
