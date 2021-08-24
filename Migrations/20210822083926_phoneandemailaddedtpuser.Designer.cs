@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApplicationDevelopmentCourseProject.Migrations
 {
     [DbContext(typeof(ApplicationDevelopmentCourseProjectContext))]
-    [Migration("20210811134713_InitMigration")]
-    partial class InitMigration
+    [Migration("20210822083926_phoneandemailaddedtpuser")]
+    partial class phoneandemailaddedtpuser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,12 +65,14 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(9)");
 
                     b.Property<string>("ZipCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -113,6 +115,77 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                     b.ToTable("Product");
                 });
 
+            modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
+
+                    b.Property<string>("AddressLine1")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("AddressLine2")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ContactNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("MemberSince")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.Order", b =>
+                {
+                    b.HasOne("ApplicationDevelopmentCourseProject.Models.User", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.Product", b =>
                 {
                     b.HasOne("ApplicationDevelopmentCourseProject.Models.Category", "Category")
@@ -127,6 +200,11 @@ namespace ApplicationDevelopmentCourseProject.Migrations
             modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,163 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model ApplicationDevelopmentCourseProject.Models.User
+
+<link rel="stylesheet" href="~/css/RegisterUser.css">
+
+<div class="container">
+    <div class="account-wall">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h4 class="card-title mt-3 text-center">Create Account</h4>
+            <form asp-controller="Users" asp-action="RegisterUser">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div>
+                    <div class="form-group input-group">
+                        @*<label asp-for="Username" class="control-label"></label>*@
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                        </div>
+                        <input asp-for="Username" class="form-control" placeholder="Username" type="text" />
+
+
+                    </div><!-- form-group// -->
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                        </div>
+                        <input asp-for="Password" class="form-control" placeholder="Create password" type="password" />
+                    </div><!-- form-group// -->
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-id-card"></i> </span>
+                        </div>
+                        <input asp-for="Id" class="form-control" placeholder="Id number" type="number">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="Id" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                        </div>
+                        <input asp-for="FirstName" class="form-control" placeholder="First Name" type="text">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                        </div>
+                        <input asp-for="LastName" class="form-control" placeholder="Last Name" type="text">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
+                        </div>
+                        <input asp-for="AddressLine1" class="form-control" placeholder="Address" type="text">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="AddressLine1" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
+                        </div>
+                        <input asp-for="AddressLine2" class="form-control" placeholder="Address 2" type="text">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="AddressLine2" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
+                        </div>
+                        <input asp-for="City" class="form-control" placeholder="City" type="text">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-globe"></i> </span>
+                        </div>
+                        <input asp-for="Country" class="form-control" placeholder="Country" type="text">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="Country" class="text-danger"></span>
+                </div>
+                
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                        </div>
+                        <input asp-for="Email" class="form-control" placeholder="Email address" type="email">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+                        </div>
+                        <input asp-for="ContactNumber" class="form-control" placeholder="Phone number" type="number">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                </div>
+                
+                <div class="form-group">
+                    <input type="submit" value="Create Account" class="btn btn-dark btn-block" />
+                </div>
+                <p class="text-center">Have an account? <a href="~/Home/Login">Log In</a> </p>
+                @if (!String.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <div class="text-danger">@ViewBag.Error</div>
+                }
+            </form>
+        </article>
+    </div> <!-- card.// -->
+</div>
+<!--container end.//-->
+
+
+<script>
+    var Regiser = function () {
+        var form = $("#RegisterUserForm")
+        var data = $("#RegisterUserForm").serialize();
+        $.ajax({
+            type: "post",
+            url: "/Users/RegisterUser",
+            data: data,
+            success: function (result) {
+                if (result == "Fail") {
+                    alert("Registration failed")
+                }
+                else {
+                    window.location.href = "../Home/";
+                }
+            }
+        })
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
