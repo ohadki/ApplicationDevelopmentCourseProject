@@ -24,6 +24,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             return View(await _context.Product.ToListAsync());
         }
+        public IActionResult UploadProductView()
+        {
+            return View();
+        }
+        public IActionResult UploadProduct()
+        {
+            return View();
+        }
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
