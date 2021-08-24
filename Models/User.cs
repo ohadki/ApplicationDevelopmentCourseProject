@@ -16,7 +16,6 @@ namespace ApplicationDevelopmentCourseProject.Models
     {
         [Required]
         [DataType(DataType.EmailAddress)]
-        [EmailAddress]
         public string Email { get; set; }
         [Required(ErrorMessage = "Userame is required")]
         [StringLength(50, MinimumLength = 3,
@@ -65,7 +64,7 @@ namespace ApplicationDevelopmentCourseProject.Models
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
         public string ContactNumber { get; set; }
         public UserType Type { get; set; } = UserType.Client;
-        public DateTime MemberSince { get; set; } = DateTime.Now;
+        public DateTime? MemberSince { get; set; } = DateTime.Now;
         public IEnumerable<Order> Orders { get; set; }
     }
 }

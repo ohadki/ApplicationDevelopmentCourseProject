@@ -31,23 +31,6 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ContactUs">Contact Us</a>
                         </li>
                         @{
-                            if (User.Identity.IsAuthenticated)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Login</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Register">Register</a>
-                                </li>
-                            }
-                        }
-                        @{
                             if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
@@ -57,14 +40,18 @@
                         }
 
                     </ul>
-
                 </div>
                 <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">
-                        <i class="bi-cart-fill me-1"></i>
-                        Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                    </button>
+                    @{
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            <button class="btn" asp-area="" asp-controller="Users" asp-action="Logout">Logout</button>
+                        }
+                        else
+                        {
+                            <button class="btn" asp-area="" asp-controller="Users" asp-action="Login">Login</button>
+                        }
+                    }
                 </form>
             </div>
         </nav>
