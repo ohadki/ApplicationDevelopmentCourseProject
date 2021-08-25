@@ -9,6 +9,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using static ApplicationDevelopmentCourseProject.Controllers.BranchesController;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -35,8 +36,12 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public IActionResult ContactUs()
         {
-            var branches = _context.Branch.ToList();
-            return View(branches);
+            var contactViewModel = new ContactViewModel
+            {
+                Contacts =  _context.Contact.ToList(),
+                Branches =  _context.Branch.ToList()
+            };
+            return View(contactViewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

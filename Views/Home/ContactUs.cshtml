@@ -1,10 +1,5 @@
 ﻿
-@{
-    ViewData["Title"] = "Contact Us";
-}
-@*@model IEnumerable<ApplicationDevelopmentCourseProject.Models.Branch>*@
 @model ApplicationDevelopmentCourseProject.Controllers.BranchesController.ContactViewModel
-
 
 
 <html>
@@ -17,7 +12,35 @@
 </body>
 </html>
 
-
+@using (Html.BeginForm("Contact", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, true, new { @id = "contact-form", role = "form" }))
+{
+    @Html.ValidationSummary()
+    <fieldset>
+        <div class="form-div-1">
+            <label class="name">
+                @Html.TextBoxFor(m => m.ContactModel.Name, new { @placeholder = "Name *", @type = "text" })
+            </label>
+        </div>
+        <div class="form-div-2">
+            <label class="email">
+                @Html.TextBoxFor(m => m.ContactModel.Email, new { @placeholder = "Email Address *", @type = "email" })
+            </label>
+        </div>
+        <div class="form-div-3">
+            <label class="phone notRequired">
+                @Html.TextBoxFor(m => m.ContactModel.Telephone, new { @placeholder = "Telephone Number", @type = "text" })
+            </label>
+        </div>
+        <div>
+            <label class="message">
+                @Html.TextAreaFor(m => m.ContactModel.Message, new { @placeholder = "Message *" })
+            </label>
+        </div>
+        <div class="button-wrapper">
+            <input type="submit" value="Send" name="submit" class="button"> <input type="reset" value="Reset" name="MFReset" class="button"><span>* Required Fields</span>
+        </div>
+    </fieldset>
+}
 
 <script type="text/javascript">
         var map;
