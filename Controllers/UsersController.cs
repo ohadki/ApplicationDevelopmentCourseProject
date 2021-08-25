@@ -19,6 +19,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;
 
+        public class AdminViewModel
+        {
+            public List<Branch> Branches { get; set; }
+            public List<User> Users { get; set; }
+            public Branch BranchModel { get; set; }
+            public User UserModel { get; set; }
+        }
+
         public UsersController(ApplicationDevelopmentCourseProjectContext context)
         {
             _context = context;
@@ -41,12 +49,17 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         [Authorize(Roles ="Admin")]
-        public IActionResult AdminPanel()
+        public async Task<IActionResult> AdminPanel()
         {
-            return View();
+            var adminModel = new AdminViewModel
+            {
+                Users = await _context.User.ToListAsync(),
+                Branches = await _context.Branch.ToListAsync()
+            };
+            return View(adminModel);
         }
 
-        // GET: Users/Details/5
+        // GET: Users1/Details/5
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -64,18 +77,18 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(user);
         }
 
-        // GET: Users/Create
+        // GET: Users1/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Users1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
+        public async Task<IActionResult> Create([Bind("Email,Username,Password,Id,FirstName,LastName,ImageUrl,AddressLine1,AddressLine2,City,Country,ContactNumber,Type,MemberSince")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +120,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Username,Password,Id,FirstName,LastName,ImageUrl,AddressLine1,AddressLine2,City,Country")] User user)
+        public async Task<IActionResult> Edit(string id, [Bind("Email,Username,Password,Id,FirstName,LastName,ImageUrl,AddressLine1,AddressLine2,City,Country,ContactNumber,Type,MemberSince")] User user)
         {
             if (id != user.Id)
             {

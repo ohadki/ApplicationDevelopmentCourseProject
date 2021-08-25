@@ -1,5 +1,150 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model ApplicationDevelopmentCourseProject.Controllers.UsersController.AdminViewModel
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Admin Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#users" onclick="showhide('userstable');">Users <span class="sr-only">(current)</span></a>
+            </li>
+            <li><a class="nav-link" href="#branches" onclick="showhide('exampletable');">Branches</a></li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+<body>
+    <div id="exampletable" style="display: none;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.BranchName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.XCoordinate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.YCoordinate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BranchModel.ImageUrl)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Branches)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BranchName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.XCoordinate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.YCoordinate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ImageUrl)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="userstable">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserModel.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserModel.Username)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserModel.Password)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserModel.Type)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserModel.MemberSince)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Users)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Username)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Password)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MemberSince)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        var divState = {}; // we store the status in this object
+        function showhide(id) {
+            if (document.getElementById) {
+                var divid = document.getElementById(id);
+
+                divState[id] = (divState[id]) ? false : true; // initialize / invert status (true is visible and false is closed)
+                //close others
+                for (var div in divState) {
+                    if (divState[div] && div != id) { // ignore closed ones and the current
+                        document.getElementById(div).style.display = 'none'; // hide
+                        divState[div] = false; // reset status
+                    }
+                }
+                divid.style.display = (divid.style.display == 'block' ? 'none' : 'block');
+            }
+        }
+        showhide("userstable");
+    </script>
 }

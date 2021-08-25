@@ -1,10 +1,12 @@
+using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
 using Microsoft.AspNetCore.Authorization;
-﻿using ApplicationDevelopmentCourseProject.Data;
+using ApplicationDevelopmentCourseProject.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,6 +33,12 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public IActionResult ContactUs()
+        {
+            var branches = _context.Branch.ToList();
+            return View(branches);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

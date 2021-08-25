@@ -21,5 +21,7 @@ namespace ApplicationDevelopmentCourseProject.Data
         public DbSet<ApplicationDevelopmentCourseProject.Models.Category> Category { get; set; }
 
         public DbSet<ApplicationDevelopmentCourseProject.Models.User> User { get; set; }
+
+        public DbSet<ApplicationDevelopmentCourseProject.Models.Branch> Branch { get; set; }
     }
 }
