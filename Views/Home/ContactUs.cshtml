@@ -2,7 +2,8 @@
 @{
     ViewData["Title"] = "Contact Us";
 }
-@model IEnumerable<ApplicationDevelopmentCourseProject.Models.Branch>
+@*@model IEnumerable<ApplicationDevelopmentCourseProject.Models.Branch>*@
+@model ApplicationDevelopmentCourseProject.Controllers.BranchesController.ContactViewModel
 
 
 
@@ -16,11 +17,13 @@
 </body>
 </html>
 
+
+
 <script type="text/javascript">
         var map;
         var Latitude, Longitude;
         var markersArray = [];
-        var branches = @Json.Serialize(Model);
+        var branches = @Json.Serialize(Model.Branches);
         console.log(branches);
         function initialize() {
             var myLatlng1 = new google.maps.LatLng(branches[0].xCoordinate, branches[0].yCoordinate);
@@ -66,41 +69,5 @@
         markersArray.push(marker1);
     }
     google.maps.event.addDomListener(window, "load", initialize);
-            @*function DisplayGoogleMap() {
-
-
-
-                //Set the Latitude and Longitude of the Map
-                var mainBranch = new google.maps.LatLng(32.1308798, 35.0035587);
-
-               //Create Options or set different Characteristics of Google Map
-                var mapOptions = {
-                    center: mainBranch,
-                    zoom: 1,
-                    minZoom: 15,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-
-                //Display the Google map in the div control with the defined Options
-                var map = new google.maps.Map(document.getElementById("myDiv"), mapOptions);
-
-
-                var marker, i;
-
-                for (i = 0; i < branches.length; i++) {
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(branches[i].xCoordinate, branches[i].yCoordinate),
-                        map: map
-                    });
-                }
-
-                ////Set Marker on the Map
-                //var marker = new google.maps.Marker({
-                //    position: myAddress,
-                //    animation: google.maps.Animation.BOUNCE,
-                //});
-
-                //marker.setMap(map);
-            }*@
 </script>
 

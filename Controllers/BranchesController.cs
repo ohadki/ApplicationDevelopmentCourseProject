@@ -13,7 +13,12 @@ namespace ApplicationDevelopmentCourseProject.Controllers
     public class BranchesController : Controller
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;
-
+        public class ContactViewModel
+        {
+            public Branch BranchModel { get; set; }
+            public List<Branch> Branches { get; set; }
+            public Contact ContactModel { get; set; }
+        }
         public BranchesController(ApplicationDevelopmentCourseProjectContext context)
         {
             _context = context;
