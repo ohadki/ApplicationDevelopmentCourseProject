@@ -76,7 +76,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
             return View(user);
         }
-
+        
         // GET: Users1/Create
         public IActionResult Create()
         {

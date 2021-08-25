@@ -7,30 +7,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;
+        private readonly string _imagesFolderPath;
 
-        public ProductsController(ApplicationDevelopmentCourseProjectContext context)
+        [Obsolete]
+        public ProductsController(ApplicationDevelopmentCourseProjectContext context, IHostingEnvironment _environment)
         {
             _context = context;
+            _imagesFolderPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\UploadFiles\\Products";
+        }
+
+        public IActionResult UploadProduct()
+        {
+            ViewData["CategoryId"] = new SelectList(_context.Category.ToList(), nameof(Category.Id), nameof(Category.Name));
+            return View();
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
-        }
-        public IActionResult UploadProductView()
-        {
-            return View();
-        }
-        public IActionResult UploadProduct()
-        {
-            return View();
+            var applicationDevelopmentCourseProjectContext = _context.Product.Include(p => p.Category);
+            return View(await applicationDevelopmentCourseProjectContext.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -55,7 +61,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // GET: Products/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
             return View();
         }
 
@@ -64,7 +70,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ShortDescription,LongDescription,Price,ImageUrl,IsPreferedProduct,InStock,CategoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Image,CategoryId")] Product product)
         {
             if (ModelState.IsValid)
             {
@@ -72,8 +78,31 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.Name), product.CategoryId);
             return View(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateProduct(Product product)
+        {  
+            if(HttpContext.Request.Form.Files.Count > 0)
+            {
+                if (ModelState.IsValid)
+                {
+                    IFormFile productImage = HttpContext.Request.Form.Files[0];
+                    string ext = Path.GetExtension(productImage.FileName);
+                    product.Image = Guid.NewGuid() + ext; // random name
+                    using (Stream fileStream = new FileStream(Path.Combine(_imagesFolderPath, product.Image), FileMode.Create))
+                    {
+                        productImage.CopyTo(fileStream);
+                    }
+                    _context.Add(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            return View(product);//TODO: change this line because it's not working
         }
 
         // GET: Products/Edit/5
@@ -89,7 +118,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", product.CategoryId);
             return View(product);
         }
 
@@ -98,7 +127,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ShortDescription,LongDescription,Price,ImageUrl,IsPreferedProduct,InStock,CategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Image,CategoryId")] Product product)
         {
             if (id != product.Id)
             {
@@ -125,7 +154,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Id", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", product.CategoryId);
             return View(product);
         }
 

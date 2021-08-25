@@ -30,8 +30,7 @@ namespace ApplicationDevelopmentCourseProject.Models
         public decimal Price { get; set; }
 
         [DisplayName("Image")]
-        [Required(ErrorMessage = "Image is required")]
-        [StringLength(80, MinimumLength = 5)]
+        [StringLength(255, MinimumLength = 5)]
         /* Image file extension validation
            1. It should start with a string of at least one character.
            2. It should not have any white space.
@@ -39,7 +38,7 @@ namespace ApplicationDevelopmentCourseProject.Models
            4. It should be end with any one of the following extensions: jpg, jpeg, png, gif, bmp.
          */
         [RegularExpression("([^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$)", ErrorMessage = "Bad image format")]
-        public string Image { get; set; } 
+        public string? Image { get; set; } 
 
         public int CategoryId { get; set; }
 

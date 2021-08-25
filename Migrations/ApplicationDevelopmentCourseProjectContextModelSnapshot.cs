@@ -19,6 +19,37 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.Branch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("BranchName")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("XCoordinate")
+                        .HasColumnType("float");
+
+                    b.Property<double>("YCoordinate")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branch");
+                });
+
             modelBuilder.Entity("ApplicationDevelopmentCourseProject.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -90,10 +121,9 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<byte[]>("Image")
-                        .IsRequired()
+                    b.Property<string>("Image")
                         .HasMaxLength(80)
-                        .HasColumnType("varbinary(80)");
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -156,7 +186,7 @@ namespace ApplicationDevelopmentCourseProject.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("MemberSince")
+                    b.Property<DateTime?>("MemberSince")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Password")

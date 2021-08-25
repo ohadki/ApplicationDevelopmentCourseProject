@@ -15,4 +15,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\UploadFiles\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\UploadFiles\Products\friends.jpg" />
+  </ItemGroup>
+
 </Project>
