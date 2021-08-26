@@ -1,6 +1,7 @@
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
 using Microsoft.AspNetCore.Authorization;
+using ApplicationDevelopmentCourseProject.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,7 +26,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            List<Product> products = _context.Product.ToList();
+            return View(products);
         }
         [Authorize]
         public IActionResult Privacy()

@@ -16,7 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\UploadFiles\Users\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\UploadFiles\Products\friends.jpg" />
   </ItemGroup>
 
 </Project>
