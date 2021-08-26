@@ -23,8 +23,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             public List<Branch> Branches { get; set; }
             public List<User> Users { get; set; }
+            public List<Product> Products { get; set; }
             public Branch BranchModel { get; set; }
             public User UserModel { get; set; }
+            public Product ProductModel { get; set; }
+
         }
 
         public UsersController(ApplicationDevelopmentCourseProjectContext context)
@@ -33,9 +36,9 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.User.ToListAsync());
+            return View(nameof(AdminPanel));
         }
 
         public IActionResult Login()
@@ -54,7 +57,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             var adminModel = new AdminViewModel
             {
                 Users = await _context.User.ToListAsync(),
-                Branches = await _context.Branch.ToListAsync()
+                Branches = await _context.Branch.ToListAsync(),
+                Products = await _context.Product.ToListAsync()
             };
             return View(adminModel);
         }
@@ -88,7 +92,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Email,Username,Password,Id,FirstName,LastName,ImageUrl,AddressLine1,AddressLine2,City,Country,ContactNumber,Type,MemberSince")] User user)
+        public async Task<IActionResult> Create([Bind("Email,Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Type,MemberSince")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -145,7 +149,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AdminPanel));
             }
             return View(user);
         }

@@ -32,21 +32,24 @@ namespace ApplicationDevelopmentCourseProject.Models
         [StringLength(50, MinimumLength = 3,
         ErrorMessage = "First Name should be minimum 3 characters and a maximum of 50 characters")]
         [DataType(DataType.Text)]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Last Name is required")]
         [StringLength(50, MinimumLength = 3,
         ErrorMessage = "Last Name should be minimum 3 characters and a maximum of 50 characters")]
         [DataType(DataType.Text)]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        public string ImageUrl { get; set; }
         [Required(ErrorMessage = "Address is required")]
         [StringLength(50, MinimumLength = 3,
         ErrorMessage = "Address should be minimum 3 characters and a maximum of 50 characters")]
         [DataType(DataType.Text)]
+        [Display(Name = "Address")]
         public string AddressLine1 { get; set; }
         [StringLength(50, MinimumLength = 3,
         ErrorMessage = "AddressLine2 should be minimum 3 characters and a maximum of 50 characters")]
         [DataType(DataType.Text)]
+        [Display(Name = "Address 2")]
         public string AddressLine2 { get; set; }
         [Required(ErrorMessage = "City is required")]
         [StringLength(50, MinimumLength = 3,
@@ -58,7 +61,7 @@ namespace ApplicationDevelopmentCourseProject.Models
         ErrorMessage = "Country should be minimum 3 characters and a maximum of 50 characters")]
         [DataType(DataType.Text)]
         public string Country { get; set; }
-        [Display(Name = "Your contact number :")]
+        [Display(Name = "Phone:")]
         [Required(ErrorMessage = "A phone number is required.")]
         [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]

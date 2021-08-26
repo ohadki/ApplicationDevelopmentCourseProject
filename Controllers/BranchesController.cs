@@ -10,6 +10,7 @@ using ApplicationDevelopmentCourseProject.Models;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
+    //TODO: HANDLE CRUD VIEW RETURNS
     public class BranchesController : Controller
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;
@@ -61,7 +62,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BranchName,Address,XCoordinate,YCoordinate,ImageUrl")] Branch branch)
+        public async Task<IActionResult> Create([Bind("Id,BranchName,Address,XCoordinate,YCoordinate")] Branch branch)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +94,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BranchName,Address,XCoordinate,YCoordinate,ImageUrl")] Branch branch)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BranchName,Address,XCoordinate,YCoordinate")] Branch branch)
         {
             if (id != branch.Id)
             {
@@ -120,7 +121,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(branch);
+            return View(branch); 
         }
 
         // GET: Branches/Delete/5
