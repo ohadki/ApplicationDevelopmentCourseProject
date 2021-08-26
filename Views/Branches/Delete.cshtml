@@ -35,17 +35,11 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.YCoordinate)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
     </dl>
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-controller="Users" asp-action="AdminPanel">Back to Admin Panel</a>
     </form>
 </div>

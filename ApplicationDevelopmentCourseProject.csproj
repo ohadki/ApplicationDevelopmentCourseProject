@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\UploadFiles\Users\**" />
+    <Content Remove="wwwroot\UploadFiles\Users\**" />
+    <EmbeddedResource Remove="wwwroot\UploadFiles\Users\**" />
+    <None Remove="wwwroot\UploadFiles\Users\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.AspNet.Web.Optimization" Version="1.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.8" />
@@ -16,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\UploadFiles\Users\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

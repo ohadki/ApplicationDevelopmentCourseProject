@@ -9,9 +9,7 @@ namespace ApplicationDevelopmentCourseProject.Models
 {
     public class Branch
     {
-        [DisplayName("Id")]
-        [Required(ErrorMessage = "Id is required")]
-        [Range(1,10, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+        [Key]
         public int Id { get; set; }
         [DisplayName("Branch Name")]
         [Required(ErrorMessage = "Branch Name is required")]
@@ -30,8 +28,5 @@ namespace ApplicationDevelopmentCourseProject.Models
         [Required(ErrorMessage = "Y Coordinate is required")]
         [Range(-180, 180, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public double YCoordinate { get; set; }
-
-        [DisplayName("Image")]
-        public string ImageUrl { get; set; }
     }
 }

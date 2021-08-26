@@ -10,10 +10,12 @@ using ApplicationDevelopmentCourseProject.Models;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
+    //TODO: HANDLE CRUD VIEW RETURNS
+
     public class ProductsController : Controller
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;
@@ -26,6 +28,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             _imagesFolderPath = System.IO.Directory.GetCurrentDirectory() + "\\wwwroot\\UploadFiles\\Products";
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult UploadProduct()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category.ToList(), nameof(Category.Id), nameof(Category.Name));
@@ -39,7 +42,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(await applicationDevelopmentCourseProjectContext.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Products1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -58,14 +61,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(product);
         }
 
-        // GET: Products/Create
+        // GET: Products1/Create
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Products1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -78,7 +81,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, nameof(Category.Id), nameof(Category.Name), product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id", product.CategoryId);
             return View(product);
         }
 
@@ -99,13 +102,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     }
                     _context.Add(product);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index),"Home");
                 }
             }
-            return View(product);//TODO: change this line because it's not working
+            return View(nameof(Index), "Home");
         }
 
-        // GET: Products/Edit/5
+        // GET: Products1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -122,7 +125,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(product);
         }
 
-        // POST: Products/Edit/5
+        // POST: Products1/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -158,7 +161,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(product);
         }
 
-        // GET: Products/Delete/5
+        // GET: Products1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -177,7 +180,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(product);
         }
 
-        // POST: Products/Delete/5
+        // POST: Products1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
