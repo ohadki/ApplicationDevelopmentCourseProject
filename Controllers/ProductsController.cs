@@ -120,7 +120,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     _context.Add(product);
                     await _context.SaveChangesAsync();
 
-                    PublishToTwitter("The product" + product.Name + "Uploaded to the shop", product.Image);
+                    PublishToTwitter("The product" + product.Name + "uploaded to the shop in category + "
+                        + product.Category + " with the the price " + product.Price, product.Image);
 
                     return RedirectToAction(nameof(Index),"Home");
                 }
