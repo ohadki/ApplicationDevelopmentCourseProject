@@ -32,7 +32,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(await branches);
         }
 
-        //public async Task<IActionResult> ContactUs()
+        //public async Task<IActionResult> Contact()
         //{
         //    var branches = _context.Branch.ToListAsync();
         //    return View(await branches);
