@@ -55,7 +55,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
 
                 //prepare email
-                var toAddress = "someadress@yahoo.co.uk";
+                var toAddress = "talofirohad@yahoo.com";
                 var fromAddress = e.Email.ToString();
                 var subject = "Test enquiry from " + e.Name;
                 var message = new StringBuilder();
