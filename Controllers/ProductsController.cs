@@ -123,8 +123,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     PublishToTwitter("The product" + product.Name + "uploaded to the shop in category + "
                         + product.Category + " with the the price " + product.Price, product.Image);
 
-                    return RedirectToAction(nameof(Index),"Home");
+                    return RedirectToAction(nameof(Index), "Home");
                 }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList();
+                }
+
             }
             return View(nameof(Index), "Home");
         }
