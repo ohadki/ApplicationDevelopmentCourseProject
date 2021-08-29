@@ -430,7 +430,7 @@
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
         // Create dummy data
-        var data = { a: 9, b: 20, c: 30, d: 8, e: 12 }
+        var data = { Electronics: 9, Home: 20, Garden: 30, Clothing: 8 }
 
         // set the color scale
         var color = d3.scaleOrdinal()
@@ -466,7 +466,7 @@
             .data(data_ready)
             .enter()
             .append('text')
-            .text(function (d) { return "grp " + d.data.key })
+            .text(function (d) { return d.data.key })
             .attr("transform", function (d) { return "translate(" + arcGenerator.centroid(d) + ")"; })
             .style("text-anchor", "middle")
             .style("font-size", 17)
@@ -488,12 +488,12 @@
                 "translate(" + margin.left + "," + margin.top + ")");
 
         // Parse the Data
-        d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv", function (data) {
+        d3.csv("https://raw.githubusercontent.com/ohadki/ApplicationDevelopmentCourseProject/master/sample_stats.csv?token=AEGHCIYIT2QMMDGTFP2QH3LBFPKLW", function (data) {
 
             // X axis
             var x = d3.scaleBand()
                 .range([0, width])
-                .domain(data.map(function (d) { return d.Country; }))
+                .domain(data.map(function (d) { return d.Month; }))
                 .padding(0.2);
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
@@ -514,7 +514,7 @@
                 .data(data)
                 .enter()
                 .append("rect")
-                .attr("x", function (d) { return x(d.Country); })
+                .attr("x", function (d) { return x(d.Month); })
                 .attr("width", x.bandwidth())
                 .attr("fill", "#69b3a2")
                 // no bar at the beginning thus:
