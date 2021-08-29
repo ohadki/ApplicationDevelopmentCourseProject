@@ -33,12 +33,12 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? categoryId)
         {
             var productsAndCategoriesViewModel = new ProductsAndCategoriesViewModel
             {
                 Categories = await _context.Category.ToListAsync(),
-                Products = await _context.Product.ToListAsync()
+                Products = (categoryId == null) ? await _context.Product.ToListAsync() : await _context.Product.Where(p => p.Category.Id == categoryId).ToListAsync(),
             };
             return View(productsAndCategoriesViewModel);
         }
