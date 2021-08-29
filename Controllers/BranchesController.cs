@@ -32,12 +32,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(await branches);
         }
 
-        //public async Task<IActionResult> Contact()
-        //{
-        //    var branches = _context.Branch.ToListAsync();
-        //    return View(await branches);
-        //}
-
         // GET: Branches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
