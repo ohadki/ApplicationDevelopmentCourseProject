@@ -176,7 +176,9 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return _context.Contact.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> ContactEmail([Bind("Id,Name,Email,Telephone,Message")] Contact contact)
+        [HttpPost]
+        [Consumes("application/x-www-form-urlencoded")]
+        public async Task<IActionResult> ContactEmail([FromForm] Contact contact)
         {
             if (ModelState.IsValid)
             {

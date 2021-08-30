@@ -11,7 +11,8 @@
     <div class="container">
         <div class="account-wall">
             <article class="card-body mx-auto" style="max-width: 400px;">
-                <form asp-controller="Contacts" asp-action="ContactEmail">
+                @*<form asp-controller="Contacts" asp-action="ContactEmail">*@
+                    <form action='@Url.Action("ContactEmail","Contacts")' method='post'>
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div>
                         <div class="form-group input-group">
@@ -19,7 +20,8 @@
                                 <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                             </div>
                             <input asp-for="ContactModel.Name" class="form-control" placeholder="Name" type="text" />
-                        </div><!-- form-group// -->
+                        </div>
+                        <!-- form-group// -->
                         <span asp-validation-for="ContactModel.Name" class="text-danger"></span>
                     </div>
                     <div>
@@ -28,7 +30,8 @@
                                 <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                             </div>
                             <input asp-for="ContactModel.Email" class="form-control" placeholder="Email" type="email" />
-                        </div><!-- form-group// -->
+                        </div>
+                        <!-- form-group// -->
                         <span asp-validation-for="ContactModel.Email" class="text-danger"></span>
                     </div>
 
@@ -38,7 +41,8 @@
                                 <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
                             </div>
                             <input asp-for="ContactModel.Telephone" class="form-control" placeholder="Telephone" type="number">
-                        </div> <!-- form-group// -->
+                        </div>
+                        <!-- form-group// -->
                         <span asp-validation-for="ContactModel.Telephone" class="text-danger"></span>
                     </div>
 
@@ -48,7 +52,8 @@
                                 <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                             </div>
                             <input asp-for="ContactModel.Message" class="form-control" placeholder="Message" type="text">
-                        </div> <!-- form-group// -->
+                        </div>
+                        <!-- form-group// -->
                         <span asp-validation-for="ContactModel.Message" class="text-danger"></span>
                     </div>
 
@@ -61,7 +66,8 @@
                     }
                 </form>
             </article>
-        </div> <!-- card.// -->
+        </div>
+        <!-- card.// -->
     </div>
     <!--container end.//-->
 
