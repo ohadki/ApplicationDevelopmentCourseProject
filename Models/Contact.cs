@@ -22,7 +22,7 @@ namespace ApplicationDevelopmentCourseProject.Models
         [Required(ErrorMessage = "Email is required")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        [Display(Name = "Your contact number :")]
+        [Display(Name = "Phone number:")]
         [FromForm(Name = "ContactModel.Telephone")]
         [Required(ErrorMessage = "A phone number is required.")]
         [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]

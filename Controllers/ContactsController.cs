@@ -14,6 +14,8 @@ using System.Text;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
+    //TODO: HANDLE CRUD VIEW RETURNS
+
     public class ContactsController : Controller
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;

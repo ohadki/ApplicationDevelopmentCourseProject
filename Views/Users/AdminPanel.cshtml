@@ -14,6 +14,8 @@
             </li>
             <li><a class="nav-link" href="#branches" onclick="showhide('branchesTable');">Branches</a></li>
             <li><a class="nav-link" href="#branches" onclick="showhide('productsTable');">Products</a></li>
+            <li><a class="nav-link" href="#branches" onclick="showhide('contactUsMessagesTable');">Customer messages</a></li>
+
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -68,6 +70,50 @@
             </tbody>
         </table>
         <input type="button" onclick="location.href='@Url.Action("Create", "Branches")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Create new branch" />
+    </div>
+    <div id="contactUsMessagesTable" style="display: none;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ContactModel.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ContactModel.Telephone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ContactModel.Message)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ContactModel.Email)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Contacts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Telephone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Message)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            <a asp-controller="Contacts" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-controller="Contacts" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     <div id="usersTable">
         <table class="table">
