@@ -186,8 +186,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 await _context.SaveChangesAsync();
 
                 //prepare email
-                var toAddress = "talofirohad@yahoo.com";
-                var fromAddress = contact.Email;
+                var toAddress = contact.Email;
+                var fromAddress = "talofirohad@yahoo.com";
                 var subject = "Test enquiry from " + contact.Name;
                 var message = new StringBuilder();
                 message.Append("Name: " + contact.Name + "\n");
@@ -214,6 +214,41 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public void SendEmail(string toAddress, string fromAddress,
                       string subject, string message)
         {
+
+            try
+            {
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                mail.From = new MailAddress(fromAddress);
+                mail.To.Add(toAddress);
+                mail.Subject = subject;
+                mail.Body = message;
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential("talofirohad@gmail.com", "Aa123456789!!!");
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             try
             {
                 using (var mail = new MailMessage())
