@@ -10,9 +10,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#users" onclick="showhide('userstable');">Users <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="#users" onclick="showhide('usersTable');">Users <span class="sr-only">(current)</span></a>
             </li>
-            <li><a class="nav-link" href="#branches" onclick="showhide('exampletable');">Branches</a></li>
+            <li><a class="nav-link" href="#branches" onclick="showhide('branchesTable');">Branches</a></li>
+            <li><a class="nav-link" href="#branches" onclick="showhide('productsTable');">Products</a></li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -22,7 +23,7 @@
 </nav>
 
 <body>
-    <div id="exampletable" style="display: none;">
+    <div id="branchesTable" style="display: none;">
         <table class="table">
             <thead>
                 <tr>
@@ -37,9 +38,6 @@
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.BranchModel.YCoordinate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BranchModel.ImageUrl)
                     </th>
                     <th></th>
                 </tr>
@@ -61,19 +59,17 @@
                             @Html.DisplayFor(modelItem => item.YCoordinate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ImageUrl)
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            <a asp-controller="Branches" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-controller="Branches" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-controller="Branches" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
+        <input type="button" onclick="location.href='@Url.Action("Create", "Branches")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Create new branch" />
     </div>
-    <div id="userstable">
+    <div id="usersTable">
         <table class="table">
             <thead>
                 <tr>
@@ -123,8 +119,62 @@
                 }
             </tbody>
         </table>
+        <input type="button" onclick="location.href='@Url.Action("Register", "Users")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Register new user" />
+    </div>
+    <div id="productsTable" style="display: none;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductModel.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductModel.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductModel.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductModel.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductModel.Category)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="button" onclick="location.href='@Url.Action("UploadProduct", "Products")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Upload new product" />
     </div>
 </body>
+
 
 @section Scripts {
 
@@ -145,6 +195,6 @@
                 divid.style.display = (divid.style.display == 'block' ? 'none' : 'block');
             }
         }
-        showhide("userstable");
+        showhide("usersTable");
     </script>
 }
