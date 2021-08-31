@@ -14,7 +14,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
     public class BranchesController : Controller
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;
-
+        public class ContactViewModel
+        {
+            public Branch BranchModel { get; set; }
+            public List<Branch> Branches { get; set; }
+            public List<Contact> Contacts{ get; set; }
+            public Contact ContactModel { get; set; }
+        }
         public BranchesController(ApplicationDevelopmentCourseProjectContext context)
         {
             _context = context;
@@ -24,12 +30,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public async Task<IActionResult> Index()
         {
             var branches =  _context.Branch.ToListAsync();
-            return View(await branches);
-        }
-
-        public async Task<IActionResult> ContactUs()
-        {
-            var branches = _context.Branch.ToListAsync();
             return View(await branches);
         }
 

@@ -9,6 +9,9 @@ namespace ApplicationDevelopmentCourseProject.Models
 {
     public class Branch
     {
+        [DisplayName("Id")]
+        [Required(ErrorMessage = "Id is required")]
+        [Range(1,100, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Key]
         public int Id { get; set; }
         [DisplayName("Branch Name")]
@@ -18,7 +21,6 @@ namespace ApplicationDevelopmentCourseProject.Models
         [DisplayName("Address")]
         [Required(ErrorMessage = "Address is required")]
         [StringLength(150, MinimumLength = 1)]
-        //TODO: Think if need to create class of address - street, city and etc...
         public string Address { get; set; }
         [DisplayName("X - Coordinate")]
         [Required(ErrorMessage = "X Coordinate is required")]

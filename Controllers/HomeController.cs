@@ -10,7 +10,12 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using static ApplicationDevelopmentCourseProject.Controllers.BranchesController;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -49,10 +54,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View();
         }
 
-        public IActionResult ContactUs()
+        public IActionResult Contact()
         {
-            var branches = _context.Branch.ToList();
-            return View(branches);
+            var contactViewModel = new ContactViewModel
+            {
+                Contacts =  _context.Contact.ToList(),
+                Branches =  _context.Branch.ToList()
+            };
+            return View(contactViewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
