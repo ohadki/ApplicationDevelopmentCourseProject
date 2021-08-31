@@ -9,9 +9,6 @@ namespace ApplicationDevelopmentCourseProject.Models
 {
     public class Branch
     {
-        [DisplayName("Id")]
-        [Required(ErrorMessage = "Id is required")]
-        [Range(1,100, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         [Key]
         public int Id { get; set; }
         [DisplayName("Branch Name")]
