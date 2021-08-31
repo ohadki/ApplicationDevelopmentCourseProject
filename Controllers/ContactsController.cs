@@ -188,7 +188,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 //prepare email
                 var toAddress = contact.Email;
                 var fromAddress = "talofirohad@yahoo.com";
-                var subject = "Test enquiry from " + contact.Name;
+                var subject = contact.Name;
                 var message = new StringBuilder();
                 message.Append("Name: " + contact.Name + "\n");
                 message.Append("Email: " + contact.Email + "\n");
@@ -214,7 +214,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public void SendEmail(string toAddress, string fromAddress,
                       string subject, string message)
         {
-
             try
             {
                 MailMessage mail = new MailMessage();
@@ -235,88 +234,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 Console.WriteLine(ex.ToString());
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            try
-            {
-                using (var mail = new MailMessage())
-                {
-                    const string email = "talofirohad@yahoo.com";
-                    const string password = "Aa123456789!";
-
-                    var loginInfo = new NetworkCredential(email, password);
-
-
-                    mail.From = new MailAddress(fromAddress);
-                    mail.To.Add(new MailAddress(toAddress));
-                    mail.Subject = subject;
-                    mail.Body = message;
-                    mail.IsBodyHtml = true;
-
-                    try
-                    {
-                        using (var smtpClient = new SmtpClient(
-                                                         "smtp.mail.yahoo.com", 465))
-                        {
-                            smtpClient.EnableSsl = true;
-                            smtpClient.UseDefaultCredentials = false;
-                            smtpClient.Credentials = loginInfo;
-                            smtpClient.Send(mail);
-                        }
-
-                    }
-
-                    finally
-                    {
-                        //dispose the client
-                        mail.Dispose();
-                    }
-
-                }
-            }
-            catch (SmtpFailedRecipientsException ex)
-            {
-                foreach (SmtpFailedRecipientException t in ex.InnerExceptions)
-                {
-                    var status = t.StatusCode;
-                    if (status == SmtpStatusCode.MailboxBusy ||
-                        status == SmtpStatusCode.MailboxUnavailable)
-                    {
-                        //Response.Write("Delivery failed - retrying in 5 seconds.");
-                        System.Threading.Thread.Sleep(5000);
-                        //resend
-                        //smtpClient.Send(message);
-                    }
-                    else
-                    {
-                        //Response.Write("Failed to deliver message to {0}",
-                        //t.FailedRecipient);
-                    }
-                }
-            }
-            catch (SmtpException Se)
-            {
-                // handle exception here
-                //Response.Write(Se.ToString());
-            }
-
-            catch (Exception ex)
-            {
-                //Response.Write(ex.ToString());
-            }
-
         }
     }
 }
