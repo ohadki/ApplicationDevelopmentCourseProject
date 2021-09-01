@@ -16,6 +16,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -29,10 +32,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         private readonly string _TwitterTextAPI = "https://api.twitter.com/1.1/statuses/update.json";
         private readonly string _TwitterImageAPI = "https://upload.twitter.com/1.1/media/upload.json";
 
-        private readonly string _consumerKey;
-        private static readonly string _consumerKeySecret;
-        private readonly string _accessToken ;
-        private static readonly string _accessTokenSecret;
+        private readonly string _consumerKey = "xWBubUSN5lTSf4Lj8rDFO9Epn";
+        private static readonly string _consumerKeySecret = "tWjCyaVlxoVFucK0HpAvk2yAsNzeHrttHEZYMlxDa16lggypBt";
+        private readonly string _accessToken = "1431559885808967680-mGKYEbUEWfOWUxvEWkNKwgJe3d4yhI";
+        private static readonly string _accessTokenSecret = "Mf7iMvgKyNqHxFNH7FArSWscudbvrRBcnvwd38aJt5nal";
+
         private readonly DateTime _epochUtc = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         private readonly HMACSHA1 _sigHasher = new HMACSHA1(
@@ -120,8 +124,9 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     _context.Add(product);
                     await _context.SaveChangesAsync();
 
-                    PublishToTwitter("The product" + product.Name + "uploaded to the shop in category + "
-                        + product.Category + " with the the price " + product.Price, product.Image);
+                    string fileFullPath = _imagesFolderPath + "\\" + product.Image;
+                    PublishToTwitter("The product: " + product.Name + " uploaded to the shop with description: "
+                        + product.Description + " with the the price: " + product.Price, fileFullPath);
 
                     return RedirectToAction(nameof(Index), "Home");
                 }
@@ -228,7 +233,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         /// <returns>result</returns>
         /// <param name="post">post to publish</param>
         /// <param name="pathToImage">image to attach</param>
-        public string PublishToTwitter(string post, string pathToImage)
+        public string PublishToTwitter(string postDescription, string pathToImage)
         {
             try
             {
@@ -258,7 +263,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 // second, send the text with the uploaded image
                 var rezText = Task.Run(async () =>
                 {
-                    var response = await TweetText(post, mediaID);
+                    var response = await TweetText(postDescription, mediaID);
                     return response;
                 });
                 var rezTextJson = JObject.Parse(rezText.Result.Item2);
