@@ -24,11 +24,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             public List<Branch> Branches { get; set; }
             public List<User> Users { get; set; }
             public List<Product> Products { get; set; }
+            public List<Category> Categories { get; set; }
             public List<Contact> Contacts { get; set; }
             public Branch BranchModel { get; set; }
             public User UserModel { get; set; }
             public Product ProductModel { get; set; }
             public Contact ContactModel { get; set; }
+            public Category CategoryModel { get; set; }
 
         }
 
@@ -61,7 +63,9 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 Users = await _context.User.ToListAsync(),
                 Branches = await _context.Branch.ToListAsync(),
                 Products = await _context.Product.ToListAsync(),
-                Contacts = await _context.Contact.ToListAsync()
+                Contacts = await _context.Contact.ToListAsync(),
+                Categories = await _context.Category.ToListAsync()
+
             };
             return View(adminModel);
         }
