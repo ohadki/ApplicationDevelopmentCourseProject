@@ -15,6 +15,7 @@
             <li><a class="nav-link" href="#branches" onclick="showhide('branchesTable');">Branches</a></li>
             <li><a class="nav-link" href="#products" onclick="showhide('productsTable');">Products</a></li>
             <li><a class="nav-link" href="#categories" onclick="showhide('categoriesTable');">Categories</a></li>
+            <li><a class="nav-link" href="#orders" onclick="showhide('ordersTable');">Orders</a></li>
             <li><a class="nav-link" href="#contactUs" onclick="showhide('contactUsMessagesTable');">Customer messages</a></li>
 
         </ul>
@@ -156,6 +157,7 @@
         </table>
         <input type="button" onclick="location.href='@Url.Action("Create", "Categories")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Create new category" />
     </div>
+
     <div id="usersTable">
         <table class="table">
             <thead>
@@ -225,8 +227,8 @@
                         @Html.DisplayNameFor(model => model.ProductModel.Description)
                     </th>
                     @*<th>
-                        @Html.DisplayNameFor(model => model.ProductModel.Category)
-                    </th>*@
+                            @Html.DisplayNameFor(model => model.ProductModel.Category)
+                        </th>*@
                     <th></th>
                 </tr>
             </thead>
@@ -247,8 +249,8 @@
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>
                         @*<td>
-                            @Html.DisplayFor(modelItem => item.Category)
-                        </td>*@
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>*@
                         <td>
                             <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                             <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">Details</a> |
@@ -259,6 +261,55 @@
             </tbody>
         </table>
         <input type="button" onclick="location.href='@Url.Action("UploadProduct", "Products")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Upload new product" />
+    </div>
+
+
+
+    <div id="ordersTable" style="display: none;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderModel.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderModel.OrderTotal)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderModel.OrderPlaced)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderModel.Products)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Orders)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderTotal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderPlaced)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Products)
+                        </td>
+                        <td>
+                            <a asp-controller="Orders" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-controller="Orders" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="button" onclick="location.href='@Url.Action("Create", "Orders")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Create new order" />
     </div>
 </body>
 
