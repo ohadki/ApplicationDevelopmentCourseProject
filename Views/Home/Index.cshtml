@@ -78,6 +78,8 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                     @Html.DisplayFor(modelItem => item.Description)
                                     @Html.DisplayFor(modelItem => item.Price)
+                                  
+                                    <a href="@Url.Action("Buy", "Cart", new { id = product.Id })">Buy Now</a>
                                 </div>
                             </div>
                             <!-- Product actions-->
