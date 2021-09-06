@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -148,6 +150,28 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         private bool OrderExists(int id)
         {
             return _context.Order.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> PurchaseOrder()
+        {
+            List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+            Order order = new Order();
+            //TODO: change to the real userId
+            order.UserId = "1";
+            //TODO: Change the order id to random number - it suppose to be unique
+            order.Id = 1;
+            order.Products = productsList;
+            decimal orderTotal = 0;
+            foreach (var product in productsList)
+            {
+                orderTotal += ((product.Quantity) * product.Product.Price);
+            }
+            order.OrderTotal = orderTotal;
+            order.OrderPlaced = DateTime.Now;
+            _context.Add(order);
+            await _context.SaveChangesAsync();
+
+            return View(nameof(Index), "Home");
         }
     }
 }
