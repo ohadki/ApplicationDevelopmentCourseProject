@@ -76,9 +76,11 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     @Html.DisplayFor(modelItem => item.Name)
+                                    <br />
                                     @Html.DisplayFor(modelItem => item.Description)
+                                    <br />
                                     @Html.DisplayFor(modelItem => item.Price)
-                                  
+
                                     <a href="@Url.Action("Buy", "Cart", new { id = item.Id, fromShoppingCartPage = false })">Buy Now</a>
                                 </div>
                             </div>
