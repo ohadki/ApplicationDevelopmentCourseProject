@@ -47,8 +47,12 @@
             </tr>
         </table>
         <br>
-        <button>Purchase Order</button>
-    }
+        <form>
+            <button class="btn btn-primary" value="Purchase Order" asp-action="PurchaseOrder" asp-controller="Orders">
+                </button>
+            </form>
+
+        }
     <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
 </body>
 </html>
