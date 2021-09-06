@@ -16,7 +16,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="#users" onclick="showhide('usersTable');">Users <span class="sr-only">(current)</span></a>
             </li>
-            <li><a class="nav-link" href="#branches" onclick="showhide('branchesTable');">Branches</a></li>
+            <li><a class="nav-link" href="#branches" onclick="showhide('branchestable');">Branches</a></li>
             <li><a class="nav-link" href="#products" onclick="showhide('productsTable');">Products</a></li>
             <li><a class="nav-link" href="#categories" onclick="showhide('categoriesTable');">Categories</a></li>
             <li><a class="nav-link" href="#orders" onclick="showhide('ordersTable');">Orders</a></li>
@@ -430,7 +430,7 @@
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
         // Create dummy data
-        var data = { Electronics: 9, Home: 20, Garden: 30, Clothing: 8 }
+        var data = { Electronics: 9, Home: 20, Garden: 30 }
 
         // set the color scale
         var color = d3.scaleOrdinal()
@@ -488,7 +488,7 @@
                 "translate(" + margin.left + "," + margin.top + ")");
 
         // Parse the Data
-        d3.csv("https://raw.githubusercontent.com/ohadki/ApplicationDevelopmentCourseProject/4b71187a2546f65206acbe803b65d85c84c828f1/sample_stats.csv?token=AEGHCI6BJP4SBKOQ54VHHKTBFPL2W", function (data) {
+        d3.csv("https://raw.githubusercontent.com/ohadki/ApplicationDevelopmentCourseProject/master/sample_stats.csv", function (data) {
 
             // X axis
             var x = d3.scaleBand()
