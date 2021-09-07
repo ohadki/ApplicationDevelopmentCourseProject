@@ -47,12 +47,8 @@
             </tr>
         </table>
         <br>
-        <form>
-            <button class="btn btn-primary" value="Purchase Order" asp-action="PurchaseOrder" asp-controller="Orders">
-                </button>
-            </form>
-
-        }
+        <input type="button" value="Purchase Order" onclick="location.href='@Url.Action("PurchaseOrder", "Orders")'"  />
+    }
     <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
 </body>
 </html>
