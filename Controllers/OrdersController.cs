@@ -159,8 +159,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             //TODO: change to the real userId
             order.UserId = "1";
             //TODO: Change the order id to random number - it suppose to be unique
-            order.Id = 1;
-            order.Products = productsList;
+            //order.Products = productsList;
             decimal orderTotal = 0;
             foreach (var product in productsList)
             {
@@ -171,7 +170,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             _context.Add(order);
             await _context.SaveChangesAsync();
 
-            return View(nameof(Index), "Home");
+            return View();
         }
     }
 }
