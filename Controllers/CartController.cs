@@ -24,16 +24,16 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public IActionResult Index()
         {
             List<CartItem> cart;
-            if (HttpContext.Session.Get("CartItems") == null)
+            if (HttpContext.Session.Get(GetUniqueSessionKey("CartItems")) == null)
             {
                 cart = new List<CartItem>();
-                HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(cart));
-                HttpContext.Session.SetInt32("NumOfCartItems", 0);
-                HttpContext.Session.SetInt32("CartTotal", 0);
+                HttpContext.Session.SetString(GetUniqueSessionKey("CartItems"), JsonConvert.SerializeObject(cart));
+                HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfCartItems"), 0);
+                HttpContext.Session.SetInt32(GetUniqueSessionKey("CartTotal"), 0);
             }
             else
             {
-                cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+                cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
             }
             return View(cart.ToList());
         }
@@ -43,14 +43,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             List<CartItem> cart;
             Product product = _context.Product.Where(p => p.Id == id).FirstOrDefault();
             
-            if (HttpContext.Session.Get("CartItems") == null)
+            if (HttpContext.Session.Get(GetUniqueSessionKey("CartItems")) == null)
             {
                 cart = new List<CartItem>();
-                HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(cart));
+                HttpContext.Session.SetString(GetUniqueSessionKey("CartItems"), JsonConvert.SerializeObject(cart));
             }
             else
             {
-                cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+                cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
             }
 
             int index = GetProductIndex(id);
@@ -63,7 +63,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 cart.Add(new CartItem { Product = product, Quantity = 1 });
             }
 
-            HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(cart));
+            HttpContext.Session.SetString(GetUniqueSessionKey("CartItems"), JsonConvert.SerializeObject(cart));
             UpdateNumOfCartItems(true);
             UpdateCartTotal(true, product.Price);
 
@@ -80,7 +80,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public ActionResult Remove(int id)
         {
-            List<CartItem> cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+            List<CartItem> cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
             int index = GetProductIndex(id);
             if (index != -1)
             {
@@ -96,20 +96,20 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     cart[index].Quantity--;
                 }
 
-                HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(cart));
+                HttpContext.Session.SetString(GetUniqueSessionKey("CartItems"), JsonConvert.SerializeObject(cart));
             }
             return RedirectToAction("Index");
         }
 
         private void UpdateNumOfCartItems(bool isItemAdded)
         {
-            if (HttpContext.Session.Get("NumOfCartItems") == null)
+            if (HttpContext.Session.Get(GetUniqueSessionKey("NumOfCartItems")) == null)
             {
-                HttpContext.Session.SetInt32("NumOfCartItems", 1);
+                HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfCartItems"), 1);
             }
             else
             {
-                int NumOfCartItems = (int)HttpContext.Session.GetInt32("NumOfCartItems");
+                int NumOfCartItems = (int)HttpContext.Session.GetInt32(GetUniqueSessionKey("NumOfCartItems"));
                 if(isItemAdded)
                 {
                     NumOfCartItems++;
@@ -118,19 +118,19 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 {
                     NumOfCartItems--;
                 }
-                HttpContext.Session.SetInt32("NumOfCartItems", NumOfCartItems);
+                HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfCartItems"), NumOfCartItems);
             }
         }
 
         private void UpdateCartTotal(bool isItemAdded, decimal productPrice)
         {
-            if (HttpContext.Session.Get("CartTotal") == null)
+            if (HttpContext.Session.Get(GetUniqueSessionKey("CartTotal")) == null)
             {
-                HttpContext.Session.SetInt32("CartTotal", (int)productPrice);
+                HttpContext.Session.SetInt32(GetUniqueSessionKey("CartTotal"), (int)productPrice);
             }
             else
             {
-                int CartTotal = (int)HttpContext.Session.GetInt32("CartTotal");
+                int CartTotal = (int)HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"));
                 if (isItemAdded)
                 {
                     CartTotal += (int)productPrice;
@@ -139,14 +139,18 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 {
                     CartTotal -= (int)productPrice;
                 }
-                HttpContext.Session.SetInt32("CartTotal", CartTotal);
+                HttpContext.Session.SetInt32(GetUniqueSessionKey("CartTotal"), CartTotal);
             }
         }
 
+        private string GetUniqueSessionKey(string key)
+        {
+            return HttpContext.User.Identity.Name.ToString() + key;
+        }
 
         private int GetProductIndex(int id)
         {
-            List<CartItem> cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+            List<CartItem> cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
             for (int i = 0; i < cart.Count; i++)
                 if (cart[i].Product.Id.Equals(id))
                     return i;
