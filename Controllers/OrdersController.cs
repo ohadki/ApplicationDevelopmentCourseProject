@@ -166,21 +166,39 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public async Task<IActionResult> PurchaseOrder()
         {
-            List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
-            Order order = new Order();
-            order.UserId = HttpContext.Session.GetString("UserId");
-            //order.Products = productsList;
-            decimal orderTotal = 0;
-            foreach (var product in productsList)
+            try
             {
-                orderTotal += ((product.Quantity) * product.Product.Price);
-            }
-            order.OrderTotal = orderTotal;
-            order.OrderPlaced = DateTime.Now;
-            _context.Add(order);
-            await _context.SaveChangesAsync();
+                List<CartItem> productsList;
+                if (HttpContext.Session.Get("CartItems") == null)
+                {
+                    productsList = new List<CartItem>();
+                    HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(productsList));
+                    HttpContext.Session.SetInt32("NumOfCartItems", 0);
+                    HttpContext.Session.SetInt32("CartTotal", 0);
+                }
+                else
+                {
+                    productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+                }
+                Order order = new Order();
+                order.UserId = HttpContext.Session.GetString("UserId");
+                //order.Products = productsList;
+                decimal orderTotal = 0;
+                foreach (var product in productsList)
+                {
+                    orderTotal += ((product.Quantity) * product.Product.Price);
+                }
+                order.OrderTotal = orderTotal;
+                order.OrderPlaced = DateTime.Now;
+                _context.Add(order);
+                await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Orders");
+                return RedirectToAction("Index", "Orders");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }
