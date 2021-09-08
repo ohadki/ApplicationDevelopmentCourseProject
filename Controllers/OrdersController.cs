@@ -180,6 +180,20 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 }
                 order.OrderTotal = orderTotal;
                 order.OrderPlaced = DateTime.Now;
+
+                var updateMontlySales = _context.MonthlySales.SingleOrDefault(x => x.Month == order.OrderPlaced.Month.ToString() && x.Year == order.OrderPlaced.Year.ToString());
+                if(updateMontlySales == null)
+                {
+                    MonthlySales ms = new MonthlySales();
+                    ms.Month = order.OrderPlaced.Month.ToString();
+                    ms.Year = order.OrderPlaced.Year.ToString();
+                    ms.Sum = orderTotal;
+                    _context.Add(ms);
+                }
+                else
+                {
+                    updateMontlySales.Sum += orderTotal;
+                }
                 _context.Add(order);
                 await _context.SaveChangesAsync();
 
@@ -189,6 +203,12 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        public IActionResult MonthlySalesStats()
+        {
+            var data = new JsonResult(_context.MonthlySales.ToList());
+            return data;
         }
     }
 }

@@ -25,6 +25,8 @@ namespace ApplicationDevelopmentCourseProject.Data
         public DbSet<ApplicationDevelopmentCourseProject.Models.Branch> Branch { get; set; }
 
         public DbSet<ApplicationDevelopmentCourseProject.Models.Contact> Contact { get; set; }
+        public DbSet<ApplicationDevelopmentCourseProject.Models.MonthlySales> MonthlySales { get; set; }
+
 
     }
 }
