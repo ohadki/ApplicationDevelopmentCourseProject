@@ -24,19 +24,16 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // GET: Orders
         public IActionResult Index()
         {
-            List<CartItem> cart;
-            if (HttpContext.Session.Get("CartItems") == null)
+            List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
+            if (productsList == null)
             {
-                cart = new List<CartItem>();
-                HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(cart));
+                productsList = new List<CartItem>();
+                HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(productsList));
                 HttpContext.Session.SetInt32("NumOfCartItems", 0);
                 HttpContext.Session.SetInt32("CartTotal", 0);
             }
-            else
-            {
-                cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
-            }
-            return View(cart.ToList());
+
+            return View(productsList.ToList());
         }
 
         // GET: Orders/Details/5
@@ -163,23 +160,16 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             return _context.Order.Any(e => e.Id == id);
         }
+        private string GetUniqueSessionKey(string key)
+        {
+            return HttpContext.User.Identity.Name.ToString() + key;
+        }
 
         public async Task<IActionResult> PurchaseOrder()
         {
             try
             {
-                List<CartItem> productsList;
-                if (HttpContext.Session.Get("CartItems") == null)
-                {
-                    productsList = new List<CartItem>();
-                    HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(productsList));
-                    HttpContext.Session.SetInt32("NumOfCartItems", 0);
-                    HttpContext.Session.SetInt32("CartTotal", 0);
-                }
-                else
-                {
-                    productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
-                }
+                List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
                 Order order = new Order();
                 order.UserId = HttpContext.Session.GetString("UserId");
                 //order.Products = productsList;
