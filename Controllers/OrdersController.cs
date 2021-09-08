@@ -22,9 +22,22 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Order.ToListAsync());
+            List<CartItem> cart;
+            if (HttpContext.Session.Get("CartItems") == null)
+            {
+                cart = new List<CartItem>();
+                HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(cart));
+                HttpContext.Session.SetInt32("NumOfCartItems", 0);
+                HttpContext.Session.SetInt32("CartTotal", 0);
+            }
+            else
+            {
+                cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+            }
+            return View(cart.ToList());
+            //return View(await _context.Order.ToListAsync());
         }
 
         // GET: Orders/Details/5
@@ -170,7 +183,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             _context.Add(order);
             await _context.SaveChangesAsync();
 
-            return View();
+            //return View();
+            return RedirectToAction("Index", "Orders");
         }
     }
 }
