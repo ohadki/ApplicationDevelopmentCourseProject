@@ -168,8 +168,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
             Order order = new Order();
-            //TODO: change to the real userId
-            order.UserId = "1";
+            order.UserId = HttpContext.Session.GetString("UserId"); ;
             //order.Products = productsList;
             decimal orderTotal = 0;
             foreach (var product in productsList)
