@@ -12,6 +12,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -205,7 +206,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 if (loggedUser != null)
                 {
                     loginUser(loggedUser.Username, loggedUser.Type);
-                    result = "Login Succedd";
+                    result = "Login Succeded";
+                    HttpContext.Session.SetString("UserId", loggedUser.Id);
                 }
             }
             return Json(result);
