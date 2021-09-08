@@ -37,7 +37,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
             }
             return View(cart.ToList());
-            //return View(await _context.Order.ToListAsync());
         }
 
         // GET: Orders/Details/5
@@ -171,7 +170,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             Order order = new Order();
             //TODO: change to the real userId
             order.UserId = "1";
-            //TODO: Change the order id to random number - it suppose to be unique
             //order.Products = productsList;
             decimal orderTotal = 0;
             foreach (var product in productsList)
@@ -183,7 +181,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             _context.Add(order);
             await _context.SaveChangesAsync();
 
-            //return View();
             return RedirectToAction("Index", "Orders");
         }
     }
