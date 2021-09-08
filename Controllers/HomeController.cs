@@ -1,12 +1,10 @@
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
 using Microsoft.AspNetCore.Authorization;
-using ApplicationDevelopmentCourseProject.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-//using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq;

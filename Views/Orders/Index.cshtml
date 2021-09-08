@@ -1,0 +1,113 @@
+﻿@model IEnumerable<ApplicationDevelopmentCourseProject.Models.CartItem>
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+
+<h1>Thanks for your order! Hope to see you soon!</h1>
+
+<body>
+    @if (@HttpContextAccessor.HttpContext.Session.GetInt32("NumOfCartItems") == 0)
+    {
+        <h3>Your cart is empty</h3>
+    }
+    else
+    {
+        <h3>Shopping Cart (@HttpContextAccessor.HttpContext.Session.GetInt32("NumOfCartItems") Items)</h3>
+        <table cellpadding="2" cellspacing="2" border="1">
+            <tr>
+                <th>Name</th>
+                <th>Photo</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Sub Total</th>
+            </tr>
+
+            @foreach (CartItem item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td><img src="~/Content/Images/@item.Product.Image" width="60" /> </td>
+                    <td>@item.Product.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.Product.Price * item.Quantity)</td>
+                </tr>
+            }
+            <tr>
+                <td align="right" colspan="6">Sum</td>
+                <td>@HttpContextAccessor.HttpContext.Session.GetInt32("CartTotal")</td>
+            </tr>
+        </table>
+        <br>
+    }
+    <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderTotal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderPlaced)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Products)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderTotal)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderPlaced)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Products)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@

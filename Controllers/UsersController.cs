@@ -12,6 +12,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -26,12 +27,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             public List<Product> Products { get; set; }
             public List<Category> Categories { get; set; }
             public List<Contact> Contacts { get; set; }
+            public List<Order> Orders { get; set; }
             public Branch BranchModel { get; set; }
             public User UserModel { get; set; }
             public Product ProductModel { get; set; }
             public Contact ContactModel { get; set; }
             public Category CategoryModel { get; set; }
-
+            public Order OrderModel { get; set; }
         }
 
         public UsersController(ApplicationDevelopmentCourseProjectContext context)
@@ -64,8 +66,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 Branches = await _context.Branch.ToListAsync(),
                 Products = await _context.Product.ToListAsync(),
                 Contacts = await _context.Contact.ToListAsync(),
-                Categories = await _context.Category.ToListAsync()
-
+                Categories = await _context.Category.ToListAsync(),
+                Orders = await _context.Order.ToListAsync()
             };
             return View(adminModel);
         }
@@ -204,7 +206,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 if (loggedUser != null)
                 {
                     loginUser(loggedUser.Username, loggedUser.Type);
-                    result = "Login Succedd";
+                    result = "Login Succeded";
+                    HttpContext.Session.SetString("UserId", loggedUser.Id);
                 }
             }
             return Json(result);

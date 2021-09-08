@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -20,9 +22,21 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Order.ToListAsync());
+            List<CartItem> cart;
+            if (HttpContext.Session.Get("CartItems") == null)
+            {
+                cart = new List<CartItem>();
+                HttpContext.Session.SetString("CartItems", JsonConvert.SerializeObject(cart));
+                HttpContext.Session.SetInt32("NumOfCartItems", 0);
+                HttpContext.Session.SetInt32("CartTotal", 0);
+            }
+            else
+            {
+                cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+            }
+            return View(cart.ToList());
         }
 
         // GET: Orders/Details/5
@@ -54,7 +68,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ZipCode,Address,City,Country,OrderTotal,OrderPlaced,UserId")] Order order)
+        public async Task<IActionResult> Create([Bind("Id,OrderTotal,OrderPlaced,UserId")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +100,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ZipCode,Address,City,Country,OrderTotal,OrderPlaced,UserId")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderTotal,OrderPlaced,UserId")] Order order)
         {
             if (id != order.Id)
             {
@@ -148,6 +162,25 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         private bool OrderExists(int id)
         {
             return _context.Order.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> PurchaseOrder()
+        {
+            List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString("CartItems"));
+            Order order = new Order();
+            order.UserId = HttpContext.Session.GetString("UserId");
+            //order.Products = productsList;
+            decimal orderTotal = 0;
+            foreach (var product in productsList)
+            {
+                orderTotal += ((product.Quantity) * product.Product.Price);
+            }
+            order.OrderTotal = orderTotal;
+            order.OrderPlaced = DateTime.Now;
+            _context.Add(order);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Orders");
         }
     }
 }
