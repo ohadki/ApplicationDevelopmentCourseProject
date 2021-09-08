@@ -149,5 +149,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             return _context.Category.Any(e => e.Id == id);
         }
+
+        public IActionResult CategoriesSalesStats()
+        {
+            var data = new JsonResult(_context.MonthlySales.ToList());
+            return data;
+        }
     }
 }
