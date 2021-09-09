@@ -1,4 +1,12 @@
-﻿@model IEnumerable<ApplicationDevelopmentCourseProject.Models.CartItem>
+﻿@functions {
+
+    public string GetUniqueSessionKey(string key)
+    {
+        return User.Identity.Name.ToString() + key;
+    }
+}
+
+@model IEnumerable<ApplicationDevelopmentCourseProject.Models.CartItem>
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
@@ -32,10 +40,6 @@
                     <td>@(item.Product.Price * item.Quantity)</td>
                 </tr>
             }
-            <tr>
-                <td align="right" colspan="6">Sum</td>
-                <td>@HttpContextAccessor.HttpContext.Session.GetInt32("CartTotal")</td>
-            </tr>
         </table>
         <br>
     }

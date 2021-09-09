@@ -33,6 +33,10 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 HttpContext.Session.SetInt32("NumOfCartItems", 0);
                 HttpContext.Session.SetInt32("CartTotal", 0);
             }
+            List<CartItem> cart = new List<CartItem>();
+            HttpContext.Session.SetString(GetUniqueSessionKey("CartItems"), JsonConvert.SerializeObject(cart));
+            HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfCartItems"), 0);
+            HttpContext.Session.SetInt32(GetUniqueSessionKey("CartTotal"), 0);
 
             return View(productsList.ToList());
         }
