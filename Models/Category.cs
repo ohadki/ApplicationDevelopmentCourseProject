@@ -21,7 +21,7 @@ namespace ApplicationDevelopmentCourseProject.Models
         ErrorMessage = "Description should be minimum 1 characters and a maximum of 200 characters")]
         [DataType(DataType.Text)]
         public string Description { get; set; }
-
+        public int SoldProductsCount { get; set; } = 0;
         public IEnumerable<Product> products { get; set; }
     }
 }

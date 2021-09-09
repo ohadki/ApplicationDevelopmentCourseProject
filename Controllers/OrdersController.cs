@@ -9,6 +9,7 @@ using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -177,9 +178,25 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 foreach (var product in productsList)
                 {
                     orderTotal += ((product.Quantity) * product.Product.Price);
+                    var productCategoryCtx = _context.Category.SingleOrDefault(x => x.Id == product.Product.CategoryId);
+                    productCategoryCtx.SoldProductsCount += product.Quantity;
                 }
                 order.OrderTotal = orderTotal;
                 order.OrderPlaced = DateTime.Now;
+
+                var updateMontlySales = _context.MonthlySales.SingleOrDefault(x => x.Month == CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(order.OrderPlaced.Month) && x.Year == order.OrderPlaced.Year.ToString());
+                if(updateMontlySales == null)
+                {
+                    MonthlySales ms = new MonthlySales();
+                    ms.Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(order.OrderPlaced.Month);
+                    ms.Year = order.OrderPlaced.Year.ToString();
+                    ms.Sum = orderTotal;
+                    _context.Add(ms);
+                }
+                else
+                {
+                    updateMontlySales.Sum += orderTotal;
+                }
                 _context.Add(order);
                 await _context.SaveChangesAsync();
 
@@ -189,6 +206,12 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        public IActionResult MonthlySalesStats()
+        {
+            var data = new JsonResult(_context.MonthlySales.ToList());
+            return data;
         }
     }
 }
