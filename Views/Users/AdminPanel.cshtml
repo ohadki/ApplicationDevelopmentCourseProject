@@ -393,7 +393,7 @@
             var pie = d3.pie()
                 .sort(null) // Do not sort group by size
                 .value(function (d) { return d.value; })
-                var data_ready = pie(d3.entries(categoryDataDict2))
+            var data_ready = pie(d3.entries(categoryDataDict2))
 
             // The arc generator
             var arc = d3.arc()
