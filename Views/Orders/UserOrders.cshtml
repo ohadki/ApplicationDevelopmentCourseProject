@@ -1,0 +1,53 @@
+﻿@{
+    Layout = null;
+}
+
+@functions {
+
+    public string GetUniqueSessionKey(string key)
+    {
+        return User.Identity.Name.ToString() + key;
+    }
+}
+
+@model IEnumerable<ApplicationDevelopmentCourseProject.Models.Order>
+@using Microsoft.AspNetCore.Http
+@using ApplicationDevelopmentCourseProject.Controllers
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>My Orders</title>
+</head>
+<body>
+    @if (@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("NumOfOrders")) == 0)
+    {
+        <h3>You have no orders</h3>
+    }
+    else
+    {
+        <h3>Orders (@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("NumOfOrders")))</h3>
+        <table cellpadding="2" cellspacing="2" border="1">
+            <tr>
+                <th>Id</th>
+                <th>OrderTotal</th>
+                <th>OrderPlaced</th>
+  
+            </tr>
+            @foreach (Order order in Model)
+            {
+                    <tr>
+                        <td>@order.Id</td>
+                        <td>@order.OrderTotal</td>
+                        <td>@order.OrderPlaced</td>
+                    </tr>
+            }
+        </table>
+        <br>
+    }
+    <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
+</body>
+</html>
