@@ -9,6 +9,7 @@ using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -181,11 +182,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 order.OrderTotal = orderTotal;
                 order.OrderPlaced = DateTime.Now;
 
-                var updateMontlySales = _context.MonthlySales.SingleOrDefault(x => x.Month == order.OrderPlaced.Month.ToString() && x.Year == order.OrderPlaced.Year.ToString());
+                var updateMontlySales = _context.MonthlySales.SingleOrDefault(x => x.Month == CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(order.OrderPlaced.Month) && x.Year == order.OrderPlaced.Year.ToString());
                 if(updateMontlySales == null)
                 {
                     MonthlySales ms = new MonthlySales();
-                    ms.Month = order.OrderPlaced.Month.ToString();
+                    ms.Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(order.OrderPlaced.Month);
                     ms.Year = order.OrderPlaced.Year.ToString();
                     ms.Sum = orderTotal;
                     _context.Add(ms);

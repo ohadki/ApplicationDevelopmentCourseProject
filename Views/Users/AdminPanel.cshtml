@@ -364,9 +364,9 @@
         showhide("usersTable");
     </script>
     <script>
-            d3.json("@Url.Action("MonthlySalesStats","Orders")", function (controllerData) {
+            d3.json("@Url.Action("CategoriesSalesStats", "Categories")", function (controllerData) {
                 // set the dimensions and margins of the graph
-            var width = 450
+            var width = 600
             height = 450
             margin = 40
 
@@ -382,7 +382,7 @@
                 .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
             var categoryDataDict2 = {}
-            controllerData.forEach(function (obj) { categoryDataDict2[obj.month] = obj.sum; });
+                controllerData.forEach(function (obj) { categoryDataDict2[obj.name] = obj.soldProductsCount; });
 
             // set the color scale
             var color = d3.scaleOrdinal()
@@ -520,14 +520,12 @@
             })
         </script>*@
     <script>
-        // set the dimensions and margins of the graph
-
-
         // Parse the Data
         //d3.csv("https://raw.githubusercontent.com/ohadki/ApplicationDevelopmentCourseProject/master/sample_stats.csv", function (data) {
         d3.json("@Url.Action("MonthlySalesStats","Orders")", function (data) {
+            // set the dimensions and margins of the graph
             var margin = { top: 10, right: 30, bottom: 90, left: 40 },
-                width = 460 - margin.left - margin.right,
+                width = 600 - margin.left - margin.right,
                 height = 450 - margin.top - margin.bottom;
 
             // append the svg object to the body of the page

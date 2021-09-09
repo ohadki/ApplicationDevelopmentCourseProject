@@ -152,7 +152,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public IActionResult CategoriesSalesStats()
         {
-            var data = new JsonResult(_context.MonthlySales.ToList());
+            var data = new JsonResult(_context.Category.ToList());
             return data;
         }
     }
