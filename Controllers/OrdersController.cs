@@ -178,6 +178,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 foreach (var product in productsList)
                 {
                     orderTotal += ((product.Quantity) * product.Product.Price);
+                    var productCategoryCtx = _context.Category.SingleOrDefault(x => x.Id == product.Product.CategoryId);
+                    productCategoryCtx.SoldProductsCount += product.Quantity;
                 }
                 order.OrderTotal = orderTotal;
                 order.OrderPlaced = DateTime.Now;
