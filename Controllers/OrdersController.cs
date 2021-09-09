@@ -33,12 +33,29 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 HttpContext.Session.SetInt32("NumOfCartItems", 0);
                 HttpContext.Session.SetInt32("CartTotal", 0);
             }
+            //Clear the cart after purchase.
             List<CartItem> cart = new List<CartItem>();
             HttpContext.Session.SetString(GetUniqueSessionKey("CartItems"), JsonConvert.SerializeObject(cart));
             HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfCartItems"), 0);
             HttpContext.Session.SetInt32(GetUniqueSessionKey("CartTotal"), 0);
 
             return View(productsList.ToList());
+        }
+
+        public IActionResult UserOrders()
+        {
+            List<Order> userOrders = new List<Order>();
+            var userId = HttpContext.Session.GetString("UserId");
+            foreach (var order in _context.Order)
+            {
+                if (order.UserId == userId)
+                {
+                    userOrders.Add(order);
+                }
+            }
+            HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), userOrders.Count);
+
+            return View(userOrders.ToList());
         }
 
         // GET: Orders/Details/5
