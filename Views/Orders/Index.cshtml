@@ -10,41 +10,84 @@
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="~/css/ShoppingCart.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
 <h1>Thanks for your order! Hope to see you soon!</h1>
+<h3>You can see your order below:</h3>
+<link href="~/css/ShoppingCart.css" rel="stylesheet">
+
 
 <body>
-    @if (@HttpContextAccessor.HttpContext.Session.GetInt32("NumOfCartItems") == 0)
-    {
-        <h3>Your cart is empty</h3>
-    }
-    else
-    {
-        <h3>Shopping Cart (@HttpContextAccessor.HttpContext.Session.GetInt32("NumOfCartItems") Items)</h3>
-        <table cellpadding="2" cellspacing="2" border="1">
-            <tr>
-                <th>Name</th>
-                <th>Photo</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Sub Total</th>
-            </tr>
+    <main class="page">
+        <section class="shopping-cart dark">
+            <div class="container">
+                <div class="block-heading">
 
-            @foreach (CartItem item in Model)
-            {
-                <tr>
-                    <td>@item.Product.Name</td>
-                    <td><img src="~/Content/Images/@item.Product.Image" width="60" /> </td>
-                    <td>@item.Product.Price</td>
-                    <td>@item.Quantity</td>
-                    <td>@(item.Product.Price * item.Quantity)</td>
-                </tr>
-            }
-        </table>
-        <br>
-    }
-    <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
+                </div>
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-8">
+                            <div class="items">
+                                @foreach (CartItem item in Model)
+                                {
+                                    <div class="product">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <img class="img-fluid mx-auto d-block image" src="~/UploadFiles/Products/@item.Product.Image">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="info">
+                                                    <div class="row">
+                                                        <div class="col-md-5 product-name">
+                                                            <div class="product-name">
+                                                                <a href="#">@item.Product.Name</a>
+                                                                <div class="product-info">
+                                                                    <div>Description: <span class="value">@item.Product.Description</span></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 quantity">
+                                                            <label for="quantity">Quantity:</label>
+                                                            <input id="quantity" type="number" value="@item.Quantity" class="form-control quantity-input">
+                                                        </div>
+                                                        <div class="col-md-3 price">
+                                                            <span>@item.Product.Price₪</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4">
+                            <div class="summary">
+                                <h3>Summary</h3>
+                                <div class="summary-item"><span class="text">Total</span><span class="price">@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"))₪</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='@Url.Action("Index", "Home")'">Continue Shopping</button>
+
+            </div>
+        </section>
+    </main>
 </body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<html>
 
 
 
