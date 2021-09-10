@@ -16,48 +16,123 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <!DOCTYPE html>
-
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Cart Page</title>
+    <title>Shopping Cart</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="~/css/ShoppingCart.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    @if (@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("NumOfCartItems")) == 0)
-    {
-        <h3>Your cart is empty</h3>
-    }
-    else
-    {
-        <h3>Shopping Cart (@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("NumOfCartItems")) Items)</h3>
-        <table cellpadding="2" cellspacing="2" border="1">
-            <tr>
-                <th>Option</th>
-                <th>Name</th>
-                <th>Photo</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Sub Total</th>
-            </tr>
-            @foreach (CartItem item in Model)
-            {
-                <tr>
-                    <td><a href="@Url.Action("Remove", "Cart", new { id = item.Product.Id })">-</a><a href="@Url.Action("Buy", "Cart", new { id = item.Product.Id, fromShoppingCartPage = true })">+</a></td>
-                    <td>@item.Product.Name</td>
-                    <td><img src="~/Content/Images/@item.Product.Image" width="60" /> </td>
-                    <td>@item.Product.Price</td>
-                    <td>@item.Quantity</td>
-                    <td>@(item.Product.Price * item.Quantity)</td>
-                </tr>
-            }
-            <tr>
-                <td align="right" colspan="6">Sum</td>
-                <td>@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"))</td>
-            </tr>
-        </table>
-        <br>
-        <input type="button" value="Purchase Order" onclick="location.href='@Url.Action("PurchaseOrder", "Orders")'"  />
-    }
-    <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
+    <main class="page">
+        <section class="shopping-cart dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2>Shopping Cart</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+                </div>
+                <div class="content">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-8">
+                            <div class="items">
+                                <div class="product">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img class="img-fluid mx-auto d-block image" src="~/UploadFiles/Products/e9618707-50da-4ff5-8583-635d41a30a63.jpg">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="info">
+                                                <div class="row">
+                                                    <div class="col-md-5 product-name">
+                                                        <div class="product-name">
+                                                            <a href="#">Lorem Ipsum dolor</a>
+                                                            <div class="product-info">
+                                                                <div>Display: <span class="value">5 inch</span></div>
+                                                                <div>RAM: <span class="value">4GB</span></div>
+                                                                <div>Memory: <span class="value">32GB</span></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 quantity">
+                                                        <label for="quantity">Quantity:</label>
+                                                        <input id="quantity" type="number" value="1" class="form-control quantity-input">
+                                                    </div>
+                                                    <div class="col-md-3 price">
+                                                        <span>$120</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4">
+                            <div class="summary">
+                                <h3>Summary</h3>
+                                <div class="summary-item"><span class="text">Subtotal</span><span class="price">$360</span></div>
+                                <div class="summary-item"><span class="text">Discount</span><span class="price">$0</span></div>
+                                <div class="summary-item"><span class="text">Shipping</span><span class="price">$0</span></div>
+                                <div class="summary-item"><span class="text">Total</span><span class="price">$360</span></div>
+                                <button type="button" class="btn btn-primary btn-lg btn-block">Checkout</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</html>
+@*<!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Cart Page</title>
+    </head>
+    <body>
+        @if (@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("NumOfCartItems")) == 0)
+        {
+            <h3>Your cart is empty</h3>
+        }
+        else
+        {
+            <h3>Shopping Cart (@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("NumOfCartItems")) Items)</h3>
+            <table cellpadding="2" cellspacing="2" border="1">
+                <tr>
+                    <th>Option</th>
+                    <th>Name</th>
+                    <th>Photo</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Sub Total</th>
+                </tr>
+                @foreach (CartItem item in Model)
+                {
+                    <tr>
+                        <td><a href="@Url.Action("Remove", "Cart", new { id = item.Product.Id })">-</a><a href="@Url.Action("Buy", "Cart", new { id = item.Product.Id, fromShoppingCartPage = true })">+</a></td>
+                        <td>@item.Product.Name</td>
+                        <td><img src="~/Content/Images/@item.Product.Image" width="60" /> </td>
+                        <td>@item.Product.Price</td>
+                        <td>@item.Quantity</td>
+                        <td>@(item.Product.Price * item.Quantity)</td>
+                    </tr>
+                }
+                <tr>
+                    <td align="right" colspan="6">Sum</td>
+                    <td>@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"))</td>
+                </tr>
+            </table>
+            <br>
+            <input type="button" value="Purchase Order" onclick="location.href='@Url.Action("PurchaseOrder", "Orders")'"  />
+        }
+        <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
+    </body>*@
 </html>
