@@ -79,14 +79,14 @@
                                     <br />
                                     @Html.DisplayFor(modelItem => item.Description)
                                     <br />
-                                    @Html.DisplayFor(modelItem => item.Price)
+                                    @Html.DisplayFor(modelItem => item.Price)₪
 
-                                    <a href="@Url.Action("Buy", "Cart", new { id = item.Id, fromShoppingCartPage = false })">Buy Now</a>
+                                    @*<a href="@Url.Action("Buy", "Cart", new { id = item.Id, fromShoppingCartPage = false })">Buy Now</a>*@
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="@Url.Action("Buy", "Cart", new { id = item.Id, fromShoppingCartPage = false })">Add to cart</a></div>
                             </div>
                         </div>
                     </div>
