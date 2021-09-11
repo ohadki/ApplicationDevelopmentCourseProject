@@ -60,10 +60,13 @@
                                                             </div>
                                                             <div class="col-md-4 quantity">
                                                                 <label for="quantity">Quantity:</label>
-                                                                <input id="quantity" type="number" value="@item.Quantity" class="form-control quantity-input">
+                                                                <span>@item.Quantity</span>
                                                             </div>
                                                             <div class="col-md-3 price">
                                                                 <span>@item.Product.Price₪</span>
+                                                            </div>
+                                                            <div class="actions">
+                                                                <button onclick="RemoveProductFromCart(@item.Product.Id)">-</button><button onclick="AddProductToCart(@item.Product.Id, true)">+</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -76,9 +79,6 @@
                             <div class="col-md-12 col-lg-4">
                                 <div class="summary">
                                     <h3>Summary</h3>
-                                    @*<div class="summary-item"><span class="text">Subtotal</span><span class="price">$360</span></div>
-                                    <div class="summary-item"><span class="text">Discount</span><span class="price">$0</span></div>
-                                    <div class="summary-item"><span class="text">Shipping</span><span class="price">$0</span></div>*@
                                     <div class="summary-item"><span class="text">Total</span><span class="price">@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"))₪</span></div>
                                     <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='@Url.Action("PurchaseOrder", "Orders")'">Checkout</button>
                                 </div>
@@ -86,14 +86,16 @@
                         </div>
                     </div>
                 }
-            else
-            {
-                <p>It seems like your shopping cart is empty, go ahead and add some items!</p>
-            }
+                else
+                {
+                    <p>It seems like your shopping cart is empty, go ahead and add some items!</p>
+                }
+                <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
             </div>
         </section>
     </main>
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="~/js/ShoppingCart.js"></script>
 </html>

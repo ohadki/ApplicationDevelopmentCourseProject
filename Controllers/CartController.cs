@@ -38,6 +38,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(cart.ToList());
         }
 
+        [HttpPost]
         public ActionResult Buy(int id, bool fromShoppingCartPage)
         {
             List<CartItem> cart;
@@ -78,6 +79,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             
         }
 
+        [HttpPost]
         public ActionResult Remove(int id)
         {
             List<CartItem> cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
