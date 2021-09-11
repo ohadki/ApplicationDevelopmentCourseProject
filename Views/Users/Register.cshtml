@@ -137,27 +137,6 @@
 </div>
 <!--container end.//-->
 
-
-<script>
-    var Regiser = function () {
-        var form = $("#RegisterUserForm")
-        var data = $("#RegisterUserForm").serialize();
-        $.ajax({
-            type: "post",
-            url: "/Users/RegisterUser",
-            data: data,
-            success: function (result) {
-                if (result == "Fail") {
-                    alert("Registration failed")
-                }
-                else {
-                    window.location.href = "../Home/";
-                }
-            }
-        })
-    }
-</script>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
