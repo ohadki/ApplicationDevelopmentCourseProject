@@ -55,6 +55,16 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             }
             HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), userOrders.Count);
 
+            List<List<CartItem>> productsList = new List<List<CartItem>>();
+
+            foreach(Order order in userOrders)
+            {
+                List<CartItem> orderItems = new List<CartItem>();
+                orderItems = ConvertStringToProductList(order.ProductsString);
+                productsList.Add(orderItems);
+            }
+            ViewBag.ProductsList = productsList;
+
             return View(userOrders.ToList());
         }
 
@@ -239,7 +249,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
                 Order order = new Order();
                 order.UserId = HttpContext.Session.GetString("UserId");
-                //order.Products = productsList;
                 string productsString = ConvertProductListToString(productsList);
                 order.ProductsString = productsString;
 
