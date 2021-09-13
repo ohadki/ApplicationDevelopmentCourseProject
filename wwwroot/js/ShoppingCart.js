@@ -8,7 +8,12 @@
             return true;
         },
         error: function (request, status, error) {
-            alert(request.responseText);
+            if (request.status == 401) {
+                window.location.href = "Users/Login";
+            }
+            else {
+                alert(error);
+            }
         }
     });
 }
@@ -23,7 +28,7 @@ function RemoveProductFromCart(productId) {
             return true;
         },
         error: function (request, status, error) {
-            alert(request.responseText);
+            alert(error);
         }
     });
 }
