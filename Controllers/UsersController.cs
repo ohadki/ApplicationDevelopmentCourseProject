@@ -252,6 +252,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 _context.User.Add(user);
                 await _context.SaveChangesAsync();
                 loginUser(user.Username, user.Type);
+                HttpContext.Session.SetString("UserId", user.Id);
                 return RedirectToAction(nameof(Index),"Home");
             }
             return View(user);

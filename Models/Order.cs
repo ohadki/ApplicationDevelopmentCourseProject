@@ -17,6 +17,8 @@ namespace ApplicationDevelopmentCourseProject.Models
 
         public IEnumerable<CartItem> Products { get; set; }
 
+        public string ProductsString { get; set; }
+
         public string UserId { get; set; }
     }
 }

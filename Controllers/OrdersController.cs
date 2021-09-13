@@ -33,12 +33,39 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 HttpContext.Session.SetInt32("NumOfCartItems", 0);
                 HttpContext.Session.SetInt32("CartTotal", 0);
             }
+            //Clear the cart after purchase.
             List<CartItem> cart = new List<CartItem>();
             HttpContext.Session.SetString(GetUniqueSessionKey("CartItems"), JsonConvert.SerializeObject(cart));
             HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfCartItems"), 0);
             HttpContext.Session.SetInt32(GetUniqueSessionKey("CartTotal"), 0);
 
             return View(productsList.ToList());
+        }
+
+        public IActionResult UserOrders()
+        {
+            List<Order> userOrders = new List<Order>();
+            var userId = HttpContext.Session.GetString("UserId");
+            foreach (var order in _context.Order)
+            {
+                if (order.UserId == userId)
+                {
+                    userOrders.Add(order);
+                }
+            }
+            HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), userOrders.Count);
+
+            List<List<CartItem>> productsList = new List<List<CartItem>>();
+
+            foreach(Order order in userOrders)
+            {
+                List<CartItem> orderItems = new List<CartItem>();
+                orderItems = ConvertStringToProductList(order.ProductsString);
+                productsList.Add(orderItems);
+            }
+            ViewBag.ProductsList = productsList;
+
+            return View(userOrders.ToList());
         }
 
         // GET: Orders/Details/5
@@ -170,6 +197,51 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return HttpContext.User.Identity.Name.ToString() + key;
         }
 
+        public string ConvertProductListToString(List<CartItem> productsList)
+        {
+            string list = "";
+
+            foreach (var product in productsList)
+            {
+                list = list + product.Id.ToString() + "," + product.Quantity.ToString() +
+                    "," + product.Product.Id.ToString() + "," + product.Product.Name +
+                    "," + product.Product.CategoryId + ","+ product.Product.Description + 
+                    "," + product.Product.Image + "," + product.Product.Price.ToString();
+                list = list + "|";
+            }
+
+            return list;
+        }
+
+        public List<CartItem> ConvertStringToProductList(string productString)
+        {
+            List<CartItem> list = new List<CartItem>();
+            String[] strlist = productString.Split("|");
+
+            foreach (var product in strlist)
+            {
+                if (product != "")
+                {
+                    String[] productDetails = product.Split(",");
+                    CartItem current = new CartItem();
+                    Product currentProduct = new Product();
+                    current.Id = Convert.ToInt32(productDetails[0]);
+                    current.Quantity = Convert.ToInt32(productDetails[1]);
+                    currentProduct.Id = Convert.ToInt32(productDetails[2]);
+                    currentProduct.Name = productDetails[3];
+                    currentProduct.CategoryId = Convert.ToInt32(productDetails[4]);
+                    currentProduct.Description = productDetails[5];
+                    currentProduct.Image = productDetails[6];
+                    currentProduct.Price = Convert.ToDecimal(productDetails[7]);
+                    current.Product = currentProduct;
+
+                    list.Add(current);
+                }
+            }
+
+            return list;
+        }
+
         public async Task<IActionResult> PurchaseOrder()
         {
             try
@@ -177,7 +249,9 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
                 Order order = new Order();
                 order.UserId = HttpContext.Session.GetString("UserId");
-                //order.Products = productsList;
+                string productsString = ConvertProductListToString(productsList);
+                order.ProductsString = productsString;
+
                 decimal orderTotal = 0;
                 foreach (var product in productsList)
                 {
