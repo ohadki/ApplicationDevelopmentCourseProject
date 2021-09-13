@@ -10,8 +10,10 @@ namespace ApplicationDevelopmentCourseProject.Models
     {
         [Key]
         public int Id { get; set; }
+        [Display(Name = "Order Total")]
 
         public decimal OrderTotal { get; set; }
+        [Display(Name = "Date")]
 
         public DateTime OrderPlaced { get; set; }
 

@@ -68,6 +68,24 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(userOrders.ToList());
         }
 
+        public IActionResult OrderDetails(int orderId)
+        {
+            var userId = HttpContext.Session.GetString("UserId");
+            List<CartItem> productsList = new List<CartItem>();
+            var order = _context.Order.Where(x => x.Id == orderId).SingleOrDefault();
+
+            if(order == null)
+            {
+                return View("UserOrders");
+            }
+
+            productsList=(ConvertStringToProductList(order.ProductsString));
+            ViewBag.OrderId = orderId;
+            ViewBag.OrderTotal = order.OrderTotal;
+            ViewBag.OrderDate = order.OrderPlaced;
+            return View(productsList);
+        }
+
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
