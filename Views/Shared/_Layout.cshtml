@@ -37,6 +37,13 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="AdminPanel">Admin Panel</a>
                                 </li>
                             }
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="UserOrders">User Orders</a>
+                                </li>
+                            }
+
                         }
                     </ul>
                 </div>
@@ -46,7 +53,6 @@
                         {
                             <button class="btn" asp-area="" asp-controller="Users" asp-action="Logout">Logout</button>
                             <button class="btn" asp-area="" asp-controller="Cart" asp-action="Index">Shopping Cart</button>
-                            <button class="btn" asp-area="" asp-controller="Orders" asp-action="UserOrders">User Orders</button>
                         }
                         else
                         {
