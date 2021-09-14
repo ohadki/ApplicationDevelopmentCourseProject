@@ -61,12 +61,14 @@
                                                             <div class="col-md-4 quantity">
                                                                 <label for="quantity">Quantity:</label>
                                                                 <span id="shopping-cart-item-@item.Product.Id.ToString()-quantity">@item.Quantity</span>
+                                                                <br />
+                                                                <button class="btn btn-danger" onclick="RemoveProductFromCart(@item.Product.Id)">-</button>   <button class="btn btn-primary" onclick="AddProductToCart(@item.Product.Id, true)">+</button>
+
                                                             </div>
                                                             <div class="col-md-3 price">
                                                                 <span id="shopping-cart-item-@item.Product.Id.ToString()-price">@item.Product.Price₪</span>
                                                             </div>
                                                             <div class="actions">
-                                                                <button onclick="RemoveProductFromCart(@item.Product.Id)">-</button><button onclick="AddProductToCart(@item.Product.Id, true)">+</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -90,6 +92,7 @@
                 {
                     <p>It seems like your shopping cart is empty, go ahead and add some items!</p>
                 }
+                <br />
                 <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
             </div>
         </section>
