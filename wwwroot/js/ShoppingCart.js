@@ -31,9 +31,26 @@ function AddProductToCart(productId, fromShoppingCartPage) {
         url: "/Cart/Buy",
         data: { id: productId, fromShoppingCartPage: fromShoppingCartPage },
         success: function () {
-            //alert("Product has been added successfully to the cart.");
             Toast.show('Product has been added successfully to the cart','success');
+            if (fromShoppingCartPage) {
+                //update product's quantity
+                var quantityId = getAttributeId(productId, "quantity");
+                var quantity = parseInt(document.getElementById(quantityId).textContent);
+
+                quantity += 1;
+                document.getElementById(quantityId).textContent = quantity.toString();
+
+                //update total
+                var priceId = getAttributeId(productId, "price");
+                var price = parseInt(document.getElementById(priceId).textContent);
+
+                var total = parseInt(document.getElementById("shopping-cart-total").textContent);
+                total += price;
+                document.getElementById("shopping-cart-total").textContent = total.toString() + "₪";
+            }
+
             return true;
+            
         },
         error: function (request, status, error) {
             if (request.status == 401) {
@@ -52,8 +69,36 @@ function RemoveProductFromCart(productId) {
         url: "/Cart/Remove",
         data: { id: productId },
         success: function () {
-            //alert("Product has been removed successfully from the cart.");
             Toast.show('Product has been removed successfully from the cart', 'success');
+            // update total
+            var priceId = getAttributeId(productId, "price");
+            var price = parseInt(document.getElementById(priceId).textContent);
+
+            var total = parseInt(document.getElementById("shopping-cart-total").textContent);
+            total -= price;
+            if (total == 0) {
+                // if it was the last product in cart, we will refresh page in order to show the client empty cart page
+                location.reload();
+                return true;
+            }
+            else {
+                document.getElementById("shopping-cart-total").textContent = total.toString() + "₪";
+            }
+
+            //update quantity
+            var quantityId = getAttributeId(productId, "quantity");
+            var quantity = parseInt(document.getElementById(quantityId).textContent);
+
+            quantity -= 1;
+            if (quantity == 0) {
+                // remove product from cart list
+                var containerId = getAttributeId(productId, "container");
+                var container = document.getElementById(containerId);
+                container.remove();
+            }
+            else {
+                document.getElementById(quantityId).textContent = quantity.toString();
+            }
 
             return true;
         },
@@ -61,4 +106,8 @@ function RemoveProductFromCart(productId) {
             alert(error);
         }
     });
+}
+
+function getAttributeId(productId, attribute) {
+    return "shopping-cart-item-".concat(productId.toString(), "-", attribute);
 }
