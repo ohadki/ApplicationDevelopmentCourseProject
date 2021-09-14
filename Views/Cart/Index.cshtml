@@ -42,7 +42,7 @@
                                 <div class="items">
                                     @foreach (CartItem item in Model)
                                     {
-                                        <div class="product">
+                                        <div class="product" id="shopping-cart-item-@item.Product.Id.ToString()-container">
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <img class="img-fluid mx-auto d-block image" src="~/UploadFiles/Products/@item.Product.Image">
@@ -60,10 +60,10 @@
                                                             </div>
                                                             <div class="col-md-4 quantity">
                                                                 <label for="quantity">Quantity:</label>
-                                                                <span>@item.Quantity</span>
+                                                                <span id="shopping-cart-item-@item.Product.Id.ToString()-quantity">@item.Quantity</span>
                                                             </div>
                                                             <div class="col-md-3 price">
-                                                                <span>@item.Product.Price₪</span>
+                                                                <span id="shopping-cart-item-@item.Product.Id.ToString()-price">@item.Product.Price₪</span>
                                                             </div>
                                                             <div class="actions">
                                                                 <button onclick="RemoveProductFromCart(@item.Product.Id)">-</button><button onclick="AddProductToCart(@item.Product.Id, true)">+</button>
@@ -79,7 +79,7 @@
                             <div class="col-md-12 col-lg-4">
                                 <div class="summary">
                                     <h3>Summary</h3>
-                                    <div class="summary-item"><span class="text">Total</span><span class="price">@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"))₪</span></div>
+                                    <div class="summary-item"><span class="text">Total</span><span class="price" id="shopping-cart-total">@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"))₪</span></div>
                                     <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='@Url.Action("PurchaseOrder", "Orders")'">Checkout</button>
                                 </div>
                             </div>
