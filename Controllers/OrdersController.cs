@@ -45,14 +45,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public IActionResult UserOrders()
         {
             List<Order> userOrders = new List<Order>();
-            var userId = HttpContext.Session.GetString("UserId");
-            foreach (var order in _context.Order)
-            {
-                if (order.UserId == userId)
-                {
-                    userOrders.Add(order);
-                }
-            }
+            var userId = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault().Id;
+            userOrders = _context.Order.Where(order => order.UserId == userId).ToList();
             HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), userOrders.Count);
 
             List<List<CartItem>> productsList = new List<List<CartItem>>();
@@ -266,7 +260,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 List<CartItem> productsList = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
                 Order order = new Order();
-                order.UserId = HttpContext.Session.GetString("UserId");
+                order.UserId = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault().Id;
                 string productsString = ConvertProductListToString(productsList);
                 order.ProductsString = productsString;
 
@@ -298,7 +292,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
                 return RedirectToAction("Index", "Orders");
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return RedirectToAction("Index", "Home");
             }

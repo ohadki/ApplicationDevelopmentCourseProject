@@ -52,6 +52,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View();
         }
 
+        public IActionResult Account()
+        {
+            return View();
+        }
+
         public IActionResult Register()
         {
             return View();
@@ -207,7 +212,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 {
                     loginUser(loggedUser.Username, loggedUser.Type);
                     result = "Login Succeded";
-                    HttpContext.Session.SetString("UserId", loggedUser.Id);
                 }
             }
             return Json(result);
@@ -252,7 +256,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 _context.User.Add(user);
                 await _context.SaveChangesAsync();
                 loginUser(user.Username, user.Type);
-                HttpContext.Session.SetString("UserId", user.Id);
                 return RedirectToAction(nameof(Index),"Home");
             }
             return View(user);
