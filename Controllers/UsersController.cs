@@ -120,12 +120,19 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
+
+            User user = null;
+
             if (id == null)
             {
-                return NotFound();
+                user = await _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefaultAsync();
+            }
+            else
+            {
+                user = await _context.User.FindAsync(id);
             }
 
-            var user = await _context.User.FindAsync(id);
+            
             if (user == null)
             {
                 return NotFound();
