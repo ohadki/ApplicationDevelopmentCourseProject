@@ -131,7 +131,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 user = await _context.User.FindAsync(id);
             }
-
             
             if (user == null)
             {
@@ -170,7 +169,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(AdminPanel));
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectToAction(nameof(AdminPanel));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(Account));
+                }   
             }
             return View(user);
         }
