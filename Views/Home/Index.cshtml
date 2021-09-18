@@ -96,60 +96,79 @@
                     <li><a class="nav-link" onclick="location.href='@Url.Action("Index", "Home")?categoryId=' + @Html.DisplayFor(modelItem => item.Id)">@Html.DisplayFor(modelItem => item.Name)</a></li>
                 }
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
         </div>
+        <input type="text" id="search" placeholder="Search by product name" />
+        <button id="searchTest" class="btn btn-outline-dark mt-auto">Test</button>
         <canvas id="canvas" width="140" height="140"></canvas>
     </nav>
 
     <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                @foreach (var item in Model.Products)
-                {
-                    <div class="col mb-5">
-                        <div class="card h-100">
-                            <img class="card-img-top" src="~/UploadFiles/Products/@item.Image" alt="..." />
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                    <br />
-                                    @Html.DisplayFor(modelItem => item.Description)
-                                    <br />
-                                    @Html.DisplayFor(modelItem => item.Price)₪
+        <table id="productsList">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    @foreach (var item in Model.Products)
+                    {
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" src="~/UploadFiles/Products/@item.Image" alt="..." />
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                        <br />
+                                        @Html.DisplayFor(modelItem => item.Description)
+                                        <br />
+                                        @Html.DisplayFor(modelItem => item.Price)₪
+                                    </div>
+                                </div>
+                                <!-- Product actions-->
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" onclick="AddProductToCart(@item.Id, false)">Add to cart</button></div>
                                 </div>
                             </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" onclick="AddProductToCart(@item.Id, false)">Add to cart</button></div>
-                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
-        <center>
-            <video controls="controls" autoplay="autoplay">
-                <source src="~/UploadFiles/Videos/Online-Shopping.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
-        </center>
+            <center>
+                <video controls="controls" autoplay="autoplay">
+                    <source src="~/UploadFiles/Videos/Online-Shopping.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </center>
+        </table>
     </section>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="~/js/ShoppingCart.js"></script>
+    <script>
+        function searchListener() {
+            //FigureOut if this line is good - print label or something.
+            $("#search").on("keyup", function () {
+                var searched = $(this).val();
+                document.getElementById("searchTest").textContent = searched;
+                $.ajax({
+                    type: "POST",
+                    url: "/HomeController/ViewSearchedProducts",
+                    data: searched,
+                    datatype: "html",
+                    success: function (data) {
+                        $('#productsList').html(data);
+                    }
+                });
+                /*$("#productsList > tbody").load("/HomeController/ViewSearchedProducts #productsList > tbody", data);*/
+            });
+        }
+    </script>
 </body>
 
 </html>
 <script>
     window.onload = function () {
+        searchListener();
         setInterval(showClock, 1000);
 
         function showClock() {
-
             // DEFINE CANVAS AND ITS CONTEXT.
             var canvas = document.getElementById('canvas');
             var ctx = canvas.getContext('2d');
