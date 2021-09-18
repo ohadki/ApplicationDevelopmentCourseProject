@@ -154,6 +154,10 @@
                         //Index to myself if the ajax succeed.
                         document.getElementById("searchTest").textContent = "Succeed";
                         $('#productsList').html(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                        alert('Unexpected error.' + textStatus + errorThrown);
                     }
                 });
             });
