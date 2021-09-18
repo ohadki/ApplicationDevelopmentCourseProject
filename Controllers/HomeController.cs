@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static ApplicationDevelopmentCourseProject.Controllers.BranchesController;
+using Microsoft.AspNetCore.Http;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -66,6 +67,35 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public ActionResult ViewSearchedProducts(string searchString)
+        {
+            var products = from m in _context.Product
+                           select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(s => s.Name.Contains(searchString));
+            }
+
+            if (IsAjaxRequest(Request)) return PartialView(products);
+            return View(products);
+        }
+
+        public bool IsAjaxRequest(HttpRequest request)
+        {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
+            if (request.Headers != null)
+                return !string.IsNullOrEmpty(request.Headers["X-Requested-With"]) &&
+                    string.Equals(
+                        request.Headers["X-Requested-With"],
+                        "XmlHttpRequest",
+                        StringComparison.OrdinalIgnoreCase);
+
+            return false;
         }
     }
 }
