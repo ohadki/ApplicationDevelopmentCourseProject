@@ -69,7 +69,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public ActionResult ViewSearchedProducts(string searchString)
+        public async Task<IActionResult> ViewSearchedProducts(string searchString)
         {
             var products = from m in _context.Product
                            select m;
@@ -79,8 +79,15 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 products = products.Where(s => s.Name.Contains(searchString));
             }
 
-            if (IsAjaxRequest(Request)) return PartialView(products);
-            return View(products);
+            var list = new List<Product>(products);
+            var productsAndCategoriesViewModel = new ProductsAndCategoriesViewModel
+            {
+                Categories = await _context.Category.ToListAsync(),
+                Products = new List<Product>(products)
+        };
+
+            if (IsAjaxRequest(Request)) return PartialView(productsAndCategoriesViewModel);
+            return View(productsAndCategoriesViewModel);
         }
 
         public bool IsAjaxRequest(HttpRequest request)

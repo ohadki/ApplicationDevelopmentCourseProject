@@ -143,20 +143,19 @@
     <script src="~/js/ShoppingCart.js"></script>
     <script>
         function searchListener() {
-            //FigureOut if this line is good - print label or something.
             $("#search").on("keyup", function () {
                 var searched = $(this).val();
-                document.getElementById("searchTest").textContent = searched;
                 $.ajax({
                     type: "POST",
-                    url: "/HomeController/ViewSearchedProducts",
-                    data: searched,
+                    url: "/Home/ViewSearchedProducts",
+                    data: { 'searchString': searched },
                     datatype: "html",
-                    success: function (data) {
+                    success: function () {
+                        //Index to myself if the ajax succeed.
+                        document.getElementById("searchTest").textContent = "Succeed";
                         $('#productsList').html(data);
                     }
                 });
-                /*$("#productsList > tbody").load("/HomeController/ViewSearchedProducts #productsList > tbody", data);*/
             });
         }
     </script>
