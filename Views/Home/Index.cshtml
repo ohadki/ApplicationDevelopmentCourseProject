@@ -147,12 +147,12 @@
                 var searched = $(this).val();
                 $.ajax({
                     type: "POST",
-                    url: "/Home/ViewSearchedProducts",
+                    url: "/Home/Index",
                     data: { 'searchString': searched },
                     datatype: "html",
                     success: function () {
                         //Index to myself if the ajax succeed.
-                        document.getElementById("searchTest").textContent = "Succeed";
+                        document.getElementById("searchTest").textContent = data;
                         $('#productsList').html(data);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {

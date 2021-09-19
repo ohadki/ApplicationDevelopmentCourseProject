@@ -37,8 +37,32 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? categoryId)
+        public async Task<IActionResult> Index(int? categoryId, string searchString)
         {
+            if (searchString != null)
+            {
+                var products = from m in _context.Product
+                               select m;
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    products = products.Where(s => s.Name.Contains(searchString));
+                }
+
+                var list = new List<Product>(products);
+                var productsViewModel = new ProductsAndCategoriesViewModel
+                {
+                    Categories = await _context.Category.ToListAsync(),
+                    Products = new List<Product>(products)
+                };
+
+                if (IsAjaxRequest(Request)) 
+                    return PartialView(productsViewModel);
+
+                return View(productsViewModel);
+            }
+
+
             var productsAndCategoriesViewModel = new ProductsAndCategoriesViewModel
             {
                 Categories = await _context.Category.ToListAsync(),
@@ -69,26 +93,28 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<IActionResult> ViewSearchedProducts(string searchString)
-        {
-            var products = from m in _context.Product
-                           select m;
+        //public async Task<IActionResult> ViewSearchedProducts(string searchString)
+        //{
+        //    var products = from m in _context.Product
+        //                   select m;
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                products = products.Where(s => s.Name.Contains(searchString));
-            }
+        //    if (!string.IsNullOrEmpty(searchString))
+        //    {
+        //        products = products.Where(s => s.Name.Contains(searchString));
+        //    }
 
-            var list = new List<Product>(products);
-            var productsAndCategoriesViewModel = new ProductsAndCategoriesViewModel
-            {
-                Categories = await _context.Category.ToListAsync(),
-                Products = new List<Product>(products)
-        };
+        //    var list = new List<Product>(products);
+        //    var productsAndCategoriesViewModel = new ProductsAndCategoriesViewModel
+        //    {
+        //        Categories = await _context.Category.ToListAsync(),
+        //        Products = new List<Product>(products)
+        //};
 
-            if (IsAjaxRequest(Request)) return PartialView(productsAndCategoriesViewModel);
-            return View(productsAndCategoriesViewModel);
-        }
+        //    return RedirectToAction("Index", "Home", productsAndCategoriesViewModel);
+
+        //    //if (IsAjaxRequest(Request)) return PartialView(productsAndCategoriesViewModel);
+        //    //return View(productsAndCategoriesViewModel);
+        //}
 
         public bool IsAjaxRequest(HttpRequest request)
         {
