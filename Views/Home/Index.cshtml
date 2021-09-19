@@ -98,7 +98,6 @@
             </ul>
         </div>
         <input type="text" id="search" placeholder="Search by product name" />
-        <button id="searchTest" class="btn btn-outline-dark mt-auto">Test</button>
         <canvas id="canvas" width="140" height="140"></canvas>
     </nav>
 
@@ -129,13 +128,13 @@
                     }
                 </div>
             </div>
-            <center>
-                <video controls="controls" autoplay="autoplay">
-                    <source src="~/UploadFiles/Videos/Online-Shopping.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            </center>
         </table>
+        <center>
+            <video controls="controls" autoplay="autoplay">
+                <source src="~/UploadFiles/Videos/Online-Shopping.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        </center>
     </section>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -152,7 +151,7 @@
                     datatype: "html",
                     success: function () {
                         //Index to myself if the ajax succeed.
-                        document.getElementById("searchTest").textContent = data;
+                        alert('Success');
                         $('#productsList').html(data);
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
