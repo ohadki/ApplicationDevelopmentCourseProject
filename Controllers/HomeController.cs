@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static ApplicationDevelopmentCourseProject.Controllers.BranchesController;
 using Microsoft.AspNetCore.Http;
+using System.Web.Mvc;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -93,6 +94,23 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public JsonResult searchedProductsList(string searched)
+        {
+            var products = from m in _context.Product
+                           select m;
+
+            if (!string.IsNullOrEmpty(searched))
+            {
+                products = products.Where(s => s.Name.Contains(searched));
+            }
+
+            var productsList = new List<Product>(products);
+
+            return Json(productsList, JsonRequestBehavior.AllowGet);
+
+            //var json = JsonSerializer.Serialize(productsList);
+            return json;
+        }
         //public async Task<IActionResult> ViewSearchedProducts(string searchString)
         //{
         //    var products = from m in _context.Product
