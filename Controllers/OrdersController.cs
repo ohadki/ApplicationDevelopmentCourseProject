@@ -274,19 +274,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 order.OrderTotal = orderTotal;
                 order.OrderPlaced = DateTime.Now;
 
-                var updateMontlySales = _context.MonthlySales.SingleOrDefault(x => x.Month == CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(order.OrderPlaced.Month) && x.Year == order.OrderPlaced.Year.ToString());
-                if(updateMontlySales == null)
-                {
-                    MonthlySales ms = new MonthlySales();
-                    ms.Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(order.OrderPlaced.Month);
-                    ms.Year = order.OrderPlaced.Year.ToString();
-                    ms.Sum = orderTotal;
-                    _context.Add(ms);
-                }
-                else
-                {
-                    updateMontlySales.Sum += orderTotal;
-                }
                 _context.Add(order);
                 await _context.SaveChangesAsync();
 
@@ -300,7 +287,15 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public IActionResult MonthlySalesStats()
         {
-            var data = new JsonResult(_context.MonthlySales.ToList());
+            var data = new JsonResult(
+                _context.Order.AsEnumerable().GroupBy(o => new { o.OrderPlaced.Month, o.OrderPlaced.Year })
+                .Select(
+                    g => new
+                    {
+                        sum = g.Sum(s => s.OrderTotal),
+                        month = g.Key.Month + "/" + g.Key.Year + "- " + g.Sum(s => s.OrderTotal).ToString() + "₪",
+                    })
+                .ToList());
             return data;
         }
     }
