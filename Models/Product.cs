@@ -9,6 +9,11 @@ namespace ApplicationDevelopmentCourseProject.Models
 {
     public class Product
     {
+        public Product()
+        {
+            this.ProductTags = new HashSet<ProductTag>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -43,5 +48,9 @@ namespace ApplicationDevelopmentCourseProject.Models
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
+
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
+
+        public string ProductTagsString { get; set; }
     }
 }
