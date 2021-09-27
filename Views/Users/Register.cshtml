@@ -21,7 +21,7 @@
 
 
                     </div><!-- form-group// -->
-                        <span asp-validation-for="Username" class="text-danger"></span>
+                    <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
                 <div>
                     <div class="form-group input-group">
@@ -30,7 +30,7 @@
                         </div>
                         <input asp-for="Password" class="form-control" placeholder="Create password" type="password" />
                     </div><!-- form-group// -->
-                        <span asp-validation-for="Password" class="text-danger"></span>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
                 <div>
@@ -68,9 +68,9 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
                         </div>
-                        <input asp-for="AddressLine1" class="form-control" placeholder="Address" type="text">
+                        <input asp-for="Address.AddressLine1" class="form-control" placeholder="Address" type="text">
                     </div> <!-- form-group// -->
-                    <span asp-validation-for="AddressLine1" class="text-danger"></span>
+                    <span asp-validation-for="Address.AddressLine1" class="text-danger"></span>
                 </div>
 
                 <div>
@@ -78,9 +78,9 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
                         </div>
-                        <input asp-for="AddressLine2" class="form-control" placeholder="Address 2" type="text">
+                        <input asp-for="Address.AddressLine2" class="form-control" placeholder="Address 2" type="text">
                     </div> <!-- form-group// -->
-                    <span asp-validation-for="AddressLine2" class="text-danger"></span>
+                    <span asp-validation-for="Address.AddressLine2" class="text-danger"></span>
                 </div>
 
                 <div>
@@ -88,21 +88,30 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-map-marker"></i> </span>
                         </div>
-                        <input asp-for="City" class="form-control" placeholder="City" type="text">
+                        <input asp-for="Address.City" class="form-control" placeholder="City" type="text">
                     </div> <!-- form-group// -->
-                    <span asp-validation-for="City" class="text-danger"></span>
+                    <span asp-validation-for="Address.City" class="text-danger"></span>
                 </div>
-                
+
                 <div>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"> <i class="fa fa-globe"></i> </span>
                         </div>
-                        <input asp-for="Country" class="form-control" placeholder="Country" type="text">
+                        <input asp-for="Address.Country" class="form-control" placeholder="Country" type="text">
                     </div> <!-- form-group// -->
-                    <span asp-validation-for="Country" class="text-danger"></span>
+                    <span asp-validation-for="Address.Country" class="text-danger"></span>
                 </div>
-                
+                <div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+                        </div>
+                        <input asp-for="Address.ContactNumber" class="form-control" placeholder="Phone number" type="number">
+                    </div> <!-- form-group// -->
+                    <span asp-validation-for="Address.ContactNumber" class="text-danger"></span>
+                </div>
+
                 <div>
                     <div class="form-group input-group">
                         <div class="input-group-prepend">
@@ -112,17 +121,7 @@
                     </div> <!-- form-group// -->
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
-                
-                <div>
-                    <div class="form-group input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
-                        </div>
-                        <input asp-for="ContactNumber" class="form-control" placeholder="Phone number" type="number">
-                    </div> <!-- form-group// -->
-                    <span asp-validation-for="ContactNumber" class="text-danger"></span>
-                </div>
-                
+
                 <div class="form-group">
                     <input type="submit" value="Create Account" class="btn btn-dark btn-block" />
                 </div>

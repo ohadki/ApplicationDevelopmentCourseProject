@@ -40,32 +40,7 @@ namespace ApplicationDevelopmentCourseProject.Models
         [DataType(DataType.Text)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        [Required(ErrorMessage = "Address is required")]
-        [StringLength(50, MinimumLength = 3,
-        ErrorMessage = "Address should be minimum 3 characters and a maximum of 50 characters")]
-        [DataType(DataType.Text)]
-        [Display(Name = "Address")]
-        public string AddressLine1 { get; set; }
-        [StringLength(50, MinimumLength = 3,
-        ErrorMessage = "AddressLine2 should be minimum 3 characters and a maximum of 50 characters")]
-        [DataType(DataType.Text)]
-        [Display(Name = "Address 2")]
-        public string AddressLine2 { get; set; }
-        [Required(ErrorMessage = "City is required")]
-        [StringLength(50, MinimumLength = 3,
-        ErrorMessage = "City should be minimum 3 characters and a maximum of 50 characters")]
-        [DataType(DataType.Text)]
-        public string City { get; set; }
-        [Required(ErrorMessage = "Country is required")]
-        [StringLength(50, MinimumLength = 3,
-        ErrorMessage = "Country should be minimum 3 characters and a maximum of 50 characters")]
-        [DataType(DataType.Text)]
-        public string Country { get; set; }
-        [Display(Name = "Phone:")]
-        [Required(ErrorMessage = "A phone number is required.")]
-        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
-        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
-        public string ContactNumber { get; set; }
+        public virtual UserAddress Address { get; set; }
         public UserType Type { get; set; } = UserType.Client;
         public DateTime? MemberSince { get; set; } = DateTime.Now;
         public IEnumerable<Order> Orders { get; set; }
