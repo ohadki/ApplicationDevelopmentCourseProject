@@ -63,11 +63,7 @@
                 <input asp-for="Address.ContactNumber" class="form-control" />
                 <span asp-validation-for="Address.ContactNumber" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control"></select>
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Type" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

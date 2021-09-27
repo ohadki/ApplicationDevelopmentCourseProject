@@ -159,7 +159,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 try
                 {
                     _context.Update(user);
-                    _context.UserAddress.Update(user.Address);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
