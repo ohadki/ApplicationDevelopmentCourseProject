@@ -16,16 +16,20 @@ namespace ApplicationDevelopmentCourseProject.Data
 
         public DbSet<ApplicationDevelopmentCourseProject.Models.Product> Product { get; set; }
 
+        public DbSet<ApplicationDevelopmentCourseProject.Models.ProductTag> ProductTag { get; set; }
+
         public DbSet<ApplicationDevelopmentCourseProject.Models.Order> Order { get; set; }
 
         public DbSet<ApplicationDevelopmentCourseProject.Models.Category> Category { get; set; }
 
         public DbSet<ApplicationDevelopmentCourseProject.Models.User> User { get; set; }
 
+        public DbSet<ApplicationDevelopmentCourseProject.Models.UserAddress> UserAddress { get; set; }
+
         public DbSet<ApplicationDevelopmentCourseProject.Models.Branch> Branch { get; set; }
 
         public DbSet<ApplicationDevelopmentCourseProject.Models.Contact> Contact { get; set; }
 
-        public DbSet<ApplicationDevelopmentCourseProject.Models.UserAddress> UserAddress { get; set; }
+        
     }
 }
