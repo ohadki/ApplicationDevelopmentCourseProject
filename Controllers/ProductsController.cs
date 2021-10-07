@@ -124,10 +124,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     }
 
                     product.ProductTagsString = "";
+                    List<ProductTag> productTagsList = await _context.ProductTag.Where(t => SelectedProductTags.Contains(t.Id.ToString())).ToListAsync();
 
-                    foreach (var TagId in SelectedProductTags)
+                    foreach (var Tag in productTagsList)
                     {
-                        product.ProductTagsString += TagId + ",";
+                        product.ProductTagsString += Tag.TagName.ToString() + ",";
                     }
 
                     if(product.ProductTagsString.Length != 0)
