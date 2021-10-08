@@ -273,39 +273,47 @@
                         @Html.DisplayNameFor(model => model.ProductModel.Price)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.ProductModel.Quantity)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.ProductModel.Description)
                     </th>
+
                     @*<th>
-                            @Html.DisplayNameFor(model => model.ProductModel.Category)
-                        </th>*@
+            @Html.DisplayNameFor(model => model.ProductModel.Category)
+        </th>*@
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Products)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>*@
-                        <td>
-                            <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>*@
+                    <td>
+                        <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
