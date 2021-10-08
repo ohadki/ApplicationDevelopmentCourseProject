@@ -12,6 +12,12 @@ namespace ApplicationDevelopmentCourseProject.Models
         [Key]
         public int Id { get; set; }
 
+        [DisplayName("Quantity")]
+        [Required(ErrorMessage = "Quantity is required")]
+        [Range(0, 1000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+
+        public int Quantity { get; set; } = 0;
+
         [DisplayName("Product Name")]
         [Required(ErrorMessage = "Product Name is required")]
         [StringLength(100, MinimumLength = 3)]
