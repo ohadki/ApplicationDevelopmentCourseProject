@@ -15,7 +15,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using static ApplicationDevelopmentCourseProject.Controllers.BranchesController;
 using Microsoft.AspNetCore.Http;
-using System.Web.Mvc;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -38,7 +37,18 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? categoryId, string searchString)
+        public async Task<IActionResult> Index(int? categoryId)
+        {
+            var productsAndCategoriesViewModel = new ProductsAndCategoriesViewModel
+            {
+                Categories = await _context.Category.ToListAsync(),
+                Products = (categoryId == null) ? await _context.Product.ToListAsync() : await _context.Product.Where(p => p.Category.Id == categoryId).ToListAsync(),
+            };
+            return View(productsAndCategoriesViewModel);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Index(string searchString)
         {
             if (searchString != null)
             {
@@ -57,18 +67,17 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     Products = new List<Product>(products)
                 };
 
-                if (IsAjaxRequest(Request)) 
-                    return PartialView(productsViewModel);
+                //if (IsAjaxRequest(Request))
+                //    return PartialView(productsViewModel);
 
                 return View(productsViewModel);
             }
-
-
             var productsAndCategoriesViewModel = new ProductsAndCategoriesViewModel
             {
                 Categories = await _context.Category.ToListAsync(),
-                Products = (categoryId == null) ? await _context.Product.ToListAsync() : await _context.Product.Where(p => p.Category.Id == categoryId).ToListAsync(),
+                Products = await _context.Product.ToListAsync(),
             };
+
             return View(productsAndCategoriesViewModel);
         }
 
@@ -94,23 +103,23 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public JsonResult searchedProductsList(string searched)
-        {
-            var products = from m in _context.Product
-                           select m;
+        //public JsonResult searchedProductsList(string searched)
+        //{
+        //    var products = from m in _context.Product
+        //                   select m;
 
-            if (!string.IsNullOrEmpty(searched))
-            {
-                products = products.Where(s => s.Name.Contains(searched));
-            }
+        //    if (!string.IsNullOrEmpty(searched))
+        //    {
+        //        products = products.Where(s => s.Name.Contains(searched));
+        //    }
 
-            var productsList = new List<Product>(products);
+        //    var productsList = new List<Product>(products);
 
-            return Json(productsList, JsonRequestBehavior.AllowGet);
+        //    return Json(productsList, JsonRequestBehavior.AllowGet);
 
-            //var json = JsonSerializer.Serialize(productsList);
-            return json;
-        }
+        //    //var json = JsonSerializer.Serialize(productsList);
+        //    return json;
+        //}
         //public async Task<IActionResult> ViewSearchedProducts(string searchString)
         //{
         //    var products = from m in _context.Product
