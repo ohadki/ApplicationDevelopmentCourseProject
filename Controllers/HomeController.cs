@@ -81,6 +81,25 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(productsAndCategoriesViewModel);
         }
 
+        public async Task<IActionResult> SearchJson(string searchString)
+        {//Check if works
+            Task.Delay(3000).Wait();
+
+            var products = from m in _context.Product
+                               select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = from product in _context.Product
+                        where product.Name.Contains(searchString)
+                        orderby product.Id descending
+                        select product;
+                //products = products.Where(s => s.Name.Contains(searchString));
+            }
+
+            return Json(await products.ToListAsync());
+        }
+
         [Authorize]
         public IActionResult Privacy()
         {
