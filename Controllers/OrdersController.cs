@@ -307,5 +307,24 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 .ToList());
             return data;
         }
+
+        public IActionResult GetOrdersByBranch(int BranchId)
+        {
+            var entryPoint = (from u in _context.User
+                              join ua in _context.UserAddress on u.Id equals ua.UserId
+                              join o in _context.Order on u.Id equals o.UserId
+                              where o.BranchId == BranchId
+                              select new
+                              {
+                                  UserId = u.Id,
+                                  Name = u.FirstName + u.LastName,
+                                  Address = ua.GetUserAddress(),
+                                  Total = o.OrderTotal,
+                                  Date = o.OrderPlaced,
+                              }).ToList();
+
+            return (IActionResult)entryPoint.ToList();
+        }
+
     }
 }
