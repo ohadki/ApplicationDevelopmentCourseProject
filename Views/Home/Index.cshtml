@@ -122,13 +122,24 @@
                                     <br />
                                     @Html.DisplayFor(modelItem => item.Price)₪
                                 </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" onclick="AddProductToCart(@item.Id, false)">Add to cart</button></div>
+                                @{
+                                    if (item.Quantity > 0)
+                                    {
+                                        <!-- Product actions-->
+                                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                            <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" onclick="AddProductToCart(@item.Id, false, @item.Quantity)">Add to cart</button></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <!-- Product actions-->
+                                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                            <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" disabled>Out of stock</button></div>
+                                        </div>
+                                    }
+                                }
                             </div>
                         </div>
-                    </div>
                 }
             </div>
         </div>

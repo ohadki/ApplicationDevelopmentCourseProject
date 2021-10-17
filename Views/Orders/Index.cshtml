@@ -6,6 +6,9 @@
     }
 }
 
+@{
+    decimal total = 0;
+}
 @model IEnumerable<ApplicationDevelopmentCourseProject.Models.CartItem>
 @using Microsoft.AspNetCore.Http
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
@@ -40,6 +43,7 @@
                             <div class="items">
                                 @foreach (CartItem item in Model)
                                 {
+                                    total += item.Quantity * item.Product.Price;
                                     <div class="product">
                                         <div class="row">
                                             <div class="col-md-3">
@@ -74,7 +78,7 @@
                         <div class="col-md-12 col-lg-4">
                             <div class="summary">
                                 <h3>Summary</h3>
-                                <div class="summary-item"><span class="text">Total</span><span class="price">@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"))₪</span></div>
+                                <div class="summary-item"><span class="text">Total</span><span class="price">@total₪</span></div>
                             </div>
                         </div>
                     </div>

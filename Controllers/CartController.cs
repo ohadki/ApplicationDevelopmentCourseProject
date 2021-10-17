@@ -45,7 +45,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             List<CartItem> cart;
             Product product = _context.Product.Where(p => p.Id == id).FirstOrDefault();
-            
+            int maxQuantity = product.Quantity;
             if (HttpContext.Session.Get(GetUniqueSessionKey("CartItems")) == null)
             {
                 cart = new List<CartItem>();
@@ -59,7 +59,16 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             int index = GetProductIndex(id);
             if (index != -1)
             {
-                cart[index].Quantity++;
+                if(cart[index].Quantity < maxQuantity)
+                {
+                    cart[index].Quantity++;
+                }
+                else
+                {
+                    Response.StatusCode = 405;
+                    return Json(new { status = "error", message = "error creating customer",StatusCode=405 });
+                }
+
             }
             else
             {
