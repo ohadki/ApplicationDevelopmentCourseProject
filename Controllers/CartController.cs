@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -35,6 +36,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
             }
+            ViewData["BranchId"] = new SelectList(_context.Branch, nameof(Branch.Id), nameof(Branch.Address));
             return View(cart.ToList());
         }
 

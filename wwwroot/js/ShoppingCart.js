@@ -111,3 +111,17 @@ function RemoveProductFromCart(productId) {
 function getAttributeId(productId, attribute) {
     return "shopping-cart-item-".concat(productId.toString(), "-", attribute);
 }
+
+function OnPurchaseClick() {
+    var SelectedBranchId = document.getElementById("SelectedBranchId").value;
+    $.ajax({
+        type: "POST",
+        url: "/Orders/PurchaseOrder",
+        data: { SelectedBranchId: SelectedBranchId },
+        success: function () {
+            window.location.href = "/Orders/Index/";
+            return true;
+        },
+        error: function (request, status, error) { }
+    });
+}

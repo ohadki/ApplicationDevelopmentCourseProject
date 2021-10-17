@@ -250,11 +250,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     list.Add(current);
                 }
             }
-
             return list;
         }
 
-        public async Task<IActionResult> PurchaseOrder()
+        [HttpPost]
+        public async Task<IActionResult> PurchaseOrder(string SelectedBranchId)
         {
             try
             {
@@ -263,6 +263,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 order.UserId = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault().Id;
                 string productsString = ConvertProductListToString(productsList);
                 order.ProductsString = productsString;
+                order.BranchId = Int32.Parse(SelectedBranchId);
 
                 decimal orderTotal = 0;
                 foreach (var product in productsList)
