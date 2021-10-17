@@ -129,9 +129,8 @@ function OnPurchaseClick() {
         type: "POST",
         url: "/Orders/PurchaseOrder",
         data: { SelectedBranchId: SelectedBranchId },
-        success: function () {
-            window.location.href = "/Orders/Index/";
-            return true;
+        success: function (response) {
+            window.location.href = response;
         },
         error: function (request, status, error) { }
     });

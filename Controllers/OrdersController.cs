@@ -286,7 +286,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 _context.Add(order);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", "Orders");
+                return Json(Url.Action("Index", "Orders"));
             }
             catch (Exception e)
             {
