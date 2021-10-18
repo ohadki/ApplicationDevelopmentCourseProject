@@ -250,11 +250,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     list.Add(current);
                 }
             }
-
             return list;
         }
 
-        public async Task<IActionResult> PurchaseOrder()
+        [HttpPost]
+        public async Task<IActionResult> PurchaseOrder(string SelectedBranchId)
         {
             try
             {
@@ -263,6 +263,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 order.UserId = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault().Id;
                 string productsString = ConvertProductListToString(productsList);
                 order.ProductsString = productsString;
+                order.BranchId = Int32.Parse(SelectedBranchId);
 
                 decimal orderTotal = 0;
                 foreach (var product in productsList)
@@ -285,7 +286,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 _context.Add(order);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index", "Orders");
+                return Json(Url.Action("Index", "Orders"));
             }
             catch (Exception e)
             {
@@ -306,5 +307,24 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 .ToList());
             return data;
         }
+
+        public IActionResult GetOrdersByBranch(int BranchId)
+        {
+            var entryPoint = (from u in _context.User
+                              join ua in _context.UserAddress on u.Id equals ua.UserId
+                              join o in _context.Order on u.Id equals o.UserId
+                              where o.BranchId == BranchId
+                              select new
+                              {
+                                  UserId = u.Id,
+                                  Name = u.FirstName + u.LastName,
+                                  Address = ua.GetUserAddress(),
+                                  Total = o.OrderTotal,
+                                  Date = o.OrderPlaced,
+                              }).ToList();
+
+            return (IActionResult)entryPoint.ToList();
+        }
+
     }
 }

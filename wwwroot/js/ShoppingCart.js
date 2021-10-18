@@ -122,3 +122,16 @@ function RemoveProductFromCart(productId) {
 function getAttributeId(productId, attribute) {
     return "shopping-cart-item-".concat(productId.toString(), "-", attribute);
 }
+
+function OnPurchaseClick() {
+    var SelectedBranchId = document.getElementById("SelectedBranchId").value;
+    $.ajax({
+        type: "POST",
+        url: "/Orders/PurchaseOrder",
+        data: { SelectedBranchId: SelectedBranchId },
+        success: function (response) {
+            window.location.href = response;
+        },
+        error: function (request, status, error) { }
+    });
+}

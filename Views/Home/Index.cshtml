@@ -110,45 +110,47 @@
                 @foreach (var item in Model.Products)
                 {
 
-                        <div class="col mb-5">
-                            <div class="card h-100">
-                                <img class="card-img-top" src="~/UploadFiles/Products/@item.Image" alt="..." />
-                                <div class="card-body p-4">
-                                    <div class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                        <br />
-                                        @Html.DisplayFor(modelItem => item.Description)
-                                        <br />
-                                        @Html.DisplayFor(modelItem => item.Price)₪
-                                    </div>
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="~/UploadFiles/Products/@item.Image" alt="..." />
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                    <br />
+                                    @Html.DisplayFor(modelItem => item.ProductTagsString)
+                                    <br />
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                    <br />
+                                    @Html.DisplayFor(modelItem => item.Price)₪
                                 </div>
-                                @{
-                                    if (item.Quantity > 0)
-                                    {
-                                        <!-- Product actions-->
-                                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                            <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" onclick="AddProductToCart(@item.Id, false, @item.Quantity)">Add to cart</button></div>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <!-- Product actions-->
-                                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                            <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" disabled>Out of stock</button></div>
-                                        </div>
-                                    }
-                                }
                             </div>
+                            @{
+                                if (item.Quantity > 0)
+                                {
+                                    <!-- Product actions-->
+                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                        <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" onclick="AddProductToCart(@item.Id, false, @item.Quantity)">Add to cart</button></div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <!-- Product actions-->
+                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                        <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" disabled>Out of stock</button></div>
+                                    </div>
+                                }
+                            }
                         </div>
+                    </div>
                 }
             </div>
         </div>
         @*<center>
-            <video controls="controls" autoplay="autoplay">
-                <source src="~/UploadFiles/Videos/Online-Shopping.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-            </video>
-        </center>*@
+                <video controls="controls" autoplay="autoplay">
+                    <source src="~/UploadFiles/Videos/Online-Shopping.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </center>*@
     </section>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
