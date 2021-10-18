@@ -53,6 +53,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public IActionResult UploadProduct()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category.ToList(), nameof(Category.Id), nameof(Category.Name));
+            ViewData["TagId"] = new SelectList(_context.ProductTag.ToList(), nameof(ProductTag.Id), nameof(ProductTag.TagName));
             return View();
         }
 
@@ -108,7 +109,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateProduct(Product product)
+        public async Task<IActionResult> CreateProduct(Product product, List<string> SelectedProductTags)
         {  
             if(HttpContext.Request.Form.Files.Count > 0)
             {
@@ -121,6 +122,20 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     {
                         productImage.CopyTo(fileStream);
                     }
+
+                    product.ProductTagsString = "";
+                    List<ProductTag> productTagsList = await _context.ProductTag.Where(t => SelectedProductTags.Contains(t.Id.ToString())).ToListAsync();
+
+                    foreach (var Tag in productTagsList)
+                    {
+                        product.ProductTagsString += Tag.TagName.ToString() + ",";
+                    }
+
+                    if(product.ProductTagsString.Length != 0)
+                    {
+                        product.ProductTagsString = product.ProductTagsString.Remove(product.ProductTagsString.Length - 1, 1);
+                    }
+                    
                     _context.Add(product);
                     await _context.SaveChangesAsync();
 
@@ -161,7 +176,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Image,CategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Image,CategoryId,Quantity")] Product product)
         {
             if (id != product.Id)
             {

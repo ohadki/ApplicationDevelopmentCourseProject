@@ -26,11 +26,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             public List<User> Users { get; set; }
             public List<Product> Products { get; set; }
             public List<Category> Categories { get; set; }
+            public List<ProductTag> ProductTags { get; set; }
             public List<Contact> Contacts { get; set; }
             public List<Order> Orders { get; set; }
             public Branch BranchModel { get; set; }
             public User UserModel { get; set; }
             public Product ProductModel { get; set; }
+            public ProductTag ProductTagModel { get; set; }
             public Contact ContactModel { get; set; }
             public Category CategoryModel { get; set; }
             public Order OrderModel { get; set; }
@@ -72,7 +74,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 Products = await _context.Product.ToListAsync(),
                 Contacts = await _context.Contact.ToListAsync(),
                 Categories = await _context.Category.ToListAsync(),
-                Orders = await _context.Order.ToListAsync()
+                Orders = await _context.Order.ToListAsync(),
+                ProductTags = await _context.ProductTag.ToListAsync(),
             };
             return View(adminModel);
         }
@@ -87,6 +90,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
             var user = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            user.Address = _context.UserAddress.Where(a => a.UserId == user.Id).FirstOrDefault();
             if (user == null)
             {
                 return NotFound();
@@ -131,7 +136,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 user = await _context.User.FindAsync(id);
             }
-            
+            user.Address = _context.UserAddress.Where(a => a.UserId == user.Id).FirstOrDefault();
+
             if (user == null)
             {
                 return NotFound();
@@ -144,7 +150,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Email,Username,Password,Id,FirstName,LastName,ImageUrl,AddressLine1,AddressLine2,City,Country,ContactNumber,Type,MemberSince")] User user)
+        public async Task<IActionResult> Edit(string id, User user)
         {
             if (id != user.Id)
             {
@@ -262,11 +268,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return RedirectToAction(nameof(Index),"Home");
         }
 
-        public async Task<IActionResult> RegisterUser([Bind("Username,Password,Id,FirstName,LastName,AddressLine1,AddressLine2,City,Country,ContactNumber,Email")] User user)
+        public async Task<IActionResult> RegisterUser(User user)
         {
             if (ModelState.IsValid)
             {
+                user.Address.UserId = user.Id;
                 _context.User.Add(user);
+                _context.UserAddress.Add(user.Address);
                 await _context.SaveChangesAsync();
                 loginUser(user.Username, user.Type);
                 return RedirectToAction(nameof(Index),"Home");

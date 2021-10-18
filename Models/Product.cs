@@ -9,8 +9,19 @@ namespace ApplicationDevelopmentCourseProject.Models
 {
     public class Product
     {
+        public Product()
+        {
+            this.ProductTags = new HashSet<ProductTag>();
+        }
+
         [Key]
         public int Id { get; set; }
+
+        [DisplayName("Quantity")]
+        [Required(ErrorMessage = "Quantity is required")]
+        [Range(0, 1000, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+
+        public int Quantity { get; set; } = 0;
 
         [DisplayName("Product Name")]
         [Required(ErrorMessage = "Product Name is required")]
@@ -43,5 +54,9 @@ namespace ApplicationDevelopmentCourseProject.Models
         public int CategoryId { get; set; }
 
         public Category Category { get; set; }
+
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
+
+        public string ProductTagsString { get; set; }
     }
 }

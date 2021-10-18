@@ -19,6 +19,7 @@
             <li><a class="nav-link" href="#branches" onclick="showhide('branchestable');">Branches</a></li>
             <li><a class="nav-link" href="#products" onclick="showhide('productsTable');">Products</a></li>
             <li><a class="nav-link" href="#categories" onclick="showhide('categoriesTable');">Categories</a></li>
+            <li><a class="nav-link" href="#producttags" onclick="showhide('ProductTagsTable');">Product Tags</a></li>
             <li><a class="nav-link" href="#orders" onclick="showhide('ordersTable');">Orders</a></li>
             @*<li><a class="nav-link" href="#statistics" onclick="showhide('statistics');">Statistics</a></li>*@
             <li><a class="nav-link" href="#contactUs" onclick="showhide('contactUsMessagesTable');">Customer messages</a></li>
@@ -172,6 +173,40 @@
         <input type="button" onclick="location.href='@Url.Action("Create", "Categories")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Create new category" />
     </div>
 
+    <div id="ProductTagsTable" style="display: none;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductTagModel.TagName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductTagModel.Id)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ProductTags)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TagName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            <a asp-controller="ProductTags" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-controller="ProductTags" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-controller="ProductTags" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <input type="button" onclick="location.href='@Url.Action("Create", "ProductTags")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Create new product tag" />
+    </div>
+
     <div id="usersTable">
         <table class="table">
             <thead>
@@ -238,39 +273,47 @@
                         @Html.DisplayNameFor(model => model.ProductModel.Price)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.ProductModel.Quantity)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.ProductModel.Description)
                     </th>
+
                     @*<th>
-                            @Html.DisplayNameFor(model => model.ProductModel.Category)
-                        </th>*@
+            @Html.DisplayNameFor(model => model.ProductModel.Category)
+        </th>*@
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.Products)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Id)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        @*<td>
-                                @Html.DisplayFor(modelItem => item.Category)
-                            </td>*@
-                        <td>
-                            <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+
+                    @*<td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>*@
+                    <td>
+                        <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

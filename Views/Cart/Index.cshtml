@@ -62,7 +62,7 @@
                                                                 <label for="quantity">Quantity:</label>
                                                                 <span id="shopping-cart-item-@item.Product.Id.ToString()-quantity">@item.Quantity</span>
                                                                 <br />
-                                                                <button class="btn btn-danger" onclick="RemoveProductFromCart(@item.Product.Id)">-</button>   <button class="btn btn-primary" onclick="AddProductToCart(@item.Product.Id, true)">+</button>
+                                                                <button class="btn btn-danger" onclick="RemoveProductFromCart(@item.Product.Id)">-</button>   <button class="btn btn-primary" onclick="AddProductToCart(@item.Product.Id, true,@item.Product.Quantity)">+</button>
 
                                                             </div>
                                                             <div class="col-md-3 price">
@@ -82,7 +82,11 @@
                                 <div class="summary">
                                     <h3>Summary</h3>
                                     <div class="summary-item"><span class="text">Total</span><span class="price" id="shopping-cart-total">@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("CartTotal"))₪</span></div>
-                                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='@Url.Action("PurchaseOrder", "Orders")'">Checkout</button>
+                                    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="OnPurchaseClick()">Checkout</button>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Selected Store</label>
+                                    <select name="SelectedBranchId" id="SelectedBranchId" class="form-control" asp-items="ViewBag.BranchId"></select>
                                 </div>
                             </div>
                         </div>
@@ -101,4 +105,5 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="~/js/ShoppingCart.js"></script>
+
 </html>

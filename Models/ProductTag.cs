@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 namespace ApplicationDevelopmentCourseProject.Models
 {
-    public class CartItem
+    public class ProductTag
     {
+        public ProductTag()
+        {
+            this.Products = new HashSet<Product>();
+        }
+
         [Key]
         public int Id { get; set; }
-        public Product Product { get; set; }
-        public int Quantity { get; set; }
+        public string TagName { get; set; }
+
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

@@ -25,42 +25,53 @@
 
 document.addEventListener("DOMContentLoaded", () => Toast.init());
 
-function AddProductToCart(productId, fromShoppingCartPage) {
-    $.ajax({
-        type: "POST",
-        url: "/Cart/Buy",
-        data: { id: productId, fromShoppingCartPage: fromShoppingCartPage },
-        success: function () {
-            Toast.show('Product has been added successfully to the cart','success');
-            if (fromShoppingCartPage) {
-                //update product's quantity
-                var quantityId = getAttributeId(productId, "quantity");
-                var quantity = parseInt(document.getElementById(quantityId).textContent);
+function AddProductToCart(productId, fromShoppingCartPage,maxquantity) {
+    var quantityId = getAttributeId(productId, "quantity");
+    var quantity = maxquantity;
+    if (fromShoppingCartPage) {
+        quantity = parseInt(document.getElementById(quantityId).textContent);
+    }
+    if (!fromShoppingCartPage || (fromShoppingCartPage && quantity < maxquantity)) {
+        $.ajax({
+            type: "POST",
+            url: "/Cart/Buy",
+            data: { id: productId, fromShoppingCartPage: fromShoppingCartPage },
+            success: function () {
+                Toast.show('Product has been added successfully to the cart', 'success');
+                if (fromShoppingCartPage) {
+                    //update product's quantity
+                    quantity += 1;
+                    document.getElementById(quantityId).textContent = quantity.toString();
 
-                quantity += 1;
-                document.getElementById(quantityId).textContent = quantity.toString();
+                    //update total
+                    var priceId = getAttributeId(productId, "price");
+                    var price = parseInt(document.getElementById(priceId).textContent);
 
-                //update total
-                var priceId = getAttributeId(productId, "price");
-                var price = parseInt(document.getElementById(priceId).textContent);
+                    var total = parseInt(document.getElementById("shopping-cart-total").textContent);
+                    total += price;
+                    document.getElementById("shopping-cart-total").textContent = total.toString() + "₪";
+                }
 
-                var total = parseInt(document.getElementById("shopping-cart-total").textContent);
-                total += price;
-                document.getElementById("shopping-cart-total").textContent = total.toString() + "₪";
+                return true;
+
+            },
+            error: function (request, status, error) {
+                if (request.status == 401) {
+                    window.location.href = "Users/Login";
+                }
+                else if (request.status == 405) {
+                    Toast.show('Cannot add more of this product', 'error');
+
+                }
+                else {
+                    alert(error);
+                }
             }
-
-            return true;
-            
-        },
-        error: function (request, status, error) {
-            if (request.status == 401) {
-                window.location.href = "Users/Login";
-            }
-            else {
-                alert(error);
-            }
-        }
-    });
+        });
+    }
+    else {
+        Toast.show('Cannot add more of this product', 'error');
+    }
 }
 
 function RemoveProductFromCart(productId) {
@@ -110,4 +121,17 @@ function RemoveProductFromCart(productId) {
 
 function getAttributeId(productId, attribute) {
     return "shopping-cart-item-".concat(productId.toString(), "-", attribute);
+}
+
+function OnPurchaseClick() {
+    var SelectedBranchId = document.getElementById("SelectedBranchId").value;
+    $.ajax({
+        type: "POST",
+        url: "/Orders/PurchaseOrder",
+        data: { SelectedBranchId: SelectedBranchId },
+        success: function (response) {
+            window.location.href = response;
+        },
+        error: function (request, status, error) { }
+    });
 }
