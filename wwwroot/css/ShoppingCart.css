@@ -111,8 +111,8 @@
         }
 .toast {
     position: fixed;
-    top: 0;
-    left: 30%;
+    margin: auto;
+    top: 90%;
     right: 0;
     margin: auto;
     max-width: 400px;
@@ -130,7 +130,9 @@
 }
 
 .toast--visible {
-    top: 20px;
+    position: fixed;
+    margin: auto;
+    top: 90%;
     opacity: 1;
     visibility: visible;
 }
