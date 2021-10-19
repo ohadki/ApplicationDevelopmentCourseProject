@@ -36,7 +36,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 cart = JsonConvert.DeserializeObject<List<CartItem>>(HttpContext.Session.GetString(GetUniqueSessionKey("CartItems")));
             }
-            ViewData["BranchId"] = new SelectList(_context.Branch, nameof(Branch.Id), nameof(Branch.Address));
+            ViewData["BranchName"] = new SelectList(_context.Branch, nameof(Branch.Id), nameof(Branch.BranchName));
             return View(cart.ToList());
         }
 
