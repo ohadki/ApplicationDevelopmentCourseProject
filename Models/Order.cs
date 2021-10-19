@@ -23,6 +23,8 @@ namespace ApplicationDevelopmentCourseProject.Models
 
         public string UserId { get; set; }
 
+        public User User { get; set; }
+
         public int BranchId { get; set; }
 
         public Branch Branch { get; set; }

@@ -44,5 +44,10 @@ namespace ApplicationDevelopmentCourseProject.Models
         public UserType Type { get; set; } = UserType.Client;
         public DateTime? MemberSince { get; set; } = DateTime.Now;
         public IEnumerable<Order> Orders { get; set; }
+
+        public string GetFullName()
+        {
+            return this.FirstName + " " + this.LastName;
+        }
     }
 }

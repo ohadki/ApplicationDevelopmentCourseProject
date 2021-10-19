@@ -62,21 +62,40 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View(userOrders.ToList());
         }
 
-        public IActionResult OrderDetails(int orderId)
+        public async Task<IActionResult> OrderDetails(int orderId)
         {
             var userId = HttpContext.Session.GetString("UserId");
             List<CartItem> productsList = new List<CartItem>();
-            var order = _context.Order.Where(x => x.Id == orderId).SingleOrDefault();
+            //var order = _context.Order.Where(x => x.Id == orderId).SingleOrDefault();
 
-            if(order == null)
+
+            var query = await (from o in _context.Order
+                                 join u in _context.User on o.UserId equals u.Id
+                                 join ua in _context.UserAddress on o.UserId equals ua.UserId
+                                 where o.Id == orderId
+                                 select new
+                                 {
+                                     UserName = u.Username,
+                                     Name = u.GetFullName(),
+                                     order = o,
+                                     UserAddress = ua.GetUserAddress(),
+                                 }).FirstOrDefaultAsync();
+
+            Order order = query.order;
+
+            if (order == null)
             {
                 return View("UserOrders");
             }
 
-            productsList=(ConvertStringToProductList(order.ProductsString));
-            ViewBag.OrderId = orderId;
-            ViewBag.OrderTotal = order.OrderTotal;
-            ViewBag.OrderDate = order.OrderPlaced;
+            //order.User
+            productsList =(ConvertStringToProductList(order.ProductsString));
+            ViewBag.OrderId     = orderId;
+            ViewBag.OrderTotal  = order.OrderTotal;
+            ViewBag.OrderDate   = order.OrderPlaced;
+            ViewBag.UserName    = query.UserName;
+            ViewBag.Name        = query.Name;
+            ViewBag.UserAddress = query.UserAddress;
             return View(productsList);
         }
 
