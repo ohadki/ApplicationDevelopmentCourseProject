@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <h1>Details about order with ID of : @ViewBag.OrderId</h1>
-<h3>You can see your order below:</h3>
+<h3>@ViewBag.Name, You can see your order below:</h3>
 <link href="~/css/ShoppingCart.css" rel="stylesheet">
 
 
@@ -36,7 +36,7 @@
                 </div>
                 <div class="content">
                     <div class="row">
-                        <div class="col-md-12 col-lg-8">
+                        <div class="col-md-12 col-lg-7">
                             <div class="items">
                                 @foreach (CartItem item in Model)
                                 {
@@ -71,11 +71,13 @@
                                 }
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-4">
+                        <div class="col-md-12 col-lg-5">
                             <div class="summary">
                                 <h3>Summary</h3>
                                 <div class="summary-item"><span class="text">Date</span><span class="price">@ViewBag.OrderDate</span></div>
                                 <div class="summary-item"><span class="text">Total</span><span class="price">@ViewBag.OrderTotal₪</span></div>
+                                <div class="summary-item"><span class="text">Address</span><span class="price">@ViewBag.UserAddress</span></div>
+
                             </div>
                         </div>
                     </div>
