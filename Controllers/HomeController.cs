@@ -143,5 +143,21 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 return jsonstring;
             }
         }
+
+        public async Task<IActionResult> SearchJson(string searchString)
+        {
+            var products = from m in _context.Product
+                           select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = from product in _context.Product
+                           where product.Name.Contains(searchString)
+                           orderby product.Id descending
+                           select product;
+            }
+
+            return Json(await products.ToListAsync());
+        }
     }
 }
