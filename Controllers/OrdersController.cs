@@ -64,10 +64,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public async Task<IActionResult> OrderDetails(int orderId)
         {
-            var userId = HttpContext.Session.GetString("UserId");
+            var userId = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault().Id;
             List<CartItem> productsList = new List<CartItem>();
-            //var order = _context.Order.Where(x => x.Id == orderId).SingleOrDefault();
-
 
             var query = await (from o in _context.Order
                                  join u in _context.User on o.UserId equals u.Id
