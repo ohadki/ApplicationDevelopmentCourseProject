@@ -146,18 +146,16 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public async Task<IActionResult> SearchJson(string searchString)
         {
-            var products = from m in _context.Product
-                           select m;
-
+            var products = new List<Product>();
             if (!string.IsNullOrEmpty(searchString))
             {
-                products = from product in _context.Product
-                           where product.Name.Contains(searchString)
-                           orderby product.Id descending
-                           select product;
+                products = await _context.Product.Where(p => p.Name.Contains(searchString)).OrderByDescending(p => p.Id).ToListAsync();
             }
-
-            return Json(await products.ToListAsync());
+            else
+            {
+                products = await _context.Product.ToListAsync();
+            }
+            return Json(products.ToList());
         }
     }
 }

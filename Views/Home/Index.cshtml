@@ -97,7 +97,7 @@
                 }
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input onkeyup="searchListener()" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <input id="search-input" onkeyup="searchListener()" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -151,46 +151,81 @@
     <script src="~/js/ShoppingCart.js"></script>
 
     <script>
+        var stringToHTML = function (str) {
+            var div = document.createElement('div');
+            div.classList.add('col', 'mb-5');
+            div.innerHTML = str;
+            return div;
+        };
+
+
         function searchListener() {
-            var inpSearch = $('#search');
+            var inpSearch = document.getElementById('search-input').value;
             $.ajax({
                 url: "/Home/SearchJson",
-                data: { searchString: inpSearch.val() }
+                data: { searchString: inpSearch }
             }).done(function (result) {
                 var ProductContainer = document.getElementById('Products-Container');
-                var template = $('#template').html();
                 ProductContainer.innerHTML = "";
                 $.each(result, function (key, value) {
+                    var q = value["quantity"];
+                    var template;
+                    if (q > 0) {
+                        template = $('#template-in-stock').html();
+                    }
+                    else {
+                        template = $('#template-out-of-stock').html();
+                    }
                     var temp = template;
                     $.each(value, function (key, value) {
                         temp = temp.replaceAll('${' + key + '}', value);
                     });
-                    ProductContainer.append(temp);
+                    ProductContainer.append(stringToHTML(temp));
                 });
             });
         }
     </script>
 
-    <script type="text/template" id="template">
-        <div class="col mb-5">
-            <div class="card h-100">
-                <img class="card-img-top" src="~/UploadFiles/Products/${image}" alt="..." />
-                <div class="card-body p-4">
-                    <div class="text-center">
-                        ${name}
-                        <br />
-                        ${productTagsString}
-                        <br />
-                        ${description}
-                        <br />
-                        ${price}₪
-                    </div>
+    <script id="template-in-stock" type="text/x-custom-template" language="C#">
+        <div class="card h-100">
+            <img class="card-img-top" src="/UploadFiles/Products/${image}" alt="..." />
+            <div class="card-body p-4">
+                <div class="text-center">
+                    ${name}
+                    <br />
+                    ${productTagsString}
+                    <br />
+                    ${description}
+                    <br />
+                    ${price}₪
                 </div>
+            </div>
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" onclick="AddProductToCart(${id}, false, ${quantity})">Add to cart</button></div>
+            </div>
+        </div>
+    </script>
 
+    <script id="template-out-of-stock" type="text/x-custom-template" language="C#">
+        <div class="card h-100">
+            <img class="card-img-top" src="/UploadFiles/Products/${image}" alt="..." />
+            <div class="card-body p-4">
+                <div class="text-center">
+                    ${name}
+                    <br />
+                    ${productTagsString}
+                    <br />
+                    ${description}
+                    <br />
+                    ${price}₪
+                </div>
+            </div>
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" disabled>Out of stock</button></div>
             </div>
         </div>
     </script>
 
 </body>
 
-</html>
+        </html>
