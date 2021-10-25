@@ -143,5 +143,19 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 return jsonstring;
             }
         }
+
+        public async Task<IActionResult> SearchJson(string searchString)
+        {
+            var products = new List<Product>();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                products = await _context.Product.Where(p => p.Name.Contains(searchString)).OrderByDescending(p => p.Id).ToListAsync();
+            }
+            else
+            {
+                products = await _context.Product.ToListAsync();
+            }
+            return Json(products.ToList());
+        }
     }
 }

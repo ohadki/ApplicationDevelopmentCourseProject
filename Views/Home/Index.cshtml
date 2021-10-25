@@ -97,7 +97,7 @@
                 }
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <input id="search-input" onkeyup="searchListener()" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -105,7 +105,7 @@
 
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <div id="Products-Container" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 @foreach (var item in Model.Products)
                 {
 
@@ -144,17 +144,88 @@
                 }
             </div>
         </div>
-        @*<center>
-                <video controls="controls" autoplay="autoplay">
-                    <source src="~/UploadFiles/Videos/Online-Shopping.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            </center>*@
     </section>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="~/js/ShoppingCart.js"></script>
+
+    <script>
+        var stringToHTML = function (str) {
+            var div = document.createElement('div');
+            div.classList.add('col', 'mb-5');
+            div.innerHTML = str;
+            return div;
+        };
+
+
+        function searchListener() {
+            var inpSearch = document.getElementById('search-input').value;
+            $.ajax({
+                url: "/Home/SearchJson",
+                data: { searchString: inpSearch }
+            }).done(function (result) {
+                var ProductContainer = document.getElementById('Products-Container');
+                ProductContainer.innerHTML = "";
+                $.each(result, function (key, value) {
+                    var q = value["quantity"];
+                    var template;
+                    if (q > 0) {
+                        template = $('#template-in-stock').html();
+                    }
+                    else {
+                        template = $('#template-out-of-stock').html();
+                    }
+                    var temp = template;
+                    $.each(value, function (key, value) {
+                        temp = temp.replaceAll('${' + key + '}', value);
+                    });
+                    ProductContainer.append(stringToHTML(temp));
+                });
+            });
+        }
+    </script>
+
+    <script id="template-in-stock" type="text/x-custom-template" language="C#">
+        <div class="card h-100">
+            <img class="card-img-top" src="/UploadFiles/Products/${image}" alt="..." />
+            <div class="card-body p-4">
+                <div class="text-center">
+                    ${name}
+                    <br />
+                    ${productTagsString}
+                    <br />
+                    ${description}
+                    <br />
+                    ${price}₪
+                </div>
+            </div>
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" onclick="AddProductToCart(${id}, false, ${quantity})">Add to cart</button></div>
+            </div>
+        </div>
+    </script>
+
+    <script id="template-out-of-stock" type="text/x-custom-template" language="C#">
+        <div class="card h-100">
+            <img class="card-img-top" src="/UploadFiles/Products/${image}" alt="..." />
+            <div class="card-body p-4">
+                <div class="text-center">
+                    ${name}
+                    <br />
+                    ${productTagsString}
+                    <br />
+                    ${description}
+                    <br />
+                    ${price}₪
+                </div>
+            </div>
+            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                <div class="text-center"><button id="addToCart" class="btn btn-outline-dark mt-auto" disabled>Out of stock</button></div>
+            </div>
+        </div>
+    </script>
+
 </body>
 
-</html>
+        </html>
