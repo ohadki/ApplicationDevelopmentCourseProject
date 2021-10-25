@@ -28,8 +28,10 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             public List<Category> Categories { get; set; }
             public List<Product> Products { get; set; }
+            public List<ProductTag> ProductTags { get; set; }
             public Category CategoryModel { get; set; }
             public Product ProductModel { get; set; }
+            public ProductTag ProductTagModel { get; set; }
         }
 
         public HomeController(ILogger<HomeController> logger, ApplicationDevelopmentCourseProjectContext context)
@@ -44,6 +46,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 Categories = await _context.Category.ToListAsync(),
                 Products = (categoryId == null) ? await _context.Product.ToListAsync() : await _context.Product.Where(p => p.Category.Id == categoryId).ToListAsync(),
+                ProductTags = await _context.ProductTag.ToListAsync(),
             };
             return View(productsAndCategoriesViewModel);
         }
@@ -154,6 +157,22 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             else
             {
                 products = await _context.Product.ToListAsync();
+            }
+            return Json(products.ToList());
+        }
+
+        public IActionResult SearchByManyParametersJson(string categoriesStr, string productTagsStr, string minPrice, string maxPrice)
+        {
+            var products = _context.Product.Where(p => true);
+            if (minPrice != null)
+                products = products.Where(p => p.Price >= Int32.Parse(minPrice));
+            if (maxPrice != null)
+                products = products.Where(p => p.Price <= Int32.Parse(maxPrice));
+            if (categoriesStr != null)
+                products = products.Where(p => categoriesStr.Split(",", System.StringSplitOptions.None).Contains(p.Category.Id.ToString()));
+            if (productTagsStr != null)
+            {
+                products = products.Where(p => p.ProductTagsString.Split(",", System.StringSplitOptions.None).Any(x => productTagsStr.Split(",", System.StringSplitOptions.None).Contains(x)));
             }
             return Json(products.ToList());
         }

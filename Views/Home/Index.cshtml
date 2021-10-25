@@ -57,6 +57,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="~/css/Homepage.css" rel="stylesheet" />
+    <link href="~/css/SideFilters.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -97,10 +98,44 @@
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input id="search-input" onkeyup="searchListener()" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchListener()">Search</button>
             </form>
         </div>
     </nav>
+
+
+    <section id="sidebar" onchange="searchByFilters(@Model.Categories.Count, @Model.ProductTags.Count)">
+        <div class="py-3">
+            <h5 class="font-weight-bold">Categories</h5>
+            @foreach (var item in Model.Categories)
+            { 
+                <div class="form-inline d-flex align-items-center py-1"> <label class="tick">@Html.DisplayFor(modelItem => item.Name)<input type="checkbox" id="filters-category-@Html.DisplayFor(modelItem => item.Id)"> <span class="check"></span> </label> </div>
+            }
+        </div>
+        <div class="py-3">
+            <h5 class="font-weight-bold">Product Tags</h5>
+            @foreach (var item in Model.ProductTags)
+            {
+                <div class="form-inline d-flex align-items-center py-1"> <label class="tick">@Html.DisplayFor(modelItem => item.TagName)<input type="checkbox" id="filters-product-tag-@Html.DisplayFor(modelItem => item.Id)"> <span class="check"></span> </label> </div>
+            }
+        </div>
+        <div class="py-3">
+            <h5 class="font-weight-bold">Price Range</h5>
+            <div class="d-flex align-items-center mt-4 pb-1">
+                <div class="md-form md-outline my-0">
+                    <input id="filters-min-price" type="number" class="form-control mb-0">
+                    <label for="filters-min-price">$ Min</label>
+                </div>
+                <p> - </p>
+                <div class="md-form md-outline my-0">
+                    <input id="filters-max-price" type="number" class="form-control mb-0">
+                    <label for="filters-max-price">$ Max</label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
@@ -164,6 +199,56 @@
             $.ajax({
                 url: "/Home/SearchJson",
                 data: { searchString: inpSearch }
+            }).done(function (result) {
+                var ProductContainer = document.getElementById('Products-Container');
+                ProductContainer.innerHTML = "";
+                $.each(result, function (key, value) {
+                    var q = value["quantity"];
+                    var template;
+                    if (q > 0) {
+                        template = $('#template-in-stock').html();
+                    }
+                    else {
+                        template = $('#template-out-of-stock').html();
+                    }
+                    var temp = template;
+                    $.each(value, function (key, value) {
+                        temp = temp.replaceAll('${' + key + '}', value);
+                    });
+                    ProductContainer.append(stringToHTML(temp));
+                });
+            });
+        }
+
+        function searchByFilters(CategoriesCount, ProductTagsCount) {
+            var i;
+            var categoriesStr = "";
+            var productTagsStr = "";
+            var minPrice;
+            var maxPrice;
+
+            for (var i = 1; i <= CategoriesCount; i++) {
+                if (document.getElementById('filters-category-' + i.toString()).checked) {
+                    categoriesStr += i.toString() + ",";
+                }
+            }
+
+            categoriesStr = categoriesStr.substring(0, categoriesStr.length - 1); // remove last ,
+
+            for (var i = 1; i <= ProductTagsCount; i++) {
+                if (document.getElementById('filters-product-tag-' + i.toString()).checked) {
+                    productTagsStr += i.toString() + ",";
+                }
+            }
+
+            productTagsStr = productTagsStr.substring(0, productTagsStr.length - 1); // remove last ,
+
+            var minPrice = document.getElementById('filters-min-price').value;
+            var maxPrice = document.getElementById('filters-max-price').value;
+
+            $.ajax({
+                url: "/Home/SearchByManyParametersJson",
+                data: { categoriesStr: categoriesStr, productTagsStr: productTagsStr, minPrice: minPrice, maxPrice: maxPrice }
             }).done(function (result) {
                 var ProductContainer = document.getElementById('Products-Container');
                 ProductContainer.innerHTML = "";

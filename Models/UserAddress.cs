@@ -33,8 +33,8 @@ namespace ApplicationDevelopmentCourseProject.Models
         [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
         public string ContactNumber { get; set; }
+        public User User { get; set; }
         public string UserId { get; set; }
-
         public string GetUserAddress()
         {
             return AddressLine1 + ", " + City + ", " + Country;
