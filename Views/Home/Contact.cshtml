@@ -72,24 +72,55 @@
         </div>
 
     </div>
-    <!-- card.// -->
-    @*</div>*@
-    <!--container end.//-->
-
 
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }
 
 
-<div class="text-center">
-    <h3>Take a quick glace at our branches locations:</h3>
-    <div id="ZeroBranches" style="display:none">
-        <h4>Currently there is no branches</h4>
+    <div class="text-center">
+        <h3>Take a quick glace at our branches locations:</h3>
+        <div id="ZeroBranches" style="display:none">
+            <h4>Currently there is no branches</h4>
+        </div>
+        <div id="branchesMap" style="width:100%;height:400px;"></div>
     </div>
-    <div id="branchesMap" style="width:100%;height:400px;"></div>
-</div>
-   
+
+    <div class="container py-5 h-100">
+
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div>
+
+                <h3 class="mb-4 pb-2 fw-normal">Check the weather forecast near the branch you are going to go to:</h3>
+
+                <div class="input-group rounded mb-3">
+                    <input id="txtCity" type="search" class="form-control rounded" placeholder="City" aria-label="Search"
+                           aria-describedby="search-addon" />
+                    <button class="btn btn-dark btn-block" onclick="GetWeather()">
+                            Check!
+                    </button>
+                </div>
+
+                <div class="card shadow-0 border">
+                    <div class="card-body p-4">
+                        
+                        <p>Current temperature: <strong><label id="lblTemp"></label></strong></p>
+                        <p>Feels like: <strong><label id="lblTempFeelsLike"></label></strong></p>
+                        <p class="mb-2">Humidity: <strong><label id="lblHumidity"></label></strong></p>
+                        <p>Max: <strong><label id="lblTempMax"></label></strong>, Min: <strong><label id="lblTempMin"></label></strong></p>
+
+                        <div class="d-flex flex-row align-items-center">
+                            <p class="mb-0 me-4"><label id="lblDescription">Description:</label></p>
+                            <img id="imgWeatherIconUrl" src="https://openweathermap.org/img/w/50d.png" title="Weather Icon" />
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </body>
 </html>
 
@@ -306,5 +337,42 @@
             }
         }
     }
+</script>
+
+<script>
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    function GetWeather() {
+        var cityname = $("#txtCity").val();
+        if (cityname.length > 0) {
+            $.ajax({
+                url: "/Home/WeatherDetail?City=" + cityname,
+                type: "POST",
+                success: function (rsltval) {
+                    var data = JSON.parse(rsltval);
+                    console.log(data);
+                    $("#lblDescription").text(capitalizeFirstLetter(data.Description)+":");
+                    $("#lblHumidity").text(data.Humidity + "%");
+                    $("#lblTempFeelsLike").text(data.TempFeelsLike +"°C");
+                    $("#lblTemp").text(data.Temp + "°C");
+                    $("#lblTempMax").text(data.TempMax + "°C");
+                    $("#lblTempMin").text(data.TempMin + "°C");
+                    $("#imgWeatherIconUrl").attr("src", "http://openweathermap.org/img/w/" + data.WeatherIcon + ".png");
+                    //data - response from server
+                },
+                error: function (xhr, httpStatusMessage, customErrorMessage) {
+                    if (xhr.status === 404) {
+                        alert(xhr.responseText);
+                    }
+                }
+            });
+        }
+        else {
+            alert("City name can't be empty");
+        }
+    }
+
 </script>
 
