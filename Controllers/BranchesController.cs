@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -31,6 +32,47 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             var branches =  _context.Branch.ToListAsync();
             return View(await branches);
+        }
+
+        public IActionResult OrdersFromSpecificBranch(int branchId)
+        {
+            var tempOrders = (from u in _context.User
+                              join ua in _context.UserAddress on u.Id equals ua.UserId
+                              join o in _context.Order on u.Id equals o.UserId
+                              where o.BranchId == branchId
+                          select new
+                              {
+                                  UserId = u.Id,
+                                  Name = u.FirstName + u.LastName,
+                                  Address = ua.GetUserAddress(),
+                                  Id = o.Id,
+                                  Total = o.OrderTotal,
+                                  Date = o.OrderPlaced,
+                                  ProductString = o.ProductsString,
+                                  //Products = o.Products,
+                                  branch = o.Branch,
+                                  BranchID = o.BranchId,
+                              }).ToList();
+            List<Order> branchOrders = new List<Order>();
+            branchOrders = _context.Order.Where(order => order.BranchId == branchId).ToList();
+            HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), branchOrders.Count);
+
+            List<Order> orders = new List<Order>();
+            foreach (var current in tempOrders)
+            {
+                Order currentOrder = new Order();
+                currentOrder.Id = current.Id;
+                currentOrder.ProductsString = current.ProductString;
+                currentOrder.OrderPlaced = current.Date;
+                currentOrder.OrderTotal = current.Total;
+                //currentOrder.Products = current.Products;
+                currentOrder.UserId = current.UserId;
+                currentOrder.Branch = current.branch;
+                currentOrder.BranchId = current.BranchID;
+                orders.Add(currentOrder);
+            }
+
+            return View(orders);
         }
 
         // GET: Branches/Details/5
@@ -87,6 +129,10 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 return NotFound();
             }
             return View(branch);
+        }
+        private string GetUniqueSessionKey(string key)
+        {
+            return HttpContext.User.Identity.Name.ToString() + key;
         }
 
         // POST: Branches/Edit/5
