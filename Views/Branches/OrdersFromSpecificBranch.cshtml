@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@functions {
+
+    public string GetUniqueSessionKey(string key)
+    {
+        return User.Identity.Name.ToString() + key;
+    }
+}
+
+@model IEnumerable<ApplicationDevelopmentCourseProject.Models.Order>
+@using Microsoft.AspNetCore.Http
+@using ApplicationDevelopmentCourseProject.Controllers
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <link href="~/css/ShoppingCart.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <main class="page">
+        <section class="shopping-cart dark">
+            <div class="container">
+                <div class="block-heading">
+                    <h2>Purchase History</h2>
+                </div>
+                @if (@HttpContextAccessor.HttpContext.Session.GetInt32(GetUniqueSessionKey("NumOfOrders")) != 0)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderTotal)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderPlaced)
+                                </th>
+                                <th>
+                                    More Details
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderTotal)₪
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderPlaced)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("OrderDetails", "Orders",new { orderId = item.Id })">Click here for more details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>It seems like you have no history with us..</p>
+                }
+                <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
+            </div>
+        </section>
+    </main>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="~/js/ShoppingCart.js"></script>
+</html>
+
+<div>
+    <a asp-controller="Branches" asp-action="Index">Back to Branches Panel</a>
+</div>
