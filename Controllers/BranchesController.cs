@@ -49,7 +49,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                                   Total = o.OrderTotal,
                                   Date = o.OrderPlaced,
                                   ProductString = o.ProductsString,
-                                  //Products = o.Products,
                                   branch = o.Branch,
                                   BranchID = o.BranchId,
                               }).ToList();
@@ -65,7 +64,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 currentOrder.ProductsString = current.ProductString;
                 currentOrder.OrderPlaced = current.Date;
                 currentOrder.OrderTotal = current.Total;
-                //currentOrder.Products = current.Products;
                 currentOrder.UserId = current.UserId;
                 currentOrder.Branch = current.branch;
                 currentOrder.BranchId = current.BranchID;
