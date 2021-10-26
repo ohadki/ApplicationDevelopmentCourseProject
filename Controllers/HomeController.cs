@@ -172,7 +172,18 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 products = products.Where(p => categoriesStr.Split(",", System.StringSplitOptions.None).Contains(p.Category.Id.ToString()));
             if (productTagsStr != null)
             {
-                products = products.Where(p => p.ProductTagsString.Split(",", System.StringSplitOptions.None).Any(x => productTagsStr.Split(",", System.StringSplitOptions.None).Contains(x)));
+                string[] productTagIdsArray = productTagsStr.Split(",");
+                var productTagsList = _context.ProductTag.Where(pt => productTagIdsArray.Contains(pt.Id.ToString())).ToList();
+                string[] productTagsArray = new string[productTagsList.Count];
+                int index = 0;
+
+                foreach (ProductTag pt in productTagsList)
+                {
+                    productTagsArray[index] = pt.TagName;
+                    index++;
+                }
+
+                products = products.Where(p => p.ProductTagsString.Split(",", System.StringSplitOptions.None).Any(x => productTagsArray.Contains(x)));
             }
             return Json(products.ToList());
         }
