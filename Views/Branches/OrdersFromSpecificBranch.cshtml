@@ -10,7 +10,7 @@
     }
 }
 
-@model IEnumerable<ApplicationDevelopmentCourseProject.Models.Order>
+@model IEnumerable<ApplicationDevelopmentCourseProject.Models.OrderInBranch>
 @using Microsoft.AspNetCore.Http
 @using ApplicationDevelopmentCourseProject.Controllers
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
@@ -39,13 +39,19 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Id)
+                                    @Html.DisplayNameFor(model => model.orderId)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.OrderTotal)
+                                    @Html.DisplayNameFor(model => model.orderTotal)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.OrderPlaced)
+                                    @Html.DisplayNameFor(model => model.orderPlaced)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.address)
                                 </th>
                                 <th>
                                     More Details
@@ -58,16 +64,22 @@
                             {
                             <tr>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Id)
+                                    @Html.DisplayFor(modelItem => item.orderId)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.OrderTotal)₪
+                                    @Html.DisplayFor(modelItem => item.orderTotal)₪
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.OrderPlaced)
+                                    @Html.DisplayFor(modelItem => item.orderPlaced)
                                 </td>
                                 <td>
-                                    <a href="@Url.Action("OrderDetails", "Orders",new { orderId = item.Id })">Click here for more details</a>
+                                    @Html.DisplayFor(modelItem => item.name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.address)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("OrderDetails", "Orders",new { orderId = item.orderId })">Click here for more details</a>
                                 </td>
                             </tr>
                             }
@@ -78,7 +90,6 @@
                 {
                     <p>It seems like you have no history with us..</p>
                 }
-                <a href="@Url.Action("Index", "Home")">Continue Shopping</a>
             </div>
         </section>
     </main>
@@ -87,3 +98,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script src="~/js/ShoppingCart.js"></script>
 </html>
+
+<div>
+    <a asp-controller="Branches" asp-action="Index">Back to Branches Panel</a>
+</div>

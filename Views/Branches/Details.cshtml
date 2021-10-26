@@ -10,7 +10,7 @@
     <h4>Branch</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BranchName)
         </dt>
         <dd class = "col-sm-10">
@@ -37,5 +37,6 @@
     </dl>
 </div>
 <div>
+    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="location.href='@Url.Action("OrdersFromSpecificBranch", "Branches", new { branchID = Model.Id })'">Show orders from this branch</button>
     <a asp-controller="Users" asp-action="AdminPanel">Back to Admin Panel</a>
 </div>

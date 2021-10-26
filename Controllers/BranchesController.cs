@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -31,6 +32,42 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             var branches =  _context.Branch.ToListAsync();
             return View(await branches);
+        }
+
+        public IActionResult OrdersFromSpecificBranch(int branchId)
+        {
+            var tempOrders = (from o in _context.Order
+                              join ua in _context.UserAddress on o.UserId equals ua.UserId
+                              join u in _context.User on o.UserId equals u.Id
+                              where o.BranchId == branchId
+                              select new
+                              {
+                                  UserId = u.Id,
+                                  Name = u.FirstName + " " + u.LastName,
+                                  Address = ua.GetUserAddress(),
+                                  Id = o.Id,
+                                  Total = o.OrderTotal,
+                                  Date = o.OrderPlaced,
+                                  ProductString = o.ProductsString,
+                                  branch = o.Branch,
+                                  BranchID = o.BranchId,
+                              }).ToList();
+
+            List<OrderInBranch> ordersInBranch = new List<OrderInBranch>();
+            foreach (var current in tempOrders)
+            {
+                OrderInBranch currentOrder = new OrderInBranch();
+                currentOrder.orderId = current.Id;
+                currentOrder.name = current.Name;
+                currentOrder.orderPlaced = current.Date;
+                currentOrder.orderTotal = current.Total;
+                currentOrder.address = current.Address;
+                ordersInBranch.Add(currentOrder);
+            }
+
+            HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), ordersInBranch.Count);
+
+            return View(ordersInBranch);
         }
 
         // GET: Branches/Details/5
@@ -87,6 +124,10 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 return NotFound();
             }
             return View(branch);
+        }
+        private string GetUniqueSessionKey(string key)
+        {
+            return HttpContext.User.Identity.Name.ToString() + key;
         }
 
         // POST: Branches/Edit/5
