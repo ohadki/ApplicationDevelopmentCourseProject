@@ -56,21 +56,19 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             branchOrders = _context.Order.Where(order => order.BranchId == branchId).ToList();
             HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), branchOrders.Count);
 
-            List<Order> orders = new List<Order>();
+            List<OrderInBranch> ordersInBranch = new List<OrderInBranch>();
             foreach (var current in tempOrders)
             {
-                Order currentOrder = new Order();
-                currentOrder.Id = current.Id;
-                currentOrder.ProductsString = current.ProductString;
-                currentOrder.OrderPlaced = current.Date;
-                currentOrder.OrderTotal = current.Total;
-                currentOrder.UserId = current.UserId;
-                currentOrder.Branch = current.branch;
-                currentOrder.BranchId = current.BranchID;
-                orders.Add(currentOrder);
+                OrderInBranch currentOrder = new OrderInBranch();
+                currentOrder.orderId = current.Id;
+                currentOrder.name = current.Name;
+                currentOrder.orderPlaced = current.Date;
+                currentOrder.orderTotal = current.Total;
+                currentOrder.address = current.Address;
+                ordersInBranch.Add(currentOrder);
             }
 
-            return View(orders);
+            return View(ordersInBranch);
         }
 
         // GET: Branches/Details/5
