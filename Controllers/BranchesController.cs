@@ -36,14 +36,14 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public IActionResult OrdersFromSpecificBranch(int branchId)
         {
-            var tempOrders = (from u in _context.User
-                              join ua in _context.UserAddress on u.Id equals ua.UserId
-                              join o in _context.Order on u.Id equals o.UserId
+            var tempOrders = (from o in _context.Order
+                              join ua in _context.UserAddress on o.UserId equals ua.UserId
+                              join u in _context.User on o.UserId equals u.Id
                               where o.BranchId == branchId
-                          select new
+                              select new
                               {
                                   UserId = u.Id,
-                                  Name = u.FirstName + u.LastName,
+                                  Name = u.FirstName + " " + u.LastName,
                                   Address = ua.GetUserAddress(),
                                   Id = o.Id,
                                   Total = o.OrderTotal,
@@ -52,9 +52,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                                   branch = o.Branch,
                                   BranchID = o.BranchId,
                               }).ToList();
-            List<Order> branchOrders = new List<Order>();
-            branchOrders = _context.Order.Where(order => order.BranchId == branchId).ToList();
-            HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), branchOrders.Count);
 
             List<OrderInBranch> ordersInBranch = new List<OrderInBranch>();
             foreach (var current in tempOrders)
@@ -67,6 +64,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 currentOrder.address = current.Address;
                 ordersInBranch.Add(currentOrder);
             }
+
+            HttpContext.Session.SetInt32(GetUniqueSessionKey("NumOfOrders"), ordersInBranch.Count);
 
             return View(ordersInBranch);
         }
