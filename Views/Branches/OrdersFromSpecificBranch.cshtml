@@ -10,7 +10,7 @@
     }
 }
 
-@model IEnumerable<ApplicationDevelopmentCourseProject.Models.Order>
+@model IEnumerable<ApplicationDevelopmentCourseProject.Models.OrderInBranch>
 @using Microsoft.AspNetCore.Http
 @using ApplicationDevelopmentCourseProject.Controllers
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
@@ -39,13 +39,19 @@
                         <thead>
                             <tr>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.Id)
+                                    @Html.DisplayNameFor(model => model.orderId)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.OrderTotal)
+                                    @Html.DisplayNameFor(model => model.orderTotal)
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.OrderPlaced)
+                                    @Html.DisplayNameFor(model => model.orderPlaced)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.name)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.address)
                                 </th>
                                 <th>
                                     More Details
@@ -56,20 +62,26 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Id)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OrderTotal)₪
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OrderPlaced)
-                                    </td>
-                                    <td>
-                                        <a href="@Url.Action("OrderDetails", "Orders",new { orderId = item.Id })">Click here for more details</a>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.orderId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.orderTotal)₪
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.orderPlaced)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.address)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("OrderDetails", "Orders",new { orderId = item.orderId })">Click here for more details</a>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
