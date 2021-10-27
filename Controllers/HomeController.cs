@@ -174,16 +174,16 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 string[] productTagIdsArray = productTagsStr.Split(",");
                 var productTagsList = _context.ProductTag.Where(pt => productTagIdsArray.Contains(pt.Id.ToString())).ToList();
-                string[] productTagsArray = new string[productTagsList.Count];
+                string[] productTagsArr = new string[productTagsList.Count];
                 int index = 0;
 
                 foreach (ProductTag pt in productTagsList)
                 {
-                    productTagsArray[index] = pt.TagName;
+                    productTagsArr[index] = pt.TagName;
                     index++;
                 }
 
-                products = products.Where(p => p.ProductTagsString.Split(",", System.StringSplitOptions.None).Any(x => productTagsArray.Contains(x)));
+                return Json(products.ToList().Where(p => p.ProductTagsArr().Intersect(productTagsArr).Any()));
             }
             return Json(products.ToList());
         }
