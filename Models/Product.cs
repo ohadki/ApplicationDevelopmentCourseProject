@@ -58,5 +58,10 @@ namespace ApplicationDevelopmentCourseProject.Models
         public virtual ICollection<ProductTag> ProductTags { get; set; }
 
         public string ProductTagsString { get; set; }
+
+        public string[] ProductTagsArr()
+        {
+            return this.ProductTagsString.Split(",");
+        }
     }
 }
