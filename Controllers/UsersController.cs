@@ -46,7 +46,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // GET: Users
         public IActionResult Index()
         {
-            return View(nameof(AdminPanel));
+            return RedirectToAction(nameof(AdminPanel));
         }
 
         public IActionResult Login()
@@ -211,6 +211,17 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.User.FindAsync(id);
+            var userAddress = await _context.UserAddress.Where(ua => ua.UserId == id).FirstOrDefaultAsync();
+            _context.UserAddress.Remove(userAddress);
+
+            var orders = _context.Order.Where(o => o.UserId == id).ToList();
+            foreach (Order o in orders)
+            {
+                o.UserId = null;
+                o.User = null; 
+                _context.Order.Update(o);
+            }
+
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

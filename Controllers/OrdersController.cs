@@ -64,22 +64,34 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public async Task<IActionResult> OrderDetails(int orderId)
         {
-            var userId = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault().Id;
+            var user = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault();
+            var userId = user != null ? user.Id : null;
             List<CartItem> productsList = new List<CartItem>();
 
-            var query = await (from o in _context.Order
-                                 join u in _context.User on o.UserId equals u.Id
-                                 join ua in _context.UserAddress on o.UserId equals ua.UserId
-                                 where o.Id == orderId
-                                 select new
-                                 {
-                                     UserName = u.Username,
-                                     Name = u.GetFullName(),
-                                     order = o,
-                                     UserAddress = ua.GetUserAddress(),
-                                 }).FirstOrDefaultAsync();
+            Order order = new Order();
 
-            Order order = query.order;
+            if (userId != null)
+            {
+                var query = await (from o in _context.Order
+                               join u in _context.User on o.UserId equals u.Id
+                               join ua in _context.UserAddress on o.UserId equals ua.UserId
+                               where o.Id == orderId
+                               select new
+                               {
+                                   UserName = (u != null) ? u.Username : null,
+                                   Name = (u != null) ? u.GetFullName() : null,
+                                   order = o,
+                                   UserAddress = (ua != null) ? ua.GetUserAddress() : null,
+                               }).FirstOrDefaultAsync();
+                order = query.order;
+                ViewBag.UserName = query.UserName;
+                ViewBag.Name = query.Name;
+                ViewBag.UserAddress = query.UserAddress;
+            }
+            else
+            {
+                order = _context.Order.Where(o => o.Id == orderId).FirstOrDefault();
+            }
 
             if (order == null)
             {
@@ -91,9 +103,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             ViewBag.OrderId     = orderId;
             ViewBag.OrderTotal  = order.OrderTotal;
             ViewBag.OrderDate   = order.OrderPlaced;
-            ViewBag.UserName    = query.UserName;
-            ViewBag.Name        = query.Name;
-            ViewBag.UserAddress = query.UserAddress;
             return View(productsList);
         }
 
