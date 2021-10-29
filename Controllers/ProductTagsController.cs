@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -44,6 +45,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: ProductTags/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             return View();
@@ -54,6 +57,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Create([Bind("Id,TagName")] ProductTag productTag)
         {
             if (ModelState.IsValid)
@@ -66,6 +71,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: ProductTags/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,6 +93,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,TagName")] ProductTag productTag)
         {
             if (id != productTag.Id)
@@ -117,6 +126,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: ProductTags/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +148,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // POST: ProductTags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var productTag = await _context.ProductTag.FindAsync(id);
@@ -144,6 +157,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
 
         private bool ProductTagExists(int id)
         {

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -33,7 +34,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             var branches =  _context.Branch.ToListAsync();
             return View(await branches);
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult OrdersFromSpecificBranch(int branchId)
         {
             var tempOrders = (from o in _context.Order
@@ -87,6 +88,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
             return View(branch);
         }
+        [Authorize(Roles = "Admin")]
 
         // GET: Branches/Create
         public IActionResult Create()
@@ -98,6 +100,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,BranchName,Address,XCoordinate,YCoordinate")] Branch branch)
         {
@@ -109,6 +112,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             }
             return View(branch);
         }
+        [Authorize(Roles = "Admin")]
 
         // GET: Branches/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -125,6 +129,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             }
             return View(branch);
         }
+
         private string GetUniqueSessionKey(string key)
         {
             return HttpContext.User.Identity.Name.ToString() + key;
@@ -134,6 +139,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,BranchName,Address,XCoordinate,YCoordinate")] Branch branch)
         {
@@ -166,6 +173,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Branches/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -185,6 +194,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         // POST: Branches/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -193,6 +203,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
 
         private bool BranchExists(int id)
         {

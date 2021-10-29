@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Threading;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -26,12 +27,16 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Contacts
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Index()
         {
             return View(await _context.Contact.ToListAsync());
         }
 
         // GET: Contacts/Details/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -94,6 +99,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Contacts/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -114,6 +121,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Telephone,Message")] Contact contact)
         {
             if (id != contact.Id)
@@ -145,6 +154,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Contacts/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -165,6 +176,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // POST: Contacts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var contact = await _context.Contact.FindAsync(id);
@@ -172,6 +185,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
 
         private bool ContactExists(int id)
         {
@@ -202,7 +216,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 SendEmail(toAddress, fromAddress, subject, message.ToString()));
                 tEmail.Start();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
 
             else
@@ -210,7 +224,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                 var errors = ModelState.Select(x => x.Value.Errors).Where(y => y.Count > 0).ToList();
             }
 
-            return View(contact);
+            return RedirectToAction("Index", "Home"); ;
         }
 
         public void SendEmail(string toAddress, string fromAddress,

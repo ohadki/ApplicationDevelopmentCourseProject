@@ -99,7 +99,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
             return View(user);
         }
-        
+
         // GET: Users1/Create
         public IActionResult Create()
         {
@@ -188,6 +188,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -208,6 +210,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var user = await _context.User.FindAsync(id);
@@ -231,7 +235,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             return _context.User.Any(e => e.Id == id);
         }
-
         public JsonResult CheckValidUser([Bind("Username,Password")] User user)
         {
             string result = "Fail";
@@ -278,7 +281,6 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
             return RedirectToAction(nameof(Index),"Home");
         }
-
         public async Task<IActionResult> RegisterUser(User user)
         {
             if (ModelState.IsValid)

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ApplicationDevelopmentCourseProject.Data;
 using ApplicationDevelopmentCourseProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
@@ -42,7 +43,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
             return View(category);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Categories/Create
         public IActionResult Create()
         {
@@ -53,6 +54,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Category category)
         {
@@ -66,6 +68,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,6 +88,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Category category)
         {
@@ -117,6 +121,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -137,6 +143,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _context.Category.FindAsync(id);
@@ -144,11 +152,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
 
         private bool CategoryExists(int id)
         {
             return _context.Category.Any(e => e.Id == id);
         }
+        [Authorize(Roles = "Admin")]
 
         public IActionResult CategoriesSalesStats()
         {

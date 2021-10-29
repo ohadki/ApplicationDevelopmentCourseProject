@@ -10,9 +10,11 @@ using ApplicationDevelopmentCourseProject.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApplicationDevelopmentCourseProject.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly ApplicationDevelopmentCourseProjectContext _context;

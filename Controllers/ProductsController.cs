@@ -84,6 +84,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Products1/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
@@ -95,6 +97,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Image,CategoryId")] Product product)
         {
             if (ModelState.IsValid)
@@ -109,6 +113,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> CreateProduct(Product product, List<string> SelectedProductTags)
         {  
             if(HttpContext.Request.Form.Files.Count > 0)
@@ -155,6 +161,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Products1/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -176,6 +184,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Image,CategoryId,Quantity")] Product product)
         {
             if (id != product.Id)
@@ -208,6 +218,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         }
 
         // GET: Products1/Delete/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -229,6 +241,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // POST: Products1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var product = await _context.Product.FindAsync(id);
@@ -236,6 +250,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [Authorize(Roles = "Admin")]
 
         private bool ProductExists(int id)
         {
@@ -248,6 +263,8 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         /// <returns>result</returns>
         /// <param name="post">post to publish</param>
         /// <param name="pathToImage">image to attach</param>
+        [Authorize(Roles = "Admin")]
+
         public string PublishToTwitter(string postDescription, string pathToImage)
         {
             try
