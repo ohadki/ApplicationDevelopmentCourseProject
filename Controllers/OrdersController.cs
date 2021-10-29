@@ -64,13 +64,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public async Task<IActionResult> OrderDetails(int orderId)
         {
+
+            Order order = _context.Order.Where(o => o.Id == orderId).FirstOrDefault();
+            var userId = order.Id;
             var user = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault();
-            var userId = user != null ? user.Id : null;
             List<CartItem> productsList = new List<CartItem>();
 
-            Order order = new Order();
-
-            if (userId != null)
+            if (user != null)
             {
                 var query = await (from o in _context.Order
                                join u in _context.User on o.UserId equals u.Id
