@@ -28,12 +28,15 @@ namespace ApplicationDevelopmentCourseProject.Models
         ErrorMessage = "Country should be minimum 3 characters and a maximum of 50 characters")]
         [DataType(DataType.Text)]
         public string Country { get; set; }
-        [Display(Name = "Phone:")]
+        [Display(Name = "Phone")]
         [Required(ErrorMessage = "A phone number is required.")]
         [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
         public string ContactNumber { get; set; }
         public User User { get; set; }
+
+        [Display(Name = "User Id")]
+        [Required(ErrorMessage = "A phone number is required.")]
         public string UserId { get; set; }
         public string GetUserAddress()
         {
