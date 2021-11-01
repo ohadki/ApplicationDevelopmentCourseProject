@@ -34,9 +34,6 @@ namespace ApplicationDevelopmentCourseProject.Models
         [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Phone Number.")]
         public string ContactNumber { get; set; }
         public User User { get; set; }
-
-        [Display(Name = "User Id")]
-        [Required(ErrorMessage = "A phone number is required.")]
         public string UserId { get; set; }
         public string GetUserAddress()
         {
