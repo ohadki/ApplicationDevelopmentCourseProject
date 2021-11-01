@@ -148,9 +148,7 @@
                             <img class="card-img-top" src="~/UploadFiles/Products/@item.Image" alt="..." />
                             <div class="card-body p-4">
                                 <div class="text-center">
-                                    @Html.DisplayFor(modelItem => item.Name)
-                                    <br />
-                                    @Html.DisplayFor(modelItem => item.ProductTagsString)
+                                    <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
                                     <br />
                                     @Html.DisplayFor(modelItem => item.Description)
                                     <br />
@@ -276,9 +274,7 @@
             <img class="card-img-top" src="/UploadFiles/Products/${image}" alt="..." />
             <div class="card-body p-4">
                 <div class="text-center">
-                    ${name}
-                    <br />
-                    ${productTagsString}
+                    <h3>${name}</h3>
                     <br />
                     ${description}
                     <br />
@@ -296,9 +292,7 @@
             <img class="card-img-top" src="/UploadFiles/Products/${image}" alt="..." />
             <div class="card-body p-4">
                 <div class="text-center">
-                    ${name}
-                    <br />
-                    ${productTagsString}
+                    <h1>${name}</h1>
                     <br />
                     ${description}
                     <br />

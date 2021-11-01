@@ -62,7 +62,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index),"Users");
             }
             return View(category);
         }
@@ -115,7 +115,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Users");
             }
             return View(category);
         }

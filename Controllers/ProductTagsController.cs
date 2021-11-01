@@ -65,7 +65,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             {
                 _context.Add(productTag);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Users");
             }
             return View(productTag);
         }
@@ -120,7 +120,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Users");
             }
             return View(productTag);
         }
