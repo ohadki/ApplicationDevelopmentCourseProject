@@ -125,8 +125,11 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-
-            User user = null;
+            var user = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault();
+            if(user == null || (user.Id != id && user.Type == 0))
+            {
+                return RedirectToAction("AccessDenied", "Home");
+            }
 
             if (id == null)
             {

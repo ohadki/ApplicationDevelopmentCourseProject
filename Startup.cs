@@ -40,7 +40,7 @@ namespace ApplicationDevelopmentCourseProject
                 options =>
                 {
                     options.LoginPath = "/Users/Login";
-                    options.AccessDeniedPath = "/Users/AccessDenied";
+                    options.AccessDeniedPath = "/Home/AccessDenied";
                 });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

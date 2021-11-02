@@ -68,9 +68,9 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             Order order = _context.Order.Where(o => o.Id == orderId).FirstOrDefault();
             var user = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault();
-            if (order == null || ((order.UserId != user.Id) && (user.Type == 0)))
+            if (user == null || order == null || ((order.UserId != user.Id) && (user.Type == 0)))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("AccessDenied", "Home");
             }
             var userId = order.Id;
             List<CartItem> productsList = new List<CartItem>();

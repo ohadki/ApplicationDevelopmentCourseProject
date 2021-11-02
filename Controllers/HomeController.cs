@@ -50,6 +50,10 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             };
             return View(productsAndCategoriesViewModel);
         }
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
         [Authorize]
         public IActionResult Privacy()
