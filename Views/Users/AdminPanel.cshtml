@@ -35,8 +35,8 @@
 
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="searched-input-admin-panel">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="SearchItems()">Search</button>
         </form>
     </div>
 </nav>
@@ -377,6 +377,24 @@
         <div id="category_stats_inner"></div>
     </div>
 </body>
+
+<script>
+    function SearchItems() {
+        var SearchedPattern = document.getElementById("searched-input-admin-panel").value;
+
+        $.ajax({
+            type: "GET",
+            url: "/Users/AdminPanel",
+            data: { SearchedPattern: SearchedPattern },
+            success: function () {
+                return true;
+            },
+            error: function (request, status, error) {
+                return false;
+            }
+        });
+    }
+</script>
 
 
 

@@ -64,18 +64,19 @@ namespace ApplicationDevelopmentCourseProject.Controllers
             return View();
         }
 
+        [HttpGet]
         [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> AdminPanel()
+        public async Task<IActionResult> AdminPanel(string SearchedPattern)
         {
             var adminModel = new AdminViewModel
             {
-                Users = await _context.User.ToListAsync(),
-                Branches = await _context.Branch.ToListAsync(),
-                Products = await _context.Product.ToListAsync(),
-                Contacts = await _context.Contact.ToListAsync(),
-                Categories = await _context.Category.ToListAsync(),
-                Orders = await _context.Order.ToListAsync(),
-                ProductTags = await _context.ProductTag.ToListAsync(),
+                Users = string.IsNullOrEmpty(SearchedPattern) ? await _context.User.ToListAsync() : await _context.User.Where(u => u.GetFullName().Contains(SearchedPattern) || u.Username.Contains(SearchedPattern)).ToListAsync(),
+                Branches = string.IsNullOrEmpty(SearchedPattern) ? await _context.Branch.ToListAsync() : await _context.Branch.Where(b => b.BranchName.Contains(SearchedPattern)).ToListAsync(),
+                Products = string.IsNullOrEmpty(SearchedPattern) ? await _context.Product.ToListAsync() : await _context.Product.Where(p => p.Name.Contains(SearchedPattern)).ToListAsync(),
+                Contacts = string.IsNullOrEmpty(SearchedPattern) ? await _context.Contact.ToListAsync() : await _context.Contact.Where(c => c.Name.Contains(SearchedPattern)).ToListAsync(),
+                Categories = string.IsNullOrEmpty(SearchedPattern) ? await _context.Category.ToListAsync() : await _context.Category.Where(c => c.Name.Contains(SearchedPattern) || c.Description.Contains(SearchedPattern)).ToListAsync(),
+                Orders = string.IsNullOrEmpty(SearchedPattern) ? await _context.Order.ToListAsync() : await _context.Order.Where(o => o.Id.ToString().Equals(SearchedPattern)).ToListAsync(),
+                ProductTags = string.IsNullOrEmpty(SearchedPattern) ? await _context.ProductTag.ToListAsync() : await _context.ProductTag.Where(pt => pt.TagName.Contains(SearchedPattern)).ToListAsync(),
             };
             return View(adminModel);
         }
