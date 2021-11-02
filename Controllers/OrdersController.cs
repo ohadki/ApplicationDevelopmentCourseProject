@@ -53,7 +53,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
             List<List<CartItem>> productsList = new List<List<CartItem>>();
 
-            foreach(Order order in userOrders)
+            foreach (Order order in userOrders)
             {
                 List<CartItem> orderItems = new List<CartItem>();
                 orderItems = ConvertStringToProductList(order.ProductsString);
@@ -66,10 +66,13 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         public async Task<IActionResult> OrderDetails(int orderId)
         {
-
             Order order = _context.Order.Where(o => o.Id == orderId).FirstOrDefault();
-            var userId = order.Id;
             var user = _context.User.Where(user => user.Username == User.Identity.Name.ToString()).FirstOrDefault();
+            if (order == null || ((order.UserId != user.Id) && (user.Type == 0)))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            var userId = order.Id;
             List<CartItem> productsList = new List<CartItem>();
 
             if (user != null)
