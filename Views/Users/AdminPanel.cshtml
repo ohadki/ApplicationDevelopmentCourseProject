@@ -16,7 +16,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="#users" onclick="showhide('usersTable');">Users <span class="sr-only">(current)</span></a>
             </li>
-            <li><a class="nav-link" href="#branches" onclick="showhide('branchestable');">Branches</a></li>
+            <li><a class="nav-link" href="#branches" onclick="showhide('branchesTable');">Branches</a></li>
             <li><a class="nav-link" href="#products" onclick="showhide('productsTable');">Products</a></li>
             <li><a class="nav-link" href="#categories" onclick="showhide('categoriesTable');">Categories</a></li>
             <li><a class="nav-link" href="#producttags" onclick="showhide('ProductTagsTable');">Product Tags</a></li>
@@ -41,8 +41,8 @@
     </div>
 </nav>
 
-<body>
-    <div id="branchestable" style="display: none;">
+<body onload="showhide(window.location.href.split('#')[1]+'Table')">
+    <div id="branchesTable" style="display: none;">
         <table class="table">
             <thead>
                 <tr>
@@ -378,26 +378,6 @@
     </div>
 </body>
 
-<script>
-    function SearchItems() {
-        var SearchedPattern = document.getElementById("searched-input-admin-panel").value;
-
-        $.ajax({
-            type: "GET",
-            url: "/Users/AdminPanel",
-            data: { SearchedPattern: SearchedPattern },
-            success: function () {
-                return true;
-            },
-            error: function (request, status, error) {
-                return false;
-            }
-        });
-    }
-</script>
-
-
-
 @section Scripts {
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -405,6 +385,9 @@
 
         var divState = {}; // we store the status in this object
         function showhide(id) {
+            if (id == "undefinedTable") {
+                id = "usersTable";
+            }
             if (document.getElementById) {
                 var divid = document.getElementById(id);
 
@@ -421,6 +404,15 @@
         }
         showhide("usersTable");
     </script>
+
+    <script>
+        function SearchItems() {
+            var table = window.location.href.split("#")[1];
+            location.href = '@Url.Action("AdminPanel", "Users")?SearchedPattern=' + document.getElementById('searched-input-admin-panel').value + "#" + table;
+        }
+    </script>
+
+
     <script>
             d3.json("@Url.Action("CategoriesSalesStats", "Categories")", function (controllerData) {
                 // set the dimensions and margins of the graph
@@ -636,3 +628,4 @@
         })
     </script>
 }
+
