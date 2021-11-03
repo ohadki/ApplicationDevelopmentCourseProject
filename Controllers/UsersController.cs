@@ -70,7 +70,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
         {
             var adminModel = new AdminViewModel
             {
-                Users = string.IsNullOrEmpty(SearchedPattern) ? await _context.User.ToListAsync() : await _context.User.Where(u => u.GetFullName().Contains(SearchedPattern) || u.Username.Contains(SearchedPattern)).ToListAsync(),
+                Users = string.IsNullOrEmpty(SearchedPattern) ? await _context.User.ToListAsync() : _context.User.AsEnumerable().Where(u => u.GetFullName().Contains(SearchedPattern) || u.Username.Contains(SearchedPattern)).ToList(),
                 Branches = string.IsNullOrEmpty(SearchedPattern) ? await _context.Branch.ToListAsync() : await _context.Branch.Where(b => b.BranchName.Contains(SearchedPattern)).ToListAsync(),
                 Products = string.IsNullOrEmpty(SearchedPattern) ? await _context.Product.ToListAsync() : await _context.Product.Where(p => p.Name.Contains(SearchedPattern)).ToListAsync(),
                 Contacts = string.IsNullOrEmpty(SearchedPattern) ? await _context.Contact.ToListAsync() : await _context.Contact.Where(c => c.Name.Contains(SearchedPattern)).ToListAsync(),
