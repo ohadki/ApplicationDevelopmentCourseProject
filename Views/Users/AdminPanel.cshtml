@@ -19,7 +19,7 @@
             <li><a class="nav-link" href="#branches" onclick="showhide('branchesTable');">Branches</a></li>
             <li><a class="nav-link" href="#products" onclick="showhide('productsTable');">Products</a></li>
             <li><a class="nav-link" href="#categories" onclick="showhide('categoriesTable');">Categories</a></li>
-            <li><a class="nav-link" href="#producttags" onclick="showhide('ProductTagsTable');">Product Tags</a></li>
+            <li><a class="nav-link" href="#producttags" onclick="showhide('producttagsTable');">Product Tags</a></li>
             <li><a class="nav-link" href="#orders" onclick="showhide('ordersTable');">Orders</a></li>
             @*<li><a class="nav-link" href="#statistics" onclick="showhide('statistics');">Statistics</a></li>*@
             <li><a class="nav-link" href="#contactUs" onclick="showhide('contactUsMessagesTable');">Customer messages</a></li>
@@ -173,7 +173,7 @@
         <input type="button" onclick="location.href='@Url.Action("Create", "Categories")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Create new category" />
     </div>
 
-    <div id="ProductTagsTable" style="display: none;">
+    <div id="producttagsTable" style="display: none;">
         <table class="table">
             <thead>
                 <tr>
@@ -384,6 +384,7 @@
     <script type="text/javascript">
 
         var divState = {}; // we store the status in this object
+
         function showhide(id) {
             if (document.getElementById) {
                 var divid = document.getElementById(id);
@@ -400,12 +401,26 @@
             }
         }
         showhide("usersTable");
+
+        var searchTable = window.location.href.split("curTable=");
+        if (searchTable.length > 1 && searchTable[1] != 'users') {
+            showhide(searchTable[1]+'Table');
+        }
     </script>
 
     <script>
         function SearchItems() {
             var table = window.location.href.split("#")[1];
-            location.href = '@Url.Action("AdminPanel", "Users")?SearchedPattern=' + document.getElementById('searched-input-admin-panel').value;
+            if (table == null) {
+                var searchTable = window.location.href.split("curTable=");
+                if (searchTable.length > 1) {
+                    table = searchTable[1]
+                }
+                else {
+                    table = 'users'
+                }
+            }
+            location.href = '@Url.Action("AdminPanel", "Users")?SearchedPattern=' + document.getElementById('searched-input-admin-panel').value +'&curTable='+ table;
         }
     </script>
 
