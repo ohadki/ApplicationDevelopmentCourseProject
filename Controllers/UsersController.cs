@@ -66,7 +66,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
 
         [HttpGet]
         [Authorize(Roles ="Admin")]
-        public async Task<IActionResult> AdminPanel(string SearchedPattern)
+        public async Task<IActionResult> AdminPanel(string SearchedPattern,string curtable)
         {
             var adminModel = new AdminViewModel
             {

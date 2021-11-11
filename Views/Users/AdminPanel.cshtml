@@ -19,7 +19,7 @@
             <li><a class="nav-link" href="#branches" onclick="showhide('branchesTable');">Branches</a></li>
             <li><a class="nav-link" href="#products" onclick="showhide('productsTable');">Products</a></li>
             <li><a class="nav-link" href="#categories" onclick="showhide('categoriesTable');">Categories</a></li>
-            <li><a class="nav-link" href="#producttags" onclick="showhide('ProductTagsTable');">Product Tags</a></li>
+            <li><a class="nav-link" href="#producttags" onclick="showhide('producttagsTable');">Product Tags</a></li>
             <li><a class="nav-link" href="#orders" onclick="showhide('ordersTable');">Orders</a></li>
             @*<li><a class="nav-link" href="#statistics" onclick="showhide('statistics');">Statistics</a></li>*@
             <li><a class="nav-link" href="#contactUs" onclick="showhide('contactUsMessagesTable');">Customer messages</a></li>
@@ -173,7 +173,7 @@
         <input type="button" onclick="location.href='@Url.Action("Create", "Categories")';return false;" class="btn btn-lg btn-default btn-block btn-primary" value="Create new category" />
     </div>
 
-    <div id="ProductTagsTable" style="display: none;">
+    <div id="producttagsTable" style="display: none;">
         <table class="table">
             <thead>
                 <tr>
@@ -384,6 +384,7 @@
     <script type="text/javascript">
 
         var divState = {}; // we store the status in this object
+
         function showhide(id) {
             if (document.getElementById) {
                 var divid = document.getElementById(id);
@@ -400,12 +401,26 @@
             }
         }
         showhide("usersTable");
+
+        var searchTable = window.location.href.split("curTable=");
+        if (searchTable.length > 1 && searchTable[1] != 'users') {
+            showhide(searchTable[1]+'Table');
+        }
     </script>
 
     <script>
         function SearchItems() {
             var table = window.location.href.split("#")[1];
-            location.href = '@Url.Action("AdminPanel", "Users")?SearchedPattern=' + document.getElementById('searched-input-admin-panel').value;
+            if (table == null) {
+                var searchTable = window.location.href.split("curTable=");
+                if (searchTable.length > 1) {
+                    table = searchTable[1]
+                }
+                else {
+                    table = 'users'
+                }
+            }
+            location.href = '@Url.Action("AdminPanel", "Users")?SearchedPattern=' + document.getElementById('searched-input-admin-panel').value +'&curTable='+ table;
         }
     </script>
 
@@ -501,71 +516,6 @@
                 })
             })
         </script>
-        @*<script>
-            d3.json("@Url.Action("MonthlySalesStats","Orders")", function (controllerData) {
-                // set the dimensions and margins of the graph
-                var width = 450
-                height = 450
-                margin = 40
-
-                // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
-                var radius = Math.min(width, height) / 2 - margin
-
-                // append the svg object to the div called 'my_dataviz'
-                var svg = d3.select("#my_dataviz")
-                    .append("svg")
-                    .attr("width", width)
-                    .attr("height", height)
-                    .append("g")
-                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-                //Parse the data that we got from the controller
-                var categoryDataDict = {}
-                controllerData.forEach(function (obj) { categoryDataDict[obj.month] = obj.sum; });
-
-                // set the color scale
-                var color = d3.scaleOrdinal()
-                    .domain(categoryDataDict)
-                    .range(d3.schemeSet2);
-
-                // Compute the position of each group on the pie:
-                var pie = d3.pie()
-                    .value(function (d) {
-                        console.log(d.value)
-                        return d.value;
-                    })
-
-                var data_ready = pie(d3.entries(categoryDataDict))
-                // Now I know that group A goes from 0 degrees to x degrees and so on.
-
-                // shape helper to build arcs:
-                var arcGenerator = d3.arc()
-                    .innerRadius(0)
-                    .outerRadius(radius)
-
-                // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-                svg
-                    .selectAll('mySlices')
-                    .data(data_ready)
-                    .enter()
-                    .append('path')
-                    .attr('d', arcGenerator)
-                    .attr('fill', function (d) { return (color(d.data.key)) })
-                    .attr("stroke", "black")
-                    .style("stroke-width", "2px")
-                    .style("opacity", 0.7)
-
-                // Now add the annotation. Use the centroid method to get the best coordinates
-                svg
-                    .selectAll('mySlices')
-                    .data(data_ready)
-                    .enter()
-                    .append('text')
-                    .text(function (d) { return d.data.key })
-                    .attr("transform", function (d) { return "translate(" + arcGenerator.centroid(d) + ")"; })
-                    .style("text-anchor", "middle")
-                    .style("font-size", 17)
-            })
-        </script>*@
     <script>
         // Parse the Data
         //d3.csv("https://raw.githubusercontent.com/ohadki/ApplicationDevelopmentCourseProject/master/sample_stats.csv", function (data) {

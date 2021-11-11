@@ -11,8 +11,7 @@
     <div class="account-wall">
         <h1>Contact us !</h1>
 
-        <article class="card-body mx-auto" @*style="max-width: 400px;"*@>
-            @*<form asp-controller="Contacts" asp-action="ContactEmail">*@
+        <article class="card-body mx-auto" >
             <form action='@Url.Action("ContactEmail","Contacts")' method='post'>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div>
