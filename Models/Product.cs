@@ -63,6 +63,10 @@ namespace ApplicationDevelopmentCourseProject.Models
 
         public string[] ProductTagsArr()
         {
+            if(string.IsNullOrEmpty(this.ProductTagsString))
+            {
+                return null;
+            }
             return this.ProductTagsString.Split(",");
         }
     }

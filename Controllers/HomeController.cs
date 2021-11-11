@@ -187,7 +187,7 @@ namespace ApplicationDevelopmentCourseProject.Controllers
                     index++;
                 }
 
-                return Json(products.ToList().Where(p => p.ProductTagsArr().Intersect(productTagsArr).Any()));
+                return Json(products.ToList().Where(p => !string.IsNullOrEmpty(p.ProductTagsString) && p.ProductTagsArr().Intersect(productTagsArr).Any()));
             }
             return Json(products.ToList());
         }
